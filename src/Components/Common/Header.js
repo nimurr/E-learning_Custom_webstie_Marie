@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <header className="w-full ">
-      <div className="container mx-auto fixed left-0 right-0 top-5">
+      <div className="container mx-auto fixed z-[999] px-4 left-0 right-0 top-5">
         <div className="flex items-center justify-between rounded-xl bg-black/60 backdrop-blur-md px-6 lg:py-3 py-5 border border-gray-300">
 
           {/* Logo */}
