@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,11 +26,23 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Outfit, Arial, Helvetica, sans-serif !important;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
 }
 
 .ant-select-selector {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
+}
+
+.customSignUpButton {
+  background: radial-gradient(circle, #2d2a71 0%, #171636 100%);
+}
+
+.customSignUpButtonHover:hover {
+  background: radial-gradient(circle, #2d2a71 0%, #171636  100%) !important;
+  color: #ffffff !important;
+  transition: 0.6s ease !important;
+  border: 1px solid transparent;
 }
