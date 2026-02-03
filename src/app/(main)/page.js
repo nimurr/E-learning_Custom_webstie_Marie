@@ -1,4 +1,5 @@
 'use client';
+import ExpertGuideMentor from '@/Components/Home/ExpertGuideMentor';
 import ExploreOurCapsules from '@/Components/Home/ExploreOurCapsules';
 import Hero from '@/Components/Home/Hero';
 import YourPathThrough from '@/Components/Home/YourPathThrough';
