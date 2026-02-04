@@ -153,7 +153,7 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
     console.log(isOpen)
 
     return (
-        <div className={` lg:flex flex-col bg-[#eaeaf1]  h-screen min-w-80 border-r border-gray-300 ${isOpen ? 'block absolute left-0 top-0' : 'hidden relative'}`}>
+        <div className={` lg:flex flex-col lg:sticky top-0 lg:z-0 z-10 bg-[#eaeaf1]  h-screen min-w-80 border-r border-gray-300 ${isOpen ? 'block fixed left-0 top-0' : 'hidden '}`}>
 
             {/* LOGO */}
             <Link href="/" className="p-4 border-b border-gray-300 relative">
@@ -164,7 +164,7 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
                 />
             </Link>
             <div onClick={() => setIsOpen(!isOpen)} className='absolute top-3 right-3 cursor-pointer'>
-                <RxCross1 className='text-2xl lg:hidden' />
+                <RxCross1 className='text-3xl lg:hidden' />
             </div>
 
             {/* MENU */}

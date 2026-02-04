@@ -13,11 +13,11 @@ export default function Layout({ children }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="relative flex ">
+        <div className="relative flex">
             <StudentsSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="w-full">
                 <StudentsHeader isOpen={isOpen} setIsOpen={setIsOpen} />
-                <div className="p-5">
+                <div className="">
                     {children}
                 </div>
             </div>
