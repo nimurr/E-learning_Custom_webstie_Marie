@@ -2,8 +2,8 @@ import React from "react";
 
 const Hero = () => {
     return (
-        <div className="h-screen w-full bg-[url('/Images/Home/Hero/Banner.png')] bg-no-repeat bg-cover bg-center pt-20 flex items-center justify-center">
-            <div className=" min-h-60 bg-gradient-to-t to-[#301f4b] from-[#1e142e] opacity-95 rounded-2xl min-w-[60%] max-w-container px-5 py-20 relative">
+        <div className="h-screen w-full bg-[url('/Images/Home/Hero/Banner.png')] bg-no-repeat bg-cover bg-center pt-20 flex items-center justify-center px-5 lg:px-0">
+            <div className=" min-h-60 bg-gradient-to-t to-[#301f4b] from-[#1e142e] opacity-95 rounded-2xl min-w-[60%]  px-5 py-20 relative">
                 <h2 className="text-5xl text-center text-white">Find Your <span className="text-orange-500">Constellation</span> Within</h2>
                 <p className="text-white text-center my-8">A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection</p>
                 <div className="flex items-center justify-center ">
