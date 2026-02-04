@@ -72,7 +72,7 @@ const YourPathThrough = () => {
       {/* Timeline */}
       <div className="relative mt-20">
         {/* Horizontal line */}
-        <div className="hidden lg:block absolute top-10 left-0 right-0 h-[3px] bg-[#B8B6D9]" />
+        <div className="hidden lg:block absolute w-[calc(100%-180px)] top-10 left-20 right-0 h-[5px] bg-[#B8B6D9]" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-12">
           {steps.map((step, index) => {

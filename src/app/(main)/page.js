@@ -2,9 +2,8 @@
 import ExpertGuideMentor from '@/Components/Home/ExpertGuideMentor';
 import ExploreOurCapsules from '@/Components/Home/ExploreOurCapsules';
 import Hero from '@/Components/Home/Hero';
+import HomeTestimonial from '@/Components/Home/HomeTestimonial';
 import YourPathThrough from '@/Components/Home/YourPathThrough';
-import Loading from '@/Components/others/Loading';
-import { useGetDemoDataQuery } from '@/redux/fetures/Demo/demoDataGet';
 import React from 'react';
 
 const Page = () => {
@@ -17,6 +16,7 @@ const Page = () => {
                 <YourPathThrough />
                 <ExploreOurCapsules />
                 <ExpertGuideMentor />
+                <HomeTestimonial />
             </div>
         </div>
     );
