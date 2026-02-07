@@ -69,7 +69,7 @@ const YourPersonalizedSummary = () => {
                 <Link href="/students/exploration-journey" className='px-8 flex items-center justify-center w-full customSignUpButton py-3 rounded-lg text-white'>Continue with the Exploration Journey</Link>
                 <Link href="/students/recommended-mentors" className='px-8 flex items-center justify-center w-full customSignUpButton py-3 rounded-lg text-white'>Be connected with aligned mentors</Link>
             </div>
-            <button className='px-8 w-full border border-primary  py-3 rounded-lg text-primary'>Continue on my own</button>
+            <Link href="/students/my-account" className='px-8 w-full block text-center border border-primary  py-3 rounded-lg text-primary'>Continue on my own</Link>
         </div>
     );
 }
