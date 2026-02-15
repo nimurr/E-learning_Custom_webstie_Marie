@@ -97,7 +97,7 @@ const Diagnostics = () => {
             <div className="mt-10 text-center">
                 <button
                     onClick={handleSubmitAll}
-                    className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+                    className="customSignUpButton text-white px-6 py-4 rounded-lg hover:bg-indigo-700 transition"
                 >
                     Submit All Answers
                 </button>

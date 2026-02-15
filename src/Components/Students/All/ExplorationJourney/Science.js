@@ -49,7 +49,7 @@ const Science = () => {
             <button
                 onClick={handleSubmit}
                 disabled={!text || text === '<p><br></p>'}
-                className="bg-primary disabled:bg-gray-400 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition mt-6"
+                className="customSignUpButton disabled:bg-gray-400 text-white px-8 py-4 rounded-lg hover:bg-indigo-700 transition mt-6"
             >
                 Submit
             </button>

@@ -135,10 +135,10 @@ const CapsuleJourneyForSingleItem = () => {
                     <button
                         onClick={nextStep}
                         disabled={currentStep === totalSteps}
-                        className={`px-6 py-3 rounded-xl text-white transition
+                        className={`px-8 py-3 rounded-xl text-white transition 
               ${currentStep === totalSteps
                                 ? "bg-gray-300 cursor-not-allowed"
-                                : "bg-primary hover:bg-indigo-800"
+                                : "customSignUpButton"
                             }`}
                     >
                         Next →
