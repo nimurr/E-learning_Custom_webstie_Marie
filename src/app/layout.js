@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/redux/Providers";
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +36,9 @@ export default function RootLayout({ children }) {
 
         />
         <Providers>
-          {children}
+          <PrimeReactProvider> 
+            {children}
+          </PrimeReactProvider>
         </Providers>
       </body>
     </html>
