@@ -66,7 +66,7 @@ const YourPersonalizedSummary = () => {
                 </div>
             </div>
             <div className='flex items-center justify-between w-full my-5 gap-5'>
-                <Link href="/students/exploration-journey" className='px-8 flex items-center justify-center w-full customSignUpButton py-3 rounded-lg text-white'>Continue with the Exploration Journey</Link>
+                <Link href="/students/capsule-journey" className='px-8 flex items-center justify-center w-full customSignUpButton py-3 rounded-lg text-white'>Continue with the Exploration Journey</Link>
                 <Link href="/students/recommended-mentors" className='px-8 flex items-center justify-center w-full customSignUpButton py-3 rounded-lg text-white'>Be connected with aligned mentors</Link>
             </div>
             <Link href="/students/my-account" className='px-8 w-full block text-center border border-primary  py-3 rounded-lg text-primary'>Continue on my own</Link>

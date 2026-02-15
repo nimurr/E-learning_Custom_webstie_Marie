@@ -67,7 +67,7 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
 
     return (
         <>
-        <ToastContainer />
+            <ToastContainer />
             <div
                 className={`lg:flex flex-col lg:sticky top-0 lg:z-0 z-10 bg-[#eaeaf1] h-screen min-w-80 border-r border-gray-300
                 ${isOpen ? 'block fixed left-0 top-0' : 'hidden'}`}
@@ -102,10 +102,9 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
                                     setIsOpen(false);
                                 }}
                                 className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition
-                                    ${
-                                        isActive
-                                            ? 'bg-white shadow-sm'
-                                            : 'hover:bg-white/70'
+                                    ${isActive
+                                        ? 'bg-white shadow-sm'
+                                        : 'hover:bg-white/70'
                                     }`}
                             >
                                 {/* ICON */}

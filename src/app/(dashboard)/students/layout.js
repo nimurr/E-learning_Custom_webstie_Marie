@@ -17,6 +17,7 @@ export default function Layout({ children }) {
             <StudentsSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="w-full">
                 <StudentsHeader isOpen={isOpen} setIsOpen={setIsOpen} />
+
                 <div className="">
                     {children}
                 </div>
