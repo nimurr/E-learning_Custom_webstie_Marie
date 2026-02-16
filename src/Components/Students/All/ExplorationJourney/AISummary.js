@@ -4,6 +4,7 @@ import { FaBrain } from 'react-icons/fa';
 import { GiDjedPillar } from "react-icons/gi";
 
 import { FaLocationDot } from 'react-icons/fa6';
+import Link from 'next/link';
 
 const AISummary = () => {
     return (
@@ -107,6 +108,10 @@ const AISummary = () => {
                     Meaningful work activates high-efficiency dopamine circuits,
                     contrasting with the survival-driven cortisol spikes of high-stress environments.
                 </p>
+            </div>
+
+            <div className='flex items-center justify-center'>
+                <Link href="/students/claim-your-gift" className='mt-4 cursor-pointer px-8 py-4 customSignUpButton  font-semibold text-white rounded-md'>Collect Your Credits</Link>
             </div>
 
         </div>
