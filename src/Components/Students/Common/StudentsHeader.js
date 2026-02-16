@@ -15,11 +15,10 @@ const StudentsHeader = ({ isOpen, setIsOpen }) => {
                 <div className='w-14 h-14 bg-primary cursor-pointer text-white flex items-center justify-center rounded-full'>
                     <IoMdNotifications className='text-3xl' />
                 </div>
-                <div className='bg-white cursor-pointer h-14 flex items-center gap-2 p-2 rounded-lg'>
-                    <img className=' h-full rounded-full' src={'https://www.fullstackexperts.eu/wp-content/uploads/2024/12/Projekt-bez-nazwy-38-1024x1024.png'} alt="" />
-                    {/* <IoIosMenu className='text-4xl' /> */}
-                    <div>
-                        <h2 className='font-semibold'>John Doe</h2>
+                <div className='bg-white cursor-pointer flex items-center gap-2 p-2 rounded-lg'>
+                    <img className=' w-10 rounded-full' src={'https://www.fullstackexperts.eu/wp-content/uploads/2024/12/Projekt-bez-nazwy-38-1024x1024.png'} alt="" />
+                    <div className='-mb-2'>
+                        <h2 className='font-semibold mb-0'>John Doe</h2>
                         <p className='text-gray-500 text-xs'>Student</p>
                     </div>
                 </div>

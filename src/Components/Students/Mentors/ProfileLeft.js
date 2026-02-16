@@ -15,17 +15,19 @@ const ProfileLeft = () => {
             {/* PROFILE CARD */}
             <div className="bg-white/90 backdrop-blur rounded-2xl p-6 shadow border text-center top-6">
 
-                <img
-                    src="https://randomuser.me/api/portraits/men/32.jpg"
-                    className="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-indigo-100"
-                />
+                <div className='border-4 border-indigo-100 w-28 h-28 mx-auto rounded-full'>
+                    <img
+                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        className="w-full h-full  rounded-full mb-4 object-cover "
+                    />
+                </div>
 
                 <h2 className="text-xl font-semibold text-gray-800">
                     James Chan
                 </h2>
 
                 <p className="text-sm text-gray-500">
-                    Career Develop Coach at <span className="text-blue-600 cursor-pointer">Facebook</span>
+                    Career Develop Coach at  <br /><span className="text-blue-600 cursor-pointer">Facebook</span>
                 </p>
 
                 <p className="mt-3 font-semibold text-gray-800">
