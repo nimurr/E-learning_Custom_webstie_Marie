@@ -2,7 +2,7 @@ import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { HiStar } from 'react-icons/hi2';
 
-const Capsules = ({  item }) => {
+const Capsules = ({ item }) => {
 
     return (
         <div className='border rounded-xl h-full flex flex-col'>
