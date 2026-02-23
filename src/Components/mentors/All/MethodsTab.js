@@ -1,0 +1,136 @@
+'use client';
+import React, { useState } from 'react';
+import { Button, Checkbox, Input } from 'antd';
+
+// ── Data ──────────────────────────────────────────────────────
+const methodologies = [
+    {
+        value: 'mindful_reflection',
+        label: 'Mindful Reflection',
+        sub: 'Focusing on self-awareness and inner growth.',
+    },
+    {
+        value: 'action_planning',
+        label: 'Action Planning',
+        sub: 'Goal-oriented strategy with clear milestones.',
+    },
+    {
+        value: 'basing_thinking',
+        label: 'Basing Thinking',
+        sub: 'Iterative problem-solving and rapid ideation.',
+    },
+    {
+        value: 'career_mapping',
+        label: 'Career Mapping',
+        sub: 'Structuring long-term professional trajectories.',
+    },
+    {
+        value: 'scenario_method',
+        label: 'Scenario Method',
+        sub: 'Guiding discovery through critical questioning.',
+    },
+    {
+        value: 'role_playing',
+        label: 'Role Playing',
+        sub: 'Simulating real-world scenarios for practice.',
+    },
+];
+
+// ── MethodsTab ────────────────────────────────────────────────
+const MethodsTab = ({ onNext, onBack }) => {
+    const [selectedMethods, setSelectedMethods] = useState([]);
+    const [calendlyLink, setCalendlyLink] = useState('');
+
+    const toggleMethod = (value) => {
+        setSelectedMethods((prev) =>
+            prev.includes(value) ? prev.filter((m) => m !== value) : [...prev, value]
+        );
+    };
+
+    const handleSubmit = () => {
+        onNext?.({ coachingMethodologies: selectedMethods, calendlyLink });
+    };
+
+    return (
+        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 space-y-6">
+
+            {/* ── Coaching Methodologies ── */}
+            <div>
+                <h3 className="text-sm font-semibold text-gray-800 mb-3">
+                    Coaching Methodologies
+                </h3>
+                <div className="grid grid-cols-3 gap-3">
+                    {methodologies.map((method) => {
+                        const isChecked = selectedMethods.includes(method.value);
+                        return (
+                            <div
+                                key={method.value}
+                                onClick={() => toggleMethod(method.value)}
+                                className={`cursor-pointer border rounded-xl p-3 flex flex-col gap-2 transition-all
+                                    ${isChecked
+                                        ? 'border-indigo-400 bg-indigo-50'
+                                        : 'border-gray-200 bg-white hover:border-indigo-200'
+                                    }`}
+                            >
+                                <p className="text-xs font-semibold text-gray-800 leading-tight">
+                                    {method.label}
+                                </p>
+                                <div className="flex items-start gap-2">
+                                    <Checkbox
+                                        checked={isChecked}
+                                        onChange={() => toggleMethod(method.value)}
+                                        className="mt-0.5 flex-shrink-0"
+                                    />
+                                    <p className="text-xs text-gray-400 leading-relaxed">
+                                        {method.sub}
+                                    </p>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* ── Calendly Profile Link ── */}
+            <div>
+                <h3 className="text-sm font-semibold text-gray-800 mb-3">
+                    Calendly Profile Link
+                </h3>
+                <Input
+                    size="large"
+                    className='py-3'
+                    value={calendlyLink}
+                    onChange={(e) => setCalendlyLink(e.target.value)}
+                    placeholder="https://calendly.com/your-link"
+                    style={{ borderRadius: '10px' }}
+                />
+            </div>
+
+            {/* ── Buttons ── */}
+            <div className="flex gap-3 pt-2">
+                {onBack && (
+                    <Button
+                        onClick={onBack}
+                        size="large"
+                        block
+                        className='bg-primary text-white h-12'
+                    >
+                        Back
+                    </Button>
+                )}
+                <Button
+                    type="primary"
+                    size="large"
+                    onClick={handleSubmit}
+                    block
+                    className='bg-primary text-white h-12'
+                >
+                    Save & Continue
+                </Button>
+            </div>
+
+        </div>
+    );
+};
+
+export default MethodsTab;
