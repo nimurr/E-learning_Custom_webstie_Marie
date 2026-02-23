@@ -226,198 +226,202 @@ const Page = () => {
         : withdrawalHistory;
 
     return (
-        <div className="p-4 space-y-4 max-w-6xl mx-auto bg-gray-100 rounded-2xl my-5 shadow-sm">
+        <div className="relative py-10">
+            <div className="absolute -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
 
-            {/* ── Stat Cards ── */}
-            <div className="grid grid-cols-3 gap-3">
-                {/* Current Balance */}
-                <div className="bg-indigo-900 text-white rounded-2xl p-10 shadow-sm">
-                    <div className="flex items-start justify-between mb-3">
-                        <p className="text-xs font-medium opacity-80">Current Balance</p>
-                        <span className="text-3xl">💵</span>
-                    </div>
-                    <p className="text-5xl font-bold">${balance.toFixed(2)}</p>
-                </div>
+            <div className="p-4 z-[999] space-y-4 max-w-6xl mx-auto bg-gray-100 rounded-2xl my-5 shadow-sm">
 
-                {/* Pending Withdrawals */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
-                    <div className="flex items-start justify-between mb-3">
-                        <p className="text-xs font-medium text-gray-500">Pending Withdrawals</p>
-                        <span className="text-3xl">⏰</span>
-                    </div>
-                    <p className="text-5xl font-bold text-red-500">2</p>
-                </div>
-
-                {/* Total Earnings */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
-                    <div className="flex items-start justify-between mb-3">
-                        <p className="text-xs font-medium text-gray-500">Total Earnings</p>
-                        <span className="text-3xl">📈</span>
-                    </div>
-                    <p className="text-5xl font-bold text-green-500">$7705.75</p>
-                </div>
-            </div>
-
-            {/* ── Transaction History ── */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-                {/* Header */}
-                <div className="flex items-start justify-between mb-1">
-                    <div>
-                        <h2 className=" font-bold text-gray-900">Transaction History</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">View your payments and withdrawal history</p>
-                    </div>
-                    <button
-                        onClick={() => setWithdrawalOpen(true)}
-                        className="flex items-center gap-1.5 bg-primary hover:bg-indigo-700 text-white text-xs font-medium px-3 py-3 rounded-lg transition"
-                    >
-                        $  Request Withdrawal
-                    </button>
-                </div>
-
-                {/* Tabs */}
-                <div className="flex bg-gray-100 rounded-xl p-1 my-4 ">
-                    {[['payments', 'Successful Payments'], ['withdrawals', 'Withdrawal History']].map(([key, label]) => (
-                        <button
-                            key={key}
-                            onClick={() => { setActiveTab(key); setPage(1); }}
-                            className={`flex-1 text-base font-medium py-2 rounded-lg transition-all
-                                ${activeTab === key ? 'bg-white shadow-sm text-gray-800' : 'text-gray-400 hover:text-gray-600'}`}
-                        >
-                            {label}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Table */}
-                <div className="rounded-xl overflow-hidden border border-gray-100">
-                    {/* Header */}
-                    <div className={`grid text-xs font-semibold text-indigo-700 bg-indigo-50 px-4 py-3 ${activeTab === 'payments' ? 'grid-cols-5' : 'grid-cols-5'}`}>
-                        <span>No</span>
-                        <span>Processed Date</span>
-                        <span>Transaction ID</span>
-                        <span>Amount</span>
-                        <span className="text-center">Details</span>
-                    </div>
-
-                    {/* Rows */}
-                    {currentData.map((row, i) => (
-                        <div
-                            key={i}
-                            className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
-                        >
-                            <span className="text-gray-400">{row.id}</span>
-                            <span>{row.date}</span>
-                            <span className="text-gray-500">{row.txId}</span>
-                            <span>{row.amount}</span>
-                            <Link href={`/mentor/wallet/${row.id}`} className="flex justify-center">
-                                {activeTab === 'payments' ? (
-                                    <button
-                                        // onClick={() => setInfoTx(row)}
-                                        className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </button>
-                                ) : (
-                                    <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
-                                        ${row.status === 'Approved'
-                                            ? 'bg-green-50 text-green-600 border-green-200'
-                                            : 'bg-yellow-50 text-yellow-600 border-yellow-200'
-                                        }`}>
-                                        <span className={`w-1.5 h-1.5 rounded-full inline-block ${row.status === 'Approved' ? 'bg-green-500' : 'bg-yellow-500'}`} />
-                                        {row.status}
-                                    </span>
-                                )}
-                            </Link>
+                {/* ── Stat Cards ── */}
+                <div className="grid grid-cols-3 gap-3">
+                    {/* Current Balance */}
+                    <div className="bg-indigo-900 text-white rounded-2xl p-10 shadow-sm">
+                        <div className="flex items-start justify-between mb-3">
+                            <p className="text-xs font-medium opacity-80">Current Balance</p>
+                            <span className="text-3xl">💵</span>
                         </div>
-                    ))}
+                        <p className="text-5xl font-bold">${balance.toFixed(2)}</p>
+                    </div>
+
+                    {/* Pending Withdrawals */}
+                    <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
+                        <div className="flex items-start justify-between mb-3">
+                            <p className="text-xs font-medium text-gray-500">Pending Withdrawals</p>
+                            <span className="text-3xl">⏰</span>
+                        </div>
+                        <p className="text-5xl font-bold text-red-500">2</p>
+                    </div>
+
+                    {/* Total Earnings */}
+                    <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
+                        <div className="flex items-start justify-between mb-3">
+                            <p className="text-xs font-medium text-gray-500">Total Earnings</p>
+                            <span className="text-3xl">📈</span>
+                        </div>
+                        <p className="text-5xl font-bold text-green-500">$7705.75</p>
+                    </div>
                 </div>
 
-                {/* Pagination (only for payments) */}
-                {activeTab === 'payments' && (
-                    <div className="flex items-center justify-end gap-2 mt-4">
+                {/* ── Transaction History ── */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-1">
+                        <div>
+                            <h2 className=" font-bold text-gray-900">Transaction History</h2>
+                            <p className="text-xs text-gray-400 mt-0.5">View your payments and withdrawal history</p>
+                        </div>
                         <button
-                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                            disabled={page === 1}
-                            className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
+                            onClick={() => setWithdrawalOpen(true)}
+                            className="flex items-center gap-1.5 bg-primary hover:bg-indigo-700 text-white text-xs font-medium px-3 py-3 rounded-lg transition"
                         >
-                            Previous
+                            $  Request Withdrawal
                         </button>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="flex bg-gray-100 rounded-xl p-1 my-4 ">
+                        {[['payments', 'Successful Payments'], ['withdrawals', 'Withdrawal History']].map(([key, label]) => (
                             <button
-                                key={n}
-                                onClick={() => setPage(n)}
-                                className={`w-7 h-7 rounded-lg text-xs font-medium transition-all
-                                    ${page === n ? 'bg-indigo-800 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+                                key={key}
+                                onClick={() => { setActiveTab(key); setPage(1); }}
+                                className={`flex-1 text-base font-medium py-2 rounded-lg transition-all
+                                ${activeTab === key ? 'bg-white shadow-sm text-gray-800' : 'text-gray-400 hover:text-gray-600'}`}
                             >
-                                {n}
+                                {label}
                             </button>
                         ))}
+                    </div>
+
+                    {/* Table */}
+                    <div className="rounded-xl overflow-hidden border border-gray-100">
+                        {/* Header */}
+                        <div className={`grid text-xs font-semibold text-indigo-700 bg-indigo-50 px-4 py-3 ${activeTab === 'payments' ? 'grid-cols-5' : 'grid-cols-5'}`}>
+                            <span>No</span>
+                            <span>Processed Date</span>
+                            <span>Transaction ID</span>
+                            <span>Amount</span>
+                            <span className="text-center">Details</span>
+                        </div>
+
+                        {/* Rows */}
+                        {currentData.map((row, i) => (
+                            <div
+                                key={i}
+                                className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                            >
+                                <span className="text-gray-400">{row.id}</span>
+                                <span>{row.date}</span>
+                                <span className="text-gray-500">{row.txId}</span>
+                                <span>{row.amount}</span>
+                                <Link href={`/mentor/wallet/${row.id}`} className="flex justify-center">
+                                    {activeTab === 'payments' ? (
+                                        <button
+                                            // onClick={() => setInfoTx(row)}
+                                            className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    ) : (
+                                        <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
+                                        ${row.status === 'Approved'
+                                                ? 'bg-green-50 text-green-600 border-green-200'
+                                                : 'bg-yellow-50 text-yellow-600 border-yellow-200'
+                                            }`}>
+                                            <span className={`w-1.5 h-1.5 rounded-full inline-block ${row.status === 'Approved' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                                            {row.status}
+                                        </span>
+                                    )}
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Pagination (only for payments) */}
+                    {activeTab === 'payments' && (
+                        <div className="flex items-center justify-end gap-2 mt-4">
+                            <button
+                                onClick={() => setPage(p => Math.max(1, p - 1))}
+                                disabled={page === 1}
+                                className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                                <button
+                                    key={n}
+                                    onClick={() => setPage(n)}
+                                    className={`w-7 h-7 rounded-lg text-xs font-medium transition-all
+                                    ${page === n ? 'bg-indigo-800 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+                                >
+                                    {n}
+                                </button>
+                            ))}
+                            <button
+                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                disabled={page === totalPages}
+                                className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* ── Account Information ── */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-start justify-between mb-4">
+                        <div>
+                            <h2 className="text-sm font-bold text-gray-900">Account Information</h2>
+                            <p className="text-xs text-gray-400 mt-0.5">Secure bank account details for withdrawals</p>
+                        </div>
                         <button
-                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                            disabled={page === totalPages}
-                            className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
+                            onClick={() => setEditAccountOpen(true)}
+                            className="flex items-center gap-1.5 bg-primary hover:bg-indigo-700 text-white text-xs font-medium px-3 py-3 rounded-lg transition"
                         >
-                            Next
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Details
                         </button>
                     </div>
-                )}
-            </div>
 
-            {/* ── Account Information ── */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-start justify-between mb-4">
-                    <div>
-                        <h2 className="text-sm font-bold text-gray-900">Account Information</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">Secure bank account details for withdrawals</p>
-                    </div>
-                    <button
-                        onClick={() => setEditAccountOpen(true)}
-                        className="flex items-center gap-1.5 bg-primary hover:bg-indigo-700 text-white text-xs font-medium px-3 py-3 rounded-lg transition"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit Details
-                    </button>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                    {[
-                        { icon: '👤', label: 'Account Holder', value: account.holderName },
-                        { icon: '🏦', label: 'Bank Name', value: account.bankName },
-                        { icon: '💳', label: 'Account Number', value: account.accountNumber },
-                        { icon: '#', label: 'Routing Number', value: account.routingNumber },
-                    ].map((item) => (
-                        <div key={item.label} className="border border-gray-100 rounded-xl p-3">
-                            <div className="flex items-center gap-1.5 mb-1">
-                                <span className="text-sm">{item.icon}</span>
-                                <span className="text-xs text-gray-400">{item.label}</span>
+                    <div className="grid grid-cols-2 gap-4">
+                        {[
+                            { icon: '👤', label: 'Account Holder', value: account.holderName },
+                            { icon: '🏦', label: 'Bank Name', value: account.bankName },
+                            { icon: '💳', label: 'Account Number', value: account.accountNumber },
+                            { icon: '#', label: 'Routing Number', value: account.routingNumber },
+                        ].map((item) => (
+                            <div key={item.label} className="border border-gray-100 rounded-xl p-3">
+                                <div className="flex items-center gap-1.5 mb-1">
+                                    <span className="text-sm">{item.icon}</span>
+                                    <span className="text-xs text-gray-400">{item.label}</span>
+                                </div>
+                                <p className="text-sm font-semibold text-gray-800">{item.value}</p>
                             </div>
-                            <p className="text-sm font-semibold text-gray-800">{item.value}</p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            {/* ── Modals ── */}
-            <WithdrawalModal
-                open={withdrawalOpen}
-                onClose={() => setWithdrawalOpen(false)}
-                balance={balance}
-            />
-            <EditAccountModal
-                open={editAccountOpen}
-                onClose={() => setEditAccountOpen(false)}
-                account={account}
-                onSave={(updated) => setAccount(updated)}
-            />
-            <InfoModal
-                open={!!infoTx}
-                onClose={() => setInfoTx(null)}
-                tx={infoTx}
-            />
+                {/* ── Modals ── */}
+                <WithdrawalModal
+                    open={withdrawalOpen}
+                    onClose={() => setWithdrawalOpen(false)}
+                    balance={balance}
+                />
+                <EditAccountModal
+                    open={editAccountOpen}
+                    onClose={() => setEditAccountOpen(false)}
+                    account={account}
+                    onSave={(updated) => setAccount(updated)}
+                />
+                <InfoModal
+                    open={!!infoTx}
+                    onClose={() => setInfoTx(null)}
+                    tx={infoTx}
+                />
+            </div>
         </div>
     );
 };

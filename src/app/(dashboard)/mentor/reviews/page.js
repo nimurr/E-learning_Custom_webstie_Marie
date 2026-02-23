@@ -57,86 +57,89 @@ const Page = () => {
     const displayed = showAll ? reviews : reviews.slice(0, 3);
 
     return (
-        <div className=" space-y-4 max-w-6xl bg-gray-100 rounded-lg p-5 my-5 mx-auto">
+        <div className="relative py-10">
+            <div className="absolute -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
+            <div className=" space-y-4 max-w-6xl bg-gray-100 rounded-lg p-5 my-5 mx-auto">
 
-            {/* ── Rating Overview ── */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-                <h2 className="text-sm font-bold text-gray-900 mb-4">Rating Overview</h2>
+                {/* ── Rating Overview ── */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                    <h2 className="text-sm font-bold text-gray-900 mb-4">Rating Overview</h2>
 
-                <div className="flex items-center gap-8">
-                    {/* Left: Score */}
-                    <div className="flex-shrink-0 text-center">
-                        <p className="text-5xl font-bold text-gray-900 leading-none mb-2">4.0</p>
-                        <Stars rating={4} size="sm" />
-                        <p className="text-xs text-gray-400 mt-2">By 1.9k Users</p>
+                    <div className="flex items-center gap-8">
+                        {/* Left: Score */}
+                        <div className="flex-shrink-0 text-center">
+                            <p className="text-5xl font-bold text-gray-900 leading-none mb-2">4.0</p>
+                            <Stars rating={4} size="sm" />
+                            <p className="text-xs text-gray-400 mt-2">By 1.9k Users</p>
+                        </div>
+
+                        {/* Right: Bars */}
+                        <div className="flex-1 space-y-2">
+                            {ratingBars.map((row) => (
+                                <div key={row.star} className="flex items-center gap-3">
+                                    <span className="text-xs text-gray-500 w-3 flex-shrink-0">{row.star}</span>
+                                    <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-indigo-800 rounded-full"
+                                            style={{ width: `${row.percent}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-xs text-gray-400 w-7 text-right flex-shrink-0">
+                                        {String(row.percent).padStart(2, '0')}%
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* ── Review Overview ── */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-sm font-bold text-gray-900">Review Overview</h2>
+                        <button
+                            onClick={() => setShowAll(!showAll)}
+                            className="flex items-center gap-1.5 border border-gray-200 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-gray-50 transition"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                            </svg>
+                            All Reviews
+                        </button>
                     </div>
 
-                    {/* Right: Bars */}
-                    <div className="flex-1 space-y-2">
-                        {ratingBars.map((row) => (
-                            <div key={row.star} className="flex items-center gap-3">
-                                <span className="text-xs text-gray-500 w-3 flex-shrink-0">{row.star}</span>
-                                <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div
-                                        className="h-full bg-indigo-800 rounded-full"
-                                        style={{ width: `${row.percent}%` }}
-                                    />
+                    <div className="space-y-3">
+                        {displayed.map((review) => (
+                            <div key={review.id} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
+                                <div className="flex items-start justify-between mb-2">
+                                    <div className="flex items-center gap-3">
+                                        <img
+                                            src={review.avatar}
+                                            alt={review.name}
+                                            className="w-11 h-11 rounded-full object-cover flex-shrink-0"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-800">{review.name}</p>
+                                            <p className="text-xs text-gray-400">{review.time}</p>
+                                        </div>
+                                    </div>
+                                    <Stars rating={review.rating} size="sm" />
                                 </div>
-                                <span className="text-xs text-gray-400 w-7 text-right flex-shrink-0">
-                                    {String(row.percent).padStart(2, '0')}%
-                                </span>
+                                <p className="text-xs text-gray-600 leading-relaxed mt-2 pl-14">
+                                    {review.text}
+                                </p>
                             </div>
                         ))}
                     </div>
                 </div>
-            </div>
 
-            {/* ── Review Overview ── */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-sm font-bold text-gray-900">Review Overview</h2>
-                    <button
-                        onClick={() => setShowAll(!showAll)}
-                        className="flex items-center gap-1.5 border border-gray-200 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-gray-50 transition"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-                        </svg>
-                        All Reviews
+                <div className="flex justify-center mt-4">
+                    <button className="customSignUpButton hover:bg-indigo-700 text-white text-sm font-bold py-3 px-10 rounded-lg transition">
+                        Load More
                     </button>
                 </div>
 
-                <div className="space-y-3">
-                    {displayed.map((review) => (
-                        <div key={review.id} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
-                            <div className="flex items-start justify-between mb-2">
-                                <div className="flex items-center gap-3">
-                                    <img
-                                        src={review.avatar}
-                                        alt={review.name}
-                                        className="w-11 h-11 rounded-full object-cover flex-shrink-0"
-                                    />
-                                    <div>
-                                        <p className="text-sm font-semibold text-gray-800">{review.name}</p>
-                                        <p className="text-xs text-gray-400">{review.time}</p>
-                                    </div>
-                                </div>
-                                <Stars rating={review.rating} size="sm" />
-                            </div>
-                            <p className="text-xs text-gray-600 leading-relaxed mt-2 pl-14">
-                                {review.text}
-                            </p>
-                        </div>
-                    ))}
-                </div>
             </div>
-
-            <div className="flex justify-center mt-4">
-                <button className="customSignUpButton hover:bg-indigo-700 text-white text-sm font-bold py-3 px-10 rounded-lg transition">
-                    Load More
-                </button>
-            </div>
-
         </div>
     );
 };
