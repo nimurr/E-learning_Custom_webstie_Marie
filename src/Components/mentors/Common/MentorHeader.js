@@ -20,7 +20,7 @@ const MentorHeader = ({ isOpen, setIsOpen }) => {
                     <img className=' w-10 rounded-full' src={'https://www.fullstackexperts.eu/wp-content/uploads/2024/12/Projekt-bez-nazwy-38-1024x1024.png'} alt="" />
                     <div className='-mb-2'>
                         <h2 className='font-semibold mb-0'>John Doe</h2>
-                        <p className='text-gray-500 text-xs'>Student</p>
+                        <p className='text-gray-500 text-xs'>Mentor</p>
                     </div>
                 </div>
             </div>

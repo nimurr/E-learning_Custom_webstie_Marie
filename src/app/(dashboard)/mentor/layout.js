@@ -1,8 +1,7 @@
-'use client';
-import { Geist, Geist_Mono } from "next/font/google";
+'use client'; 
 import './../../globals.css'
-import StudentsHeader from "@/Components/Students/Common/StudentsHeader"; 
 import { useState } from "react";
+import MentorHeader from "@/Components/mentors/Common/MentorHeader";
 import MentorSidebar from "@/Components/mentors/Common/MentorSidebar";
 
 
@@ -16,7 +15,7 @@ export default function Layout({ children }) {
         <div className="relative flex">
             <MentorSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="w-full">
-                <StudentsHeader isOpen={isOpen} setIsOpen={setIsOpen} />
+                <MentorHeader isOpen={isOpen} setIsOpen={setIsOpen} />
 
                 <div className="">
                     {children}
