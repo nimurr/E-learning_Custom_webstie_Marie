@@ -1,5 +1,12 @@
 'use client';
 import Basicinfo from '@/Components/mentors/All/Basicinfo';
+import ProfileFocusArea from '@/Components/mentors/All/ProfileFocusArea';
+import ProfileIndustry from '@/Components/mentors/All/ProfileIndustry';
+import ProfileMentor from '@/Components/mentors/All/ProfileMentor';
+import ProfileMethodology from '@/Components/mentors/All/ProfileMethodology';
+import ProfileSpecialtis from '@/Components/mentors/All/ProfileSpecialtis';
+import ProfileSubscription from '@/Components/mentors/All/ProfileSubscription';
+import ProfileValues from '@/Components/mentors/All/ProfileValues';
 import FAQTab from '@/Components/Students/Mentors/FAQTab';
 import PrivacyTab from '@/Components/Students/Mentors/PrivacyTab';
 import TermsTab from '@/Components/Students/Mentors/TermsTab';
@@ -7,13 +14,13 @@ import React, { useState } from 'react';
 
 const tabs = [ 
     { label: 'Basic info', component: <Basicinfo /> },
-    { label: 'Specialties', component: <TermsTab /> },
-    { label: 'Values', component: <TermsTab /> },
-    { label: 'Focus Area', component: <TermsTab /> },
-    { label: 'Mentor To', component: <TermsTab /> },
-    { label: 'Industry', component: <PrivacyTab /> },
-    { label: 'Methodology', component: <FAQTab /> },
-    { label: 'Subscription', component: <FAQTab /> },
+    { label: 'Specialties', component: <ProfileSpecialtis /> },
+    { label: 'Values', component: <ProfileValues /> },
+    { label: 'Focus Area', component: <ProfileFocusArea /> },
+    { label: 'Mentor To', component: <ProfileMentor /> },
+    { label: 'Industry', component: <ProfileIndustry /> },
+    { label: 'Methodology', component: <ProfileMethodology /> },
+    { label: 'Subscription', component: <ProfileSubscription /> },
 ];
 
 const Page = () => {
