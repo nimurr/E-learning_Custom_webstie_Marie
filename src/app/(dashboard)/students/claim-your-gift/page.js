@@ -3,7 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
-import DownloadCertificate from "@/components/DownloadCertificate"; // 👈 adjust path
+import DownloadCertificate from "@/Components/others/DownloadCertificate";
+
 
 export default function Page() {
     return (
