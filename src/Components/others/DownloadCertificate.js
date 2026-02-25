@@ -8,7 +8,7 @@ import { FaArrowDown } from "react-icons/fa";
 const DownloadCertificate = () => {
     const certificateRef = useRef();
 
-    const downloadCertificate = async () => {
+    const downloadCertificate2 = async () => {
         const element = certificateRef.current;
 
         const canvas = await html2canvas(element, {
@@ -32,7 +32,7 @@ const DownloadCertificate = () => {
         <>
             {/* Download Button */}
             <button
-                onClick={downloadCertificate}
+                onClick={downloadCertificate2}
                 className="customSignUpButton hover:bg-indigo-800 text-white px-5 py-4 rounded-lg text-sm font-medium flex items-center gap-2"
             >
                 Download Certificate <FaArrowDown />
