@@ -44,9 +44,9 @@ const plans = [
 ];
 
 const ProfileSubscription = () => {
-    const [selected,    setSelected]    = useState('universal');
-    const [isChanging,  setIsChanging]  = useState(false);
-    const [saved,       setSaved]       = useState('universal');
+    const [selected, setSelected] = useState('universal');
+    const [isChanging, setIsChanging] = useState(false);
+    const [saved, setSaved] = useState('universal');
 
     const handleChangePlan = () => {
         if (isChanging) {
@@ -97,7 +97,7 @@ const ProfileSubscription = () => {
 
                             <div className="flex gap-6">
                                 {/* Left: Plan Info */}
-                                <div className="w-36 flex-shrink-0">
+                                <div className="sm:w-36 w-24 flex-shrink-0">
                                     <h3 className="text-lg font-bold text-gray-900 leading-tight mb-1">
                                         {plan.name}
                                     </h3>
@@ -114,7 +114,7 @@ const ProfileSubscription = () => {
                                 <div className="w-px bg-gray-100 self-stretch" />
 
                                 {/* Right: Features */}
-                                <div className="flex-1 space-y-3 pt-1 pr-8">
+                                <div className="flex-1 min-w-30 space-y-3 pt-1 pr-8">
                                     {plan.features.map((f) => (
                                         <div key={f} className="flex items-center gap-2">
                                             <div className="w-5 h-5 rounded-full bg-indigo-800 flex items-center justify-center flex-shrink-0">
