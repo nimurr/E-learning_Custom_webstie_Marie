@@ -56,7 +56,7 @@ const Page = () => {
                                 >
                                     {index + 1}
                                 </div>
-                                <p className={`text-xs mt-2 font-semibold  ${isActive ? 'text-[#2b124f]' : 'text-gray-500'}`}>
+                                <p className={`text-xs sm:block hidden mt-2 font-semibold  ${isActive ? 'text-[#2b124f]' : 'text-gray-500'}`}>
                                     {step.title}
                                 </p>
                             </div>
