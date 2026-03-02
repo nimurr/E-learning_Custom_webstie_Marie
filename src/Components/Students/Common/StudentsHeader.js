@@ -158,7 +158,7 @@ const StudentsHeader = ({ isOpen, setIsOpen }) => {
 
                 {/* Profile */}
                 <Link
-                    href="/mentor/my-account"
+                    href="/students/my-account"
                     className="bg-white cursor-pointer flex items-center gap-2 p-2 rounded-lg"
                 >
                     <img
