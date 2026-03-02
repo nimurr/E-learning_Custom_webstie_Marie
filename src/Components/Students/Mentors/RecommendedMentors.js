@@ -88,7 +88,7 @@ const RecommendedMentors = () => {
                             </div>
 
                             {/* Meta */}
-                            <div className="text-sm text-gray-600 flex gap-3 mb-3">
+                            <div className="text-sm text-gray-600 flex flex-wrap gap-3 mb-3">
                                 <span className="text-primary font-medium">
                                     {mentor.price}
                                 </span>

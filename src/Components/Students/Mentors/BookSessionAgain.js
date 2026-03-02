@@ -44,7 +44,7 @@ const BookSessionAgain = () => {
         <div className="max-w-6xl lg:mx-auto bg-white/80 mx-3 backdrop-blur rounded-2xl p-8 shadow-lg border my-5">
 
             {/* Title */}
-            <h2 className="text-4xl font-semibold text-center text-primary mb-8 flex items-center justify-center gap-2">
+            <h2 className="text-4xl font-semibold text-center text-primary mb-8 flex items-center flex-wrap justify-center gap-2">
                 <span className="text-3xl">🪐</span>
                 Book Session Again
             </h2>
@@ -86,7 +86,7 @@ const BookSessionAgain = () => {
                             </div>
 
                             {/* Meta */}
-                            <div className="text-sm text-gray-600 flex gap-3 mb-3">
+                            <div className="text-sm text-gray-600 flex gap-3 flex-wrap  mb-3">
                                 <span className="text-primary font-medium">
                                     {mentor.price}
                                 </span>
