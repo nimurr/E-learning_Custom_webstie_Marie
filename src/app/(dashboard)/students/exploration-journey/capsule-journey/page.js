@@ -16,7 +16,7 @@ const Page = () => {
                 <h1 className="text-3xl text-center  mb-5 font-bold text-primary">
                     🚀 Your 6-Capsule Journey
                 </h1>
-                <div className="flex items-center justify-between mb-10">
+                <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
                     <div>
                         <p className="text-sm text-gray-500 mt-2 tracking-wide flex items-center gap-2">
                           <span className="h-3 w-3 rounded-full bg-primary inline-block"></span>  DISCOVER YOUR VALUES, UNLOCK YOUR STRENGTHS, AND CHART YOUR PROFESSIONAL DESTINY

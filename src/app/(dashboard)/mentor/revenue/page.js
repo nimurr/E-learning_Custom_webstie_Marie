@@ -213,9 +213,9 @@ const Page = () => {
                 </div>
 
                 {/* Payout History */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+                <div className="bg-white border overflow-x-auto border-gray-100 rounded-2xl p-5 shadow-sm">
                     <h2 className="text-sm font-semibold text-gray-800 mb-4">Payout History</h2>
-                    <div className="rounded-xl overflow-hidden border border-gray-100">
+                    <div className="rounded-xl  min-w-[600px] border border-gray-100">
                         <div className="grid grid-cols-5 bg-indigo-50 px-4 py-2.5 text-xs font-semibold text-indigo-800">
                             <span>No</span>
                             <span>Mantee</span>

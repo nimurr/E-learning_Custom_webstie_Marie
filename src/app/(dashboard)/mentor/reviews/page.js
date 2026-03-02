@@ -57,7 +57,7 @@ const Page = () => {
     const displayed = showAll ? reviews : reviews.slice(0, 3);
 
     return (
-        <div className="relative py-10">
+        <div className="relative lg:py-10 py-5 w-full px-5 lg:px-0 z-0">
             <div className="absolute -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
             <div className=" space-y-4 max-w-6xl bg-gray-100 rounded-lg p-5 my-5 mx-auto">
 

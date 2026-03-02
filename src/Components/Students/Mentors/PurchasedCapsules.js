@@ -65,14 +65,12 @@ const data = [
     }
 ]
 
-
-
 const PurchasedCapsules = () => {
     return (
         <div className='max-w-7xl mx-auto my-10 bg-gray-100 rounded-2xl p-5 lg:p-10'>
 
             <h2 className="text-4xl font-bold text-center text-primary mb-6">🔥 Purchased Capsules</h2>
-            <CategoryCarosal />
+            {/* <CategoryCarosal /> */}
 
             <div className='grid lg:grid-cols-3 sm:grid-cols-2 gap-3'>
                 {

@@ -42,23 +42,25 @@ const Page = () => {
                     </div>
 
                     {/* Tab Bar */}
-                    <div className="flex border-b border-gray-100">
-                        {tabs.map((tab, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setActiveTab(i)}
-                                className={`flex-1 py-4 text-sm font-medium transition-colors relative
+                    <div className='overflow-x-auto'>
+                        <div className="flex border-b min-w-[800px] border-gray-100">
+                            {tabs.map((tab, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setActiveTab(i)}
+                                    className={`flex-1 py-4 text-sm font-medium transition-colors relative
                                 ${activeTab === i
-                                        ? 'text-primary'
-                                        : 'text-gray-400 hover:text-gray-600'
-                                    }`}
-                            >
-                                {tab.label}
-                                {activeTab === i && (
-                                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                                )}
-                            </button>
-                        ))}
+                                            ? 'text-primary'
+                                            : 'text-gray-400 hover:text-gray-600'
+                                        }`}
+                                >
+                                    {tab.label}
+                                    {activeTab === i && (
+                                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Tab Content */}

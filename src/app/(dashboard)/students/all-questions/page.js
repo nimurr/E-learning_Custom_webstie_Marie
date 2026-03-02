@@ -30,7 +30,7 @@ const Page = () => {
     };
 
     return (
-        <div className="relative min-h-screen p-10">
+        <div className="relative min-h-screen lg:p-10 p-5 z-0 ">
             <div className="absolute inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover opacity-60" />
 
 

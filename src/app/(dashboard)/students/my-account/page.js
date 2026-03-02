@@ -67,7 +67,7 @@ const MentorCard = ({ name, role, imgSrc }) => (
 
 // --- Course Row ---
 const CourseRow = ({ title, date, imgSrc }) => (
-    <div className="flex items-center justify-between bg-white border border-gray-100 rounded-2xl px-5 py-4 shadow-sm">
+    <div className="flex items-center justify-between bg-white border border-gray-100 rounded-2xl px-3 lg:px-5 py-2 lg:py-4 shadow-sm">
         <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-indigo-100">
                 <img
@@ -127,10 +127,10 @@ const Page = () => {
                 </div>
 
                 {/* ── Middle Row: Learning Progress + My Mentors ── */}
-                <div className="grid grid-cols-5 gap-5">
+                <div className="grid md:grid-cols-3  xl:grid-cols-5 gap-5">
 
                     {/* Learning Progress */}
-                    <div className="col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
+                    <div className="lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
                                 <span className="text-lg">📊</span>
@@ -158,7 +158,7 @@ const Page = () => {
                     </div>
 
                     {/* My Mentors */}
-                    <div className="col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
+                    <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
                         <div className="flex items-center gap-2 mb-5">
                             <span className="text-lg">🧑‍🏫</span>
                             <h2 className="font-semibold text-gray-800">My Mentors</h2>

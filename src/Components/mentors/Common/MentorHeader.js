@@ -90,7 +90,7 @@ const MentorHeader = ({ isOpen, setIsOpen }) => {
 
                     {/* Dropdown */}
                     {showNotifications && (
-                        <div className="absolute z-50 top-14 right-0 bg-white shadow-xl rounded-2xl w-80 border border-gray-100 overflow-hidden">
+                        <div className="absolute z-50 top-14 -right-28 md:right-0 bg-white shadow-xl rounded-2xl w-80 border border-gray-100 overflow-hidden">
 
                             {/* Header */}
                             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">

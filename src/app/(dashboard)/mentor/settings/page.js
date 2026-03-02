@@ -15,7 +15,7 @@ const Page = () => {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <div className="relative py-10 h-screen">
+        <div className="relative py-5 lg:py-10 h-screen">
             <div className="absolute h-full -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
             <div className="p-6">
                 <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

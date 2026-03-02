@@ -232,7 +232,7 @@ const Page = () => {
             <div className="p-4 z-[999] space-y-4 max-w-6xl mx-auto bg-gray-100 rounded-2xl my-5 shadow-sm">
 
                 {/* ── Stat Cards ── */}
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
                     {/* Current Balance */}
                     <div className="bg-indigo-900 text-white rounded-2xl p-10 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
@@ -292,49 +292,51 @@ const Page = () => {
                     </div>
 
                     {/* Table */}
-                    <div className="rounded-xl overflow-hidden border border-gray-100">
-                        {/* Header */}
-                        <div className={`grid text-xs font-semibold text-indigo-700 bg-indigo-50 px-4 py-3 ${activeTab === 'payments' ? 'grid-cols-5' : 'grid-cols-5'}`}>
-                            <span>No</span>
-                            <span>Processed Date</span>
-                            <span>Transaction ID</span>
-                            <span>Amount</span>
-                            <span className="text-center">Details</span>
-                        </div>
-
-                        {/* Rows */}
-                        {currentData.map((row, i) => (
-                            <div
-                                key={i}
-                                className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
-                            >
-                                <span className="text-gray-400">{row.id}</span>
-                                <span>{row.date}</span>
-                                <span className="text-gray-500">{row.txId}</span>
-                                <span>{row.amount}</span>
-                                <Link href={`/mentor/wallet/${row.id}`} className="flex justify-center">
-                                    {activeTab === 'payments' ? (
-                                        <button
-                                            // onClick={() => setInfoTx(row)}
-                                            className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </button>
-                                    ) : (
-                                        <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
-                                        ${row.status === 'Approved'
-                                                ? 'bg-green-50 text-green-600 border-green-200'
-                                                : 'bg-yellow-50 text-yellow-600 border-yellow-200'
-                                            }`}>
-                                            <span className={`w-1.5 h-1.5 rounded-full inline-block ${row.status === 'Approved' ? 'bg-green-500' : 'bg-yellow-500'}`} />
-                                            {row.status}
-                                        </span>
-                                    )}
-                                </Link>
+                    <div className="rounded-xl overflow-x-auto  border border-gray-100">
+                        <div className="min-w-[600px]">
+                            {/* Header */}
+                            <div className={`grid text-xs font-semibold text-indigo-700 bg-indigo-50 px-4 py-3 ${activeTab === 'payments' ? 'grid-cols-5' : 'grid-cols-5'}`}>
+                                <span>No</span>
+                                <span>Processed Date</span>
+                                <span>Transaction ID</span>
+                                <span>Amount</span>
+                                <span className="text-center">Details</span>
                             </div>
-                        ))}
+
+                            {/* Rows */}
+                            {currentData.map((row, i) => (
+                                <div
+                                    key={i}
+                                    className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                                >
+                                    <span className="text-gray-400">{row.id}</span>
+                                    <span>{row.date}</span>
+                                    <span className="text-gray-500">{row.txId}</span>
+                                    <span>{row.amount}</span>
+                                    <Link href={`/mentor/wallet/${row.id}`} className="flex justify-center">
+                                        {activeTab === 'payments' ? (
+                                            <button
+                                                // onClick={() => setInfoTx(row)}
+                                                className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </button>
+                                        ) : (
+                                            <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
+                                        ${row.status === 'Approved'
+                                                    ? 'bg-green-50 text-green-600 border-green-200'
+                                                    : 'bg-yellow-50 text-yellow-600 border-yellow-200'
+                                                }`}>
+                                                <span className={`w-1.5 h-1.5 rounded-full inline-block ${row.status === 'Approved' ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                                                {row.status}
+                                            </span>
+                                        )}
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Pagination (only for payments) */}
