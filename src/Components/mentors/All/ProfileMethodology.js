@@ -70,14 +70,14 @@ const ProfileMethodology = () => {
                 </div>
 
                 {/* Cards */}
-                <div className="flex flex-wrap gap-3">
+                <div className=" sm:flex space-y-4 flex-wrap gap-3">
                     {methodologies.map((method) => {
                         const isActive = selected.includes(method.value);
                         return (
                             <div
                                 key={method.value}
                                 onClick={() => toggle(method.value)}
-                                className={`w-[175px] border rounded-xl px-4 py-3 transition-all
+                                className={`md:w-[175px] border rounded-xl px-4 py-3 transition-all
                                     ${isEditing ? 'cursor-pointer' : 'cursor-default'}
                                     ${isActive
                                         ? 'border-indigo-400 bg-white shadow-sm'

@@ -83,7 +83,7 @@ const Basicinfo = () => {
                     </div>
 
                     {/* Job Title + Company */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid lg:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm text-gray-600 mb-1.5">Current Job Title</label>
                             <input
@@ -105,7 +105,7 @@ const Basicinfo = () => {
                     </div>
 
                     {/* Experience + Session Price */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid lg:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm text-gray-600 mb-1.5">Years Of Experience</label>
                             <input
