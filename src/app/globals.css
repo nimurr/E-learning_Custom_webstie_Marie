@@ -59,3 +59,9 @@ body {
 .swiper-button-next {
   color: #e54646;
 }
+
+.background-userFull_landingPage {
+  background-image: url("/Images/Home/Full_screen_banner.png");
+  background-size: cover;
+  background-position: center;
+}

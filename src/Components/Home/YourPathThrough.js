@@ -61,10 +61,10 @@ const YourPathThrough = () => {
     <section className="my-20 lg:my-32 px-4">
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
-        <h2 className="text-4xl lg:text-5xl font-semibold text-primary">
-          Your Path Through the Stars
+        <h2 className="text-4xl lg:text-5xl font-semibold text-white">
+          Your Exploration in <span className="text-orange-400">5 Phases</span>
         </h2>
-        <p className="mt-4 text-gray-700 font-medium">
+        <p className="mt-4 text-gray-300 font-medium">
           A Gentle, Guided Progression Toward Career Clarity
         </p>
       </div>
@@ -80,18 +80,18 @@ const YourPathThrough = () => {
             return (
               <div key={index} className="text-center relative">
                 {/* Icon Circle */}
-                <div className="mx-auto w-20 h-20 rounded-full bg-primary shadow-[0_0_15px_#2d2a71]  flex items-center justify-center  relative z-10">
-                  <Icon className="text-white text-3xl" />
+                <div className="mx-auto w-20 h-20 rounded-full border bg-primary shadow-[0_0_15px_#2d2a71]  flex items-center justify-center  relative z-10">
+                  <Icon className="text-orange-400 text-3xl" />
                 </div>
 
                 {/* Content */}
-                <h4 className="mt-6 font-semibold text-primary">
+                <h4 className="mt-6 font-semibold text-white">
                   {step.title}
                 </h4>
-                <p className="mt-2 italic text-sm text-gray-600">
+                <p className="mt-2 italic text-sm text-gray-300">
                   {step.subtitle}
                 </p>
-                <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                <p className="mt-3 text-sm text-gray-300 leading-relaxed">
                   {step.desc}
                 </p>
               </div>
