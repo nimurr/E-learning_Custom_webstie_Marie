@@ -5,7 +5,7 @@ const ChooseYourMission = () => {
         <div className='lg:py-20 py-10 '>
             <h2 className='text-4xl font-semibold text-white text-center mb-10'>Choose Your <span className='text-orange-400'>Mission</span></h2>
             <div className='max-w-6xl mx-auto'>
-                <div className='grid grid-cols-2 gap-5'>
+                <div className='grid lg:grid-cols-2 gap-5'>
                     <div className='bg-blue-400/10 p-5 rounded-lg border border-orange-400'>
                         <h3 className='text-white my-5 flex items-center justify-between text-2xl'>For Individuals <span className='text-5xl'>🤖</span></h3>
 
