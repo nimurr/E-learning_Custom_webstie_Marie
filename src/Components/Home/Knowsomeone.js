@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ForMentors = () => {
+const Knowsomeone = () => {
     const features = [
         {
             icon: (
@@ -42,7 +42,7 @@ const ForMentors = () => {
 
     return (
         <div
-            className="min-h-screen flex items-center justify-center p-6"
+            className="min-h-screen  p-6 lg:py-20 flex items-center justify-center py-10"
         //   style={{ background: 'linear-gradient(160deg, #0d1b3e 0%, #0a1628 40%, #10082a 100%)' }}
         >
             {/* Dot decorations */}
@@ -60,50 +60,54 @@ const ForMentors = () => {
                     />
                 ))}
             </div>
+            <div>
 
-            <div className="relative w-full max-w-md mx-auto flex flex-col items-center gap-6">
                 {/* Star Icon */}
-                <div className="text-5xl select-none" style={{ filter: 'drop-shadow(0 0 12px rgba(255,180,0,0.5))' }}>
-                    ⭐
+                <div className="text-5xl text-center select-none" style={{ filter: 'drop-shadow(0 0 12px rgba(255,180,0,0.5))' }}>
+                    🚀
                 </div>
 
                 {/* Title */}
-                <div className="text-center">
-                    <h1 className="text-5xl font-bold text-white">
-                        For <span style={{ color: '#f5a623' }}>Mentors</span>
+                <div className="text-center my-10 max-w-3xl">
+                    <h1 className="text-4xl font-bold text-white">
+                        Know someone who feels <span style={{ color: '#f5a623' }}>lost</span> at work?
                     </h1>
                     <p className="mt-2 " style={{ color: '#8898b8' }}>
                         Join a curated ecosystem focused on alignment.
                     </p>
                 </div>
 
-                {/* Feature Cards */}
-                <div className="w-full flex flex-col gap-3">
-                    {features.map((feature, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center gap-4 px-5 py-4 rounded-xl bg-red-900/20 border border-red-600/20"
 
-                        >
-                            <div className="flex-shrink-0">{feature.icon}</div>
-                            <span className="text-white text-sm font-medium">{feature.text}</span>
-                        </div>
-                    ))}
+                <div className="relative w-full max-w-md mx-auto flex flex-col items-center gap-6">
+
+                    {/* Feature Cards */}
+                    <div className="w-full flex flex-col gap-3">
+                        {features.map((feature, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center gap-4 px-5 py-4 rounded-xl bg-red-900/20 border border-red-600/20"
+
+                            >
+                                <div className="flex-shrink-0">{feature.icon}</div>
+                                <span className="text-white text-sm font-medium">{feature.text}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* CTA Button */}
+                    <button
+                        className="w-3/4 py-3.5 rounded-md font-semibold text-white text-sm transition-opacity hover:opacity-90 active:scale-95"
+                        style={{
+                            background: 'linear-gradient(135deg, #f5a623 0%, #e8870a 100%)',
+                            boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
+                        }}
+                    >
+                        Apply to join the ecosystem
+                    </button>
                 </div>
-
-                {/* CTA Button */}
-                <button
-                    className="w-3/4 py-3.5 rounded-md font-semibold text-white text-sm transition-opacity hover:opacity-90 active:scale-95"
-                    style={{
-                        background: 'linear-gradient(135deg, #f5a623 0%, #e8870a 100%)',
-                        boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
-                    }}
-                >
-                    Apply to join the ecosystem
-                </button>
             </div>
         </div>
     );
 };
 
-export default ForMentors;
+export default Knowsomeone;
