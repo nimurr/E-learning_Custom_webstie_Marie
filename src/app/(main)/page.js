@@ -9,6 +9,7 @@ import Hero from '@/Components/Home/Hero';
 import HomeTestimonial from '@/Components/Home/HomeTestimonial';
 import Theirprofessionallife from '@/Components/Home/Theirprofessionallife';
 import WhatExplorersSay from '@/Components/Home/WhatExplorersSay';
+import YourExploration from '@/Components/Home/YourExploration';
 import YourPathThrough from '@/Components/Home/YourPathThrough';
 import React from 'react';
 
@@ -25,6 +26,7 @@ const Page = () => {
                 <YourPathThrough />
                 <ChooseYourMission />
                 <CosmicEcosystem />
+                <YourExploration />
                 <WhatExplorersSay />
                 {/* <ExploreOurCapsules />
                 <ExpertGuideMentor />
