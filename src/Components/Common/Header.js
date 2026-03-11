@@ -24,7 +24,7 @@ const Header = () => {
 
           {/* Desktop Nav */}
           <ul className="hidden md:flex items-center gap-10 text-gray-300 text-sm">
-            {["The Journey", "Capsules", "Mentor", "Testimonials"].map(
+            {["The Approach", "How It Works", "For Individuals", "For Companies", "For Mentors", "Testimonials", "Contact"].map(
               (item) => (
                 <li
                   key={item}
