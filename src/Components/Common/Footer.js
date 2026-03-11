@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Footer = () => {
@@ -73,14 +74,14 @@ const Footer = () => {
                         <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
                             {col.links.map((link, j) => (
                                 <li key={j}>
-                                    <a
+                                    <Link
                                         href="#"
                                         style={{ color: '#d1d5db', fontSize: '12px', textDecoration: 'none' }}
                                         onMouseEnter={e => e.target.style.color = '#ffffff'}
                                         onMouseLeave={e => e.target.style.color = '#d1d5db'}
                                     >
                                         {link}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
