@@ -30,14 +30,13 @@ const Footer = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-t from-blue-950 to-black">
+        <div className="bg-gradient-to-b from-blue-950 to-black">
             <footer className="container mx-auto text-white">
 
                 {/* Top bar: logo + tagline */}
                 <div className="flex flex-wrap items-center justify-between px-12 pt-9 pb-7 gap-3">
                     <div className="leading-tight">
-                        <div className="text-xs font-bold text-amber-400">La</div>
-                        <div className="text-xs font-bold text-amber-400">Propulserie</div>
+                        <img src="/Images/Auth/logo.png" alt="" />
                     </div>
                     <p className="text-xs text-slate-400 m-0">
                         Your journey to professional alignment starts here
