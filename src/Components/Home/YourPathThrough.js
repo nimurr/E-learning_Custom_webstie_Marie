@@ -10,50 +10,41 @@ import {
   HiOutlineUsers,
   HiOutlineChatBubbleLeftRight,
 } from "react-icons/hi2";
+import { MdOutlineDocumentScanner } from "react-icons/md";
+
 
 const steps = [
   {
-    title: "Registration",
-    subtitle: "Joining the circle",
+    title: "Free Dashboard Check  ",
     desc:
-      "Step into our shared space and begin your alignment by becoming part of the cosmic community.",
-    icon: FaUserPlus,
+      "Answer simple questions to assess your situation.",
+    icon: MdOutlineDocumentScanner ,
   },
   {
-    title: "Gentle Questions",
-    subtitle: "Revealing your inner landscape",
+    title: "Understand What’s Happening",
     desc:
-      "Answering kind inquiries designed to gently peel back layers and reveal your unique inner landscape.",
+      "Identify values, motivations and tensions.",
     icon: HiOutlineChatBubbleLeftRight,
   },
   {
-    title: "Your Cosmic Map",
-    subtitle: "Reflecting your unique constellation",
+    title: "Expedition Path ",
     desc:
-      "Receive an AI-generated reflection of your skills and passions, mapped as a personal stellar system.",
+      "A guided capsule journey to clarify direction.",
     icon: HiOutlineMap,
   },
   {
-    title: "Mentor Match",
-    subtitle: "Resonating with your guide",
+    title: "Meet the Crew (optional)",
     desc:
-      "Connecting with a guide who resonates with your light for personalized 1:1 wisdom sessions.",
+      "Connect with a mentor. ",
     icon: HiOutlineUsers,
   },
   {
-    title: "The Expedition",
-    subtitle: "Focusing on your goal",
+    title: "Take Action",
     desc:
-      "Embark on the full 6-capsule journey or choose individual capsules to focus on specific areas of growth.",
+      "Move forward with clearer decisions.",
     icon: FaRoute,
   },
-  {
-    title: "Individual Capsules",
-    subtitle: "Diving deeper into your purpose",
-    desc:
-      "Explore focused topics that bring clarity and growth to specific areas of your professional journey.",
-    icon: FaGraduationCap,
-  },
+
 ];
 
 const YourPathThrough = () => {
@@ -72,9 +63,9 @@ const YourPathThrough = () => {
       {/* Timeline */}
       <div className="relative mt-20">
         {/* Horizontal line */}
-        <div className="hidden lg:block absolute w-[calc(100%-180px)] top-10 left-20 right-0 h-[5px] bg-[#B8B6D9]" />
+        <div className="hidden lg:block absolute w-[calc(95%-150px)] top-10 left-24 right-0 h-[5px] bg-[#B8B6D9]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -85,12 +76,9 @@ const YourPathThrough = () => {
                 </div>
 
                 {/* Content */}
-                <h4 className="mt-6 font-semibold text-white">
+                <h4 className="mt-6 font-semibold text-xl text-white">
                   {step.title}
                 </h4>
-                <p className="mt-2 italic text-sm text-gray-300">
-                  {step.subtitle}
-                </p>
                 <p className="mt-3 text-sm text-gray-300 leading-relaxed">
                   {step.desc}
                 </p>
