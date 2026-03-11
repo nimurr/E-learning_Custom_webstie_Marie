@@ -6,7 +6,7 @@ const Hero = () => {
             <div>
                 <h2 className="text-6xl  text-white">(Re)finding   <span className="text-orange-500">Meaning</span> at work</h2>
                 <p className="text-white  my-8">Because no one ever taught you how to truly know yourself</p>
-                <div className=" flex  gap-5">
+                <div className=" flex flex-wrap gap-5">
                     <button className="px-8 py-4    text-[#ffffff] bg-orange-500 font-semibold rounded-lg ">Take your Dashboard Check for free</button>
                     <button className="px-8 py-4  border bg-white text-[#301f4b] customSignUpButtonHover font-semibold rounded-lg ">Discover the approach</button>
                 </div>

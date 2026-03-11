@@ -14,7 +14,7 @@ const YourExploration = () => {
                     <p className='text-gray-300 mt-5 flex items-center gap-2'><span className='h-1.5 w-1.5 rounded-full inline-block bg-orange-400'></span>A structured step-by-step journey</p>
                 </div>
             </div>
-            <img className='absolute bottom-0 right-0 w-60' src="/Images/Home/yourexploration.png" alt="" />
+            <img className='absolute bottom-0 right-0 w-60 lg:block hidden' src="/Images/Home/yourexploration.png" alt="" />
         </div>
     );
 }
