@@ -30,7 +30,7 @@ const Footer = () => {
     ];
 
     return (
-        <footer style={{ background: '#0a0d1f', width: '100%', color: 'white', fontFamily: 'sans-serif' }}>
+        <footer className='container mx-auto' style={{ background: '#0a0d1f', width: '100%', color: 'white', fontFamily: 'sans-serif' }}>
 
             {/* Top bar: logo + tagline */}
             <div style={{
@@ -77,8 +77,7 @@ const Footer = () => {
                                     <Link
                                         href="#"
                                         style={{ color: '#d1d5db', fontSize: '12px', textDecoration: 'none' }}
-                                        onMouseEnter={e => e.target.style.color = '#ffffff'}
-                                        onMouseLeave={e => e.target.style.color = '#d1d5db'}
+                                        target="_blank"
                                     >
                                         {link}
                                     </Link>
