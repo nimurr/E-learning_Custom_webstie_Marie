@@ -30,76 +30,60 @@ const Footer = () => {
     ];
 
     return (
-        <footer className='container mx-auto' style={{ background: '#0a0d1f', width: '100%', color: 'white', fontFamily: 'sans-serif' }}>
+        <div className="bg-gradient-to-t from-blue-950 to-black">
+            <footer className="container mx-auto text-white">
 
-            {/* Top bar: logo + tagline */}
-            <div style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '36px 48px 28px 48px',
-                gap: '12px'
-            }}>
-                <div style={{ lineHeight: 1.2 }}>
-                    <div style={{ color: '#f5a623', fontWeight: 700, fontSize: '13px' }}>La</div>
-                    <div style={{ color: '#f5a623', fontWeight: 700, fontSize: '13px' }}>Propulserie</div>
-                </div>
-                <p style={{ color: '#8898b8', fontSize: '13px', margin: 0 }}>
-                    Your journey to professional alignment starts here
-                </p>
-            </div>
-
-            {/* Divider */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0 48px' }} />
-
-            {/* Link columns */}
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-                gap: '32px',
-                padding: '40px 48px',
-            }}>
-                {columns.map((col, i) => (
-                    <div key={i}>
-                        <h3 style={{
-                            color: '#f5a623',
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            marginBottom: '16px',
-                            letterSpacing: '0.03em',
-                        }}>
-                            {col.heading}
-                        </h3>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                            {col.links.map((link, j) => (
-                                <li key={j}>
-                                    <Link
-                                        href="#"
-                                        style={{ color: '#d1d5db', fontSize: '12px', textDecoration: 'none' }}
-                                        target="_blank"
-                                    >
-                                        {link}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
+                {/* Top bar: logo + tagline */}
+                <div className="flex flex-wrap items-center justify-between px-12 pt-9 pb-7 gap-3">
+                    <div className="leading-tight">
+                        <div className="text-xs font-bold text-amber-400">La</div>
+                        <div className="text-xs font-bold text-amber-400">Propulserie</div>
                     </div>
-                ))}
-            </div>
+                    <p className="text-xs text-slate-400 m-0">
+                        Your journey to professional alignment starts here
+                    </p>
+                </div>
 
-            {/* Bottom divider */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0 48px' }} />
+                {/* Divider */}
+                <div className="mx-12 border-t border-white/10" />
 
-            {/* Copyright */}
-            <div style={{ padding: '20px 48px', textAlign: 'center' }}>
-                <p style={{ color: '#8898b8', fontSize: '12px', margin: 0 }}>
-                    © 2026 La Propulserie.{' '}
-                    <span style={{ color: '#f5a623' }}>★</span>
-                    {' '}All rights reserved.
-                </p>
-            </div>
-        </footer >
+                {/* Link columns */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 px-12 py-10">
+                    {columns.map((col, i) => (
+                        <div key={i}>
+                            <h3 className="text-xs font-semibold text-amber-400 mb-4 tracking-wide">
+                                {col.heading}
+                            </h3>
+                            <ul className="flex flex-col gap-2.5 list-none p-0 m-0">
+                                {col.links.map((link, j) => (
+                                    <li key={j}>
+                                        <Link
+                                            href="#"
+                                            className="text-xs text-gray-300 no-underline hover:text-white transition-colors duration-200"
+                                        >
+                                            {link}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Bottom divider */}
+                <div className="mx-12 border-t border-white/10" />
+
+                {/* Copyright */}
+                <div className="px-12 py-5 text-center">
+                    <p className="text-xs text-slate-400 m-0">
+                        © 2026 La Propulserie.{' '}
+                        <span className="text-amber-400">★</span>
+                        {' '}All rights reserved.
+                    </p>
+                </div>
+
+            </footer>
+        </div>
     );
 };
 
