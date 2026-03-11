@@ -42,7 +42,7 @@ const ForMentors = () => {
 
     return (
         <div
-            className="min-h-screen flex items-center justify-center p-6"
+            className=" flex items-center justify-center p-6"
         //   style={{ background: 'linear-gradient(160deg, #0d1b3e 0%, #0a1628 40%, #10082a 100%)' }}
         >
             {/* Dot decorations */}

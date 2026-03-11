@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <footer className="bg-gradient-to-b from-[#2b124f] via-[#140b26] to-black text-white">
             {/* TOP CTA SECTION */}
-            <div className="container mx-auto px-4 py-28 text-center">
+            {/* <div className="container mx-auto px-4 py-28 text-center">
                 <h1 className="text-4xl md:text-5xl font-semibold mb-6">
                     Your Constellation Awaits
                 </h1>
@@ -17,20 +17,21 @@ const Footer = () => {
                 <button className="bg-white customSignUpButtonHover text-primary border px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition inline-flex items-center gap-2">
                     Begin Your Mentorship Journey  🚀
                 </button>
-            </div>
+            </div> */}
 
             {/* DIVIDER */}
-            <div className="container mx-auto px-4">
+            {/* <div className="container mx-auto px-4">
                 <div className="border-t border-white/20"></div>
-            </div>
+            </div> */}
 
             {/* BOTTOM FOOTER CONTENT */}
-            <div className="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div className="container mx-auto px-4 lg:py-20 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
 
                 {/* LOGO + SOCIAL */}
                 <div>
                     <h2 className="text-3xl font-bold mb-6">
-                        <span className="text-yellow-500">La</span> Propulserie
+                        {/* <span className="text-yellow-500">La</span> Propulserie */}
+                        <img className='w-32' src="/Images/Auth/logo.png" alt="" />
                     </h2>
 
                     <div className="flex gap-4">

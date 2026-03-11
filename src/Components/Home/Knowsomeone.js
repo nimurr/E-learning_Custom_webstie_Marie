@@ -5,47 +5,37 @@ const Knowsomeone = () => {
         {
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-                    <path d="M12 2L8 6H4v4L2 12l2 2v4h4l4 4 4-4h4v-4l2-2-2-2V6h-4L12 2z" stroke="#c9a96e" strokeWidth="1.5" strokeLinejoin="round" />
-                    <circle cx="12" cy="12" r="3" stroke="#c9a96e" strokeWidth="1.5" />
+                    <path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M16 6l-4-4-4 4" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M12 2v13" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Visibility in a qualified ecosystem',
+            text: 'Share the free Dashboard Check',
         },
         {
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-                    <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#a0aec0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Structured digital framework',
+            text: 'Encourage reflection without pressure',
         },
         {
             icon: (
                 <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-                    <circle cx="12" cy="12" r="10" stroke="#c9a96e" strokeWidth="1.5" />
-                    <path d="M12 6v6l4 2" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M12 8C10 5 6 5 6 8c0 2 2 4 6 7 4-3 6-5 6-7 0-3-4-3-6 0z" fill="#f5a623" stroke="#f5a623" strokeWidth="1" strokeLinejoin="round" />
+                    <path d="M9 3.5C9.5 2.5 10.5 2 12 2s2.5.5 3 1.5" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M9 20.5C9.5 21.5 10.5 22 12 22s2.5-.5 3-1.5" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M3.5 9C2.5 9.5 2 10.5 2 12s.5 2.5 1.5 3" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M20.5 9C21.5 9.5 22 10.5 22 12s-.5 2.5-1.5 3" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Subscription model',
-        },
-        {
-            icon: (
-                <div className="w-6 h-6 bg-green-500 rounded flex items-center justify-center flex-shrink-0">
-                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
-                        <path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </div>
-            ),
-            text: 'Mandatory interview before approval',
+            text: 'Support them without replacing a professional',
         },
     ];
 
     return (
-        <div
-            className="min-h-screen  p-6 lg:py-20 flex items-center justify-center py-10"
-        //   style={{ background: 'linear-gradient(160deg, #0d1b3e 0%, #0a1628 40%, #10082a 100%)' }}
-        >
-            {/* Dot decorations */}
+        <div className=" p-6 lg:py-20 flex items-center justify-center py-10 relative">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {[
                     { top: '8%', left: '6%' }, { top: '12%', right: '12%' },
@@ -53,40 +43,33 @@ const Knowsomeone = () => {
                     { top: '55%', right: '3%' }, { top: '70%', left: '8%' },
                     { top: '85%', right: '8%' }, { top: '92%', left: '3%' },
                 ].map((pos, i) => (
-                    <div
-                        key={i}
-                        className="absolute w-1.5 h-1.5 rounded-full bg-white opacity-40"
-                        style={pos}
-                    />
+                    <div key={i} className="absolute w-1.5 h-1.5 rounded-full bg-white opacity-40" style={pos} />
                 ))}
             </div>
-            <div>
 
-                {/* Star Icon */}
+            <img className='absolute bottom-0 right-0 w-72' src="/Images/Home/Knowsomeone.png" alt="" />
+
+            <div>
                 <div className="text-5xl text-center select-none" style={{ filter: 'drop-shadow(0 0 12px rgba(255,180,0,0.5))' }}>
                     🚀
                 </div>
 
-                {/* Title */}
                 <div className="text-center my-10 max-w-3xl">
                     <h1 className="text-4xl font-bold text-white">
                         Know someone who feels <span style={{ color: '#f5a623' }}>lost</span> at work?
                     </h1>
-                    <p className="mt-2 " style={{ color: '#8898b8' }}>
-                        Join a curated ecosystem focused on alignment.
+                    <p className="mt-2" style={{ color: '#8898b8' }}>
+                        Sometimes people around us see the misalignment before we do.
+                        Recommend the Dashboard Check to someone you care about.
                     </p>
                 </div>
 
-
                 <div className="relative w-full max-w-md mx-auto flex flex-col items-center gap-6">
-
-                    {/* Feature Cards */}
                     <div className="w-full flex flex-col gap-3">
                         {features.map((feature, index) => (
                             <div
                                 key={index}
                                 className="flex items-center gap-4 px-5 py-4 rounded-xl bg-red-900/20 border border-red-600/20"
-
                             >
                                 <div className="flex-shrink-0">{feature.icon}</div>
                                 <span className="text-white text-sm font-medium">{feature.text}</span>
@@ -94,7 +77,6 @@ const Knowsomeone = () => {
                         ))}
                     </div>
 
-                    {/* CTA Button */}
                     <button
                         className="w-3/4 py-3.5 rounded-md font-semibold text-white text-sm transition-opacity hover:opacity-90 active:scale-95"
                         style={{
@@ -102,7 +84,7 @@ const Knowsomeone = () => {
                             boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
                         }}
                     >
-                        Apply to join the ecosystem
+                        Recommend the Dashboard Check
                     </button>
                 </div>
             </div>

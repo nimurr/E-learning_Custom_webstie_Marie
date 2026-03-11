@@ -9,6 +9,7 @@ import ForMentors from '@/Components/Home/ForMentors';
 import Hero from '@/Components/Home/Hero';
 import HomeTestimonial from '@/Components/Home/HomeTestimonial';
 import Knowsomeone from '@/Components/Home/Knowsomeone';
+import Mostcompanies from '@/Components/Home/Mostcompanies';
 import Theirprofessionallife from '@/Components/Home/Theirprofessionallife';
 import WhatExplorersSay from '@/Components/Home/WhatExplorersSay';
 import YourExploration from '@/Components/Home/YourExploration';
@@ -32,6 +33,7 @@ const Page = () => {
                 <WhatExplorersSay />
                 <ForMentors />
                 <Knowsomeone />
+                <Mostcompanies />
                 {/* <ExploreOurCapsules />
                 <ExpertGuideMentor />
                 <HomeTestimonial /> */}
