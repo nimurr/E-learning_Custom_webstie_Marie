@@ -1,85 +1,105 @@
 import React from 'react';
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
+    const columns = [
+        {
+            heading: 'La Propulserie',
+            links: ['Free Dashboard Check', 'Expedition Path', 'Meet a Mentor', 'Take Action'],
+        },
+        {
+            heading: 'Solutions',
+            links: ['For Individuals', 'For Companies'],
+        },
+        {
+            heading: 'Ecosystem',
+            links: ['The Explorers', 'The Boosters', 'The Mentors', 'The Boosters'],
+        },
+        {
+            heading: 'For Mentors',
+            links: ['Become a Mentor', 'Application Process'],
+        },
+        {
+            heading: 'About',
+            links: ['The Approach', 'How It Works', 'Contact'],
+        },
+        {
+            heading: 'Legal',
+            links: ['Terms of Use', 'Privacy Policy', 'Cookie Policy', 'Legal Notice'],
+        },
+    ];
+
     return (
-        <footer className="bg-gradient-to-b from-[#2b124f] via-[#140b26] to-black text-white">
-            {/* TOP CTA SECTION */}
-            {/* <div className="container mx-auto px-4 py-28 text-center">
-                <h1 className="text-4xl md:text-5xl font-semibold mb-6">
-                    Your Constellation Awaits
-                </h1>
+        <footer style={{ background: '#0a0d1f', width: '100%', color: 'white', fontFamily: 'sans-serif' }}>
 
-                <p className="max-w-3xl mx-auto text-gray-300 mb-10">
-                    Begin With A Free Assessment. Receive Your Star Map. Meet Your Guide. Start Your Journey.
+            {/* Top bar: logo + tagline */}
+            <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '36px 48px 28px 48px',
+                gap: '12px'
+            }}>
+                <div style={{ lineHeight: 1.2 }}>
+                    <div style={{ color: '#f5a623', fontWeight: 700, fontSize: '13px' }}>La</div>
+                    <div style={{ color: '#f5a623', fontWeight: 700, fontSize: '13px' }}>Propulserie</div>
+                </div>
+                <p style={{ color: '#8898b8', fontSize: '13px', margin: 0 }}>
+                    Your journey to professional alignment starts here
                 </p>
-
-                <button className="bg-white customSignUpButtonHover text-primary border px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition inline-flex items-center gap-2">
-                    Begin Your Mentorship Journey  🚀
-                </button>
-            </div> */}
-
-            {/* DIVIDER */}
-            {/* <div className="container mx-auto px-4">
-                <div className="border-t border-white/20"></div>
-            </div> */}
-
-            {/* BOTTOM FOOTER CONTENT */}
-            <div className="container mx-auto px-4 lg:py-20 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
-
-                {/* LOGO + SOCIAL */}
-                <div>
-                    <h2 className="text-3xl font-bold mb-6">
-                        {/* <span className="text-yellow-500">La</span> Propulserie */}
-                        <img className='w-32' src="/Images/Auth/logo.png" alt="" />
-                    </h2>
-
-                    <div className="flex gap-4">
-                        {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, i) => (
-                            <div
-                                key={i}
-                                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 cursor-pointer transition"
-                            >
-                                <Icon />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* THE JOURNEY */}
-                <div>
-                    <h3 className="font-semibold mb-4">The Journey</h3>
-                    <ul className="space-y-2 text-gray-400">
-                        <li>Registration</li>
-                        <li>Gentle Questions</li>
-                        <li>Mentor Match</li>
-                        <li>Your Cosmic Map</li>
-                        <li>The Expedition</li>
-                        <li>Individual Capsules</li>
-                    </ul>
-                </div>
-
-                {/* INDIVIDUAL CAPSULES */}
-                <div>
-                    <h3 className="font-semibold mb-4">Individual Capsules</h3>
-                    <ul className="space-y-2 text-gray-400">
-                        <li>Web Development & Design</li>
-                        <li>Product Management</li>
-                        <li>Business & Marketing</li>
-                        <li>Creatives</li>
-                        <li>Data Engineering</li>
-                    </ul>
-                </div>
-
-                {/* FOR MENTORS */}
-                <div>
-                    <h3 className="font-semibold mb-4">For Mentors</h3>
-                    <ul className="space-y-2 text-gray-400">
-                        <li>Become A Guide</li>
-                    </ul>
-                </div>
             </div>
-        </footer>
+
+            {/* Divider */}
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0 48px' }} />
+
+            {/* Link columns */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                gap: '32px',
+                padding: '40px 48px',
+            }}>
+                {columns.map((col, i) => (
+                    <div key={i}>
+                        <h3 style={{
+                            color: '#f5a623',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            marginBottom: '16px',
+                            letterSpacing: '0.03em',
+                        }}>
+                            {col.heading}
+                        </h3>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            {col.links.map((link, j) => (
+                                <li key={j}>
+                                    <a
+                                        href="#"
+                                        style={{ color: '#d1d5db', fontSize: '12px', textDecoration: 'none' }}
+                                        onMouseEnter={e => e.target.style.color = '#ffffff'}
+                                        onMouseLeave={e => e.target.style.color = '#d1d5db'}
+                                    >
+                                        {link}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+
+            {/* Bottom divider */}
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '0 48px' }} />
+
+            {/* Copyright */}
+            <div style={{ padding: '20px 48px', textAlign: 'center' }}>
+                <p style={{ color: '#8898b8', fontSize: '12px', margin: 0 }}>
+                    © 2026 La Propulserie.{' '}
+                    <span style={{ color: '#f5a623' }}>★</span>
+                    {' '}All rights reserved.
+                </p>
+            </div>
+        </footer >
     );
 };
 

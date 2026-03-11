@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header className="w-full ">
       <div className="container mx-auto fixed z-[999] px-4 left-0 right-0 top-5">
-        <div className="flex items-center justify-between rounded-xl bg-black/60 backdrop-blur-md px-6 xl:py-3 py-5 border border-gray-300">
+        <div className="flex items-center justify-between rounded-xl bg-black/60 backdrop-blur-md px-6 2xl:py-3 py-5 border border-gray-300">
 
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -23,7 +23,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Nav */}
-          <ul className="hidden xl:flex items-center gap-10 text-gray-300 text-sm">
+          <ul className="hidden 2xl:flex items-center gap-10 text-gray-300 text-sm">
             {["The Approach", "How It Works", "For Individuals", "For Companies", "For Mentors", "Testimonials", "Contact"].map(
               (item) => (
                 <li
@@ -37,7 +37,7 @@ const Header = () => {
           </ul>
 
           {/* Desktop Buttons */}
-          <div className="hidden xl:flex items-center text-[17px] gap-3">
+          <div className="hidden 2xl:flex items-center text-[17px] gap-3">
             <button className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
               Sign Up
             </button>
@@ -48,7 +48,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="xl:hidden text-white"
+            className="2xl:hidden text-white"
             onClick={() => setOpen(!open)}
           >
             {open ? <RxCross1 size={24} /> : <FiMenu size={24} />}
@@ -57,11 +57,11 @@ const Header = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`xl:hidden mt-2 rounded-2xl bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] border border-gray-700 overflow-hidden transition-all duration-300 ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          className={`2xl:hidden mt-2 rounded-2xl bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] border border-gray-700 overflow-y-auto transition-all duration-300 ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
             }`}
         >
           <ul className="flex flex-col text-gray-300 text-sm divide-y divide-gray-700">
-            {["The Journey", "Capsules", "Mentor", "Testimonials"].map(
+            {["The Approach", "How It Works", "For Individuals", "For Companies", "For Mentors", "Testimonials", "Contact"].map(
               (item) => (
                 <li
                   key={item}
