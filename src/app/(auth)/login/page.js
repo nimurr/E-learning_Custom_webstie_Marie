@@ -1,26 +1,40 @@
 'use client'
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useLoginMutation } from '@/redux/fetures/auth/login';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
     const [loginWithPassowrd, { isLoading }] = useLoginMutation();
+    const router = useRouter();
 
     const togglePassword = () => {
         setShowPassword(prevState => !prevState);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMsg('');
         const formData = new FormData(e.target);
         const email = formData.get('email');
-        const password = formData.get('password'); 
+        const password = formData.get('password');
         const data = {
             email,
-            password
-        }
+            password,
+            rememberMe: true
+        };
 
-        
+        try {
+            const response = await loginWithPassowrd(data).unwrap();
+            console.log(response)
+            router.push('/dashboard'); // ✅ redirect after login
+        } catch (error) {
+            console.error('Login failed:', error);
+            toast.error(error?.data?.message || 'Login failed. Please try again.'); // ✅ toast error message
+        }
     };
 
     return (
@@ -30,6 +44,13 @@ const Page = () => {
                 <div className='min-w-80'>
                     <h2 className='text-3xl font-medium text-center'>Login</h2>
 
+                    {/* ✅ Error message */}
+                    {errorMsg && (
+                        <div className='mt-4 p-2 bg-red-100 border border-red-400 text-red-600 text-sm rounded-md text-center'>
+                            {errorMsg}
+                        </div>
+                    )}
+
                     <div className='mt-5'>
                         <label className='font-semibold' htmlFor="email">Email</label>
                         <input
@@ -38,6 +59,7 @@ const Page = () => {
                             type="email"
                             name="email"
                             id="email"
+                            required
                         />
                     </div>
 
@@ -50,6 +72,7 @@ const Page = () => {
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 id="password"
+                                required
                             />
                             <button
                                 type="button"
@@ -70,7 +93,13 @@ const Page = () => {
                     </div>
 
                     <div className='mt-5'>
-                        <button className='cursor-pointer w-full p-2 bg-[#3b398d] font-semibold text-white rounded-md'>Login</button>
+                        <button
+                            type='submit'
+                            disabled={isLoading}
+                            className='cursor-pointer w-full p-2 bg-[#3b398d] font-semibold text-white rounded-md disabled:opacity-60 disabled:cursor-not-allowed'
+                        >
+                            {isLoading ? 'Logging in...' : 'Login'} {/* ✅ loading state */}
+                        </button>
                     </div>
 
                     <p className='text-center mt-5 text-gray-600'>Don't have an account? <Link className='text-blue-600' href="/signup">Sign Up</Link></p>

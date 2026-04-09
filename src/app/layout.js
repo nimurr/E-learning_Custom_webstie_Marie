@@ -3,6 +3,7 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/redux/Providers";
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { ToastContainer } from "react-toastify";
 
 
 const geistSans = Geist({
@@ -35,8 +36,9 @@ export default function RootLayout({ children }) {
           easing="ease"     // Animation easing
 
         />
+        <ToastContainer />
         <Providers>
-          <PrimeReactProvider> 
+          <PrimeReactProvider>
             {children}
           </PrimeReactProvider>
         </Providers>
