@@ -29,8 +29,19 @@ const Page = () => {
 
         try {
             const response = await loginWithPassowrd(data).unwrap();
-            console.log(response)
-            router.push('/dashboard'); // ✅ redirect after login
+            if (response?.code == 200) {
+                toast.success(response?.message);
+                console.log(response?.data?.userWithoutPassword)
+                localStorage.setItem("token", JSON.stringify(response?.data?.tokens?.accessToken));
+                localStorage.setItem("user", JSON.stringify(response?.data?.userWithoutPassword));
+                if (response?.data?.userWithoutPassword?.role == 'student') {
+                    router.push('/students'); // ✅ redirect after login
+                } else if (response?.data?.userWithoutPassword?.role == 'mentor') {
+                    router.push('/mentor'); // ✅ redirect after login
+                }
+            }
+
+            // router.push('/dashboard'); // ✅ redirect after login
         } catch (error) {
             console.error('Login failed:', error);
             toast.error(error?.data?.message || 'Login failed. Please try again.'); // ✅ toast error message

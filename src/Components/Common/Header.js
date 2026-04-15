@@ -1,4 +1,5 @@
 'use client';
+import Link from "next/link";
 import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
@@ -38,12 +39,12 @@ const Header = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden 2xl:flex items-center text-[17px] gap-3">
-            <button className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+            <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
               Sign Up
-            </button>
-            <button className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
+            </Link>
+            <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
               Sign In
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
