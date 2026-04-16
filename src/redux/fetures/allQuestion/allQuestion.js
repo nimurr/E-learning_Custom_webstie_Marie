@@ -14,6 +14,7 @@ const allQuestion = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        
     }),
 });
 

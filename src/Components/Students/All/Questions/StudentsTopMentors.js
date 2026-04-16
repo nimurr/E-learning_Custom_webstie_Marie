@@ -42,7 +42,8 @@ const StudentsTopMentors = () => {
         <div className='bg-white max-w-6xl mx-auto rounded-2xl lg:p-10 p-5 mt-10'>
 
             <div>
-                <CategoryCarosal />
+                {/* <CategoryCarosal /> */}
+                <h2 className='text-center text-4xl font-semibold text-primary  mb-10'>Top Mentors</h2>
             </div>
             <div className='grid lg:grid-cols-3 gap-3'>
                 {
