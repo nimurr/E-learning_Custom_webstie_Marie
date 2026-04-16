@@ -1,7 +1,19 @@
 'use client';
+import IsLoading from '@/Components/IsLoading';
+import { useGetAllQuestionCategoryPaidQuery } from '@/redux/fetures/allQuestion/allQuestion';
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const Step1Identification = ({ onNext }) => {
+    // StepId get in search params
+    const searchParams = useSearchParams();
+    const stepId = searchParams.get('StepId');
+    console.log(stepId)
+    const { data: step, isLoading } = useGetAllQuestionCategoryPaidQuery({ id: stepId });
+    const fullDataOfStep = step?.data;
+    console.log(fullDataOfStep)
+
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,29 +39,42 @@ const Step1Identification = ({ onNext }) => {
         }
     };
 
+
+    if (isLoading) {
+        return <IsLoading row={10} />
+    }
+
     return (
         <div>
-            <h2 className="text-xl font-semibold mb-6">
-                Identification
+            <h2 className="text-xl font-semibold mb-3">
+                {fullDataOfStep?.questionary?.title}
+            </h2>
+            <h2 className="text-sm text-gray-400 mb-6">
+                {fullDataOfStep?.questionary?.brief}
             </h2>
 
-            <div className="mb-6">
-                <label className="block text-sm mb-2">Name</label>
-                <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full border rounded-lg px-4 py-3"
-                />
-            </div>
+            {
+                fullDataOfStep?.questions.map((question, index) => (
+                    <div key={index} className="mb-6">
+                        <label className="block font-semibold mb-2">
+                            {question?.title}
+                        </label>
+                        <input
+                            type="text"
+                            value={question.answer}
+                            placeholder={question?.helperText}
+                            onChange={(e) => {
+                                const updatedQuestions = fullDataOfStep.questionary.questions.map((q, i) =>
+                                    i === index ? { ...q, answer: e.target.value } : q
+                                );
+                                console.log(updatedQuestions);
+                            }}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500"
+                        />
+                    </div>
+                ))
+            }
 
-            <div className="mb-6">
-                <label className="block text-sm mb-2">Email</label>
-                <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full border rounded-lg px-4 py-3"
-                />
-            </div>
 
             {/* SAVE & NEXT */}
             <button

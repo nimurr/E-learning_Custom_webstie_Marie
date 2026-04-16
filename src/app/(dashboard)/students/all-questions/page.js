@@ -8,31 +8,58 @@ import Step4Identification from '@/Components/Students/All/Questions/Step4Identi
 import Step5Identification from '@/Components/Students/All/Questions/Step5Identification';
 import Step6Identification from '@/Components/Students/All/Questions/Step6Identification';
 import Step7Identification from '@/Components/Students/All/Questions/Step7Identification';
+import { useGetAllQuestionCategoryQuery } from '@/redux/fetures/allQuestion/allQuestion';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const steps = [
-    { title: 'Identification', component: Step1Identification },
-    { title: 'Current Situation', component: Step2Identification },
-    { title: 'Values', component: Step3Identification },
-    { title: 'Idea Future', component: Step4Identification },
-    { title: 'Work Conditions', component: Step5Identification },
-    { title: 'Work Style', component: Step6Identification },
-    { title: 'Skills', component: Step7Identification },
+const stepComponents = [
+    Step1Identification,
+    Step2Identification,
+    Step3Identification,
+    Step4Identification,
+    Step5Identification,
+    Step6Identification,
+    Step7Identification,
+];
+
+const fallbackTitles = [
+    'Identification', 'Current Situation', 'Values',
+    'Idea Future', 'Work Conditions', 'Work Style', 'Skills',
 ];
 
 const Page = () => {
-    const [currentStep, setCurrentStep] = useState(0);
-    const CurrentComponent = steps[currentStep].component;
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const { data: questionsCategory, isLoading } = useGetAllQuestionCategoryQuery();
+    const apiCategories = questionsCategory?.data || [];
+
+    // Merge API titles with fixed components by index
+    const steps = stepComponents.map((component, index) => ({
+        component,
+        title: apiCategories[index]?.title || fallbackTitles[index],
+        id: apiCategories[index]?.id || index,
+    }));
+
+    // Derive currentStep from URL param — fall back to 0
+    const stepIdFromUrl = searchParams.get('StepId');
+    const currentStep = stepIdFromUrl
+        ? Math.max(steps.findIndex((s) => String(s.id) === String(stepIdFromUrl)), 0)
+        : 0;
+
+    const CurrentComponent = stepComponents[currentStep];
 
     const goNext = () => {
-        if (currentStep < steps.length - 1) {
-            setCurrentStep(prev => prev + 1);
+        const nextIndex = currentStep + 1;
+        if (nextIndex < steps.length) {
+            const nextStepId = steps[nextIndex].id;
+            router.push(`/students/all-questions?StepId=${nextStepId}`);
         }
     };
 
     return (
-        <div className="relative min-h-screen lg:p-10 p-5 z-0 ">
+        <div className="relative min-h-screen lg:p-10 p-5 z-0">
             <div className="absolute inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover opacity-60" />
-
 
             <div className="relative z-10 max-w-6xl mx-auto bg-white rounded-xl">
 
@@ -40,11 +67,10 @@ const Page = () => {
                 <div className="p-6 flex justify-between">
                     {steps.map((step, index) => {
                         const isActive = index === currentStep;
-
                         return (
-                            <div
-                                key={index}
-                                onClick={() => setCurrentStep(index)}
+                            <Link
+                                href={`/students/all-questions?StepId=${step.id}`}
+                                key={step.id}
                                 className="flex-1 text-center cursor-pointer"
                             >
                                 <div
@@ -54,12 +80,15 @@ const Page = () => {
                                             : 'border border-gray-300 text-gray-400'
                                         }`}
                                 >
-                                    {index + 1}
+                                    {isLoading
+                                        ? <span className="w-3 h-3 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+                                        : index + 1
+                                    }
                                 </div>
-                                <p className={`text-xs sm:block hidden mt-2 font-semibold  ${isActive ? 'text-[#2b124f]' : 'text-gray-500'}`}>
+                                <p className={`text-xs sm:block hidden mt-2 font-semibold ${isActive ? 'text-[#2b124f]' : 'text-gray-500'}`}>
                                     {step.title}
                                 </p>
-                            </div>
+                            </Link>
                         );
                     })}
                 </div>

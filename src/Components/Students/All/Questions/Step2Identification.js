@@ -1,43 +1,61 @@
 'use client';
-import React, { useState } from 'react';
-
-const options = [
-    { value: 'earth', title: 'Earth', desc: 'Stable, but monotonous' },
-    { value: 'mars', title: 'Mars', desc: 'Full of challenges, sometimes hostile' },
-    { value: 'moon', title: 'Moon', desc: 'Calm, but isolated' },
-    { value: 'sun', title: 'Sun', desc: 'Radiant and energizing' },
-];
-
-const questions = [
-    { id: 'q1', title: 'Question 01', text: 'Current job as a planet:' },
-    { id: 'q2', title: 'Question 02', text: 'Your work environment feels like:' },
-    { id: 'q3', title: 'Question 03', text: 'Your daily energy level:' },
-];
+import IsLoading from '@/Components/IsLoading';
+import { useGetAllQuestionCategoryPaidQuery } from '@/redux/fetures/allQuestion/allQuestion';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const Step2Identification = ({ onNext }) => {
+    const searchParams = useSearchParams();
+    const stepId = searchParams.get('StepId');
+
+    const { data: step, isLoading } = useGetAllQuestionCategoryPaidQuery({ id: stepId });
+    const fullDataOfStep = step?.data;
+
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(false);
 
-    const handleSelect = (questionId, value) => {
-        setAnswers(prev => ({
+    // ✅ Initialize answers
+    useEffect(() => {
+        if (fullDataOfStep?.questions) {
+            const initial = {};
+            fullDataOfStep.questions.forEach((q) => {
+                initial[q.id] = '';
+            });
+            setAnswers(initial);
+        }
+    }, [fullDataOfStep]);
+
+    // ✅ Handle text input
+    const handleInput = (id, value) => {
+        setAnswers((prev) => ({
             ...prev,
-            [questionId]: value,
+            [id]: value,
+        }));
+    };
+
+    // ✅ Handle select
+    const handleSelect = (id, value) => {
+        setAnswers((prev) => ({
+            ...prev,
+            [id]: value,
         }));
     };
 
     const handleSave = async () => {
-        // ensure all answered
-        if (Object.keys(answers).length !== questions.length) return;
+        const allAnswered = Object.values(answers).every(v => v !== '');
+        if (!allAnswered) return;
 
         setLoading(true);
 
         const payload = {
-            step2Answers: answers,
+            stepId,
+            answers,
         };
 
         try {
             console.log('Saving Step 2', payload);
             // await api.post('/steps/2', payload);
+
             onNext();
         } catch (err) {
             console.error(err);
@@ -46,73 +64,108 @@ const Step2Identification = ({ onNext }) => {
         }
     };
 
+    if (isLoading) {
+        return <IsLoading row={10} />
+    }
+
     return (
-        <div className="space-y-12">
-            {questions.map((question) => (
-                <div key={question.id}>
-                    {/* QUESTION */}
-                    <h2 className="text-lg font-semibold mb-2">
-                        {question.title}
-                    </h2>
-                    <p className="mb-6 text-gray-700">
-                        {question.text}
-                    </p>
+        <div className="space-y-10">
 
-                    {/* OPTIONS */}
-                    <div className="grid sm:grid-cols-2 gap-4">
-                        {options.map((option) => {
-                            const isActive = answers[question.id] === option.value;
+            {/* TITLE */}
+            <div>
+                <h2 className="text-xl font-semibold">
+                    {fullDataOfStep?.questionary?.title}
+                </h2>
+                <p className="text-gray-500">
+                    {fullDataOfStep?.questionary?.brief}
+                </p>
+            </div>
 
-                            return (
-                                <button
-                                    key={option.value}
-                                    type="button"
-                                    onClick={() => handleSelect(question.id, option.value)}
-                                    className={`text-left p-5 rounded-xl border transition
-                                        ${isActive
-                                            ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                            : 'border-gray-300 hover:border-[#2b124f]'
-                                        }`}
-                                >
-                                    <div className="flex items-start gap-3">
-                                        {/* RADIO */}
-                                        <div
-                                            className={`w-4 h-4 mt-1 rounded-full border flex items-center justify-center
-                                                ${isActive
-                                                    ? 'border-[#2b124f]'
-                                                    : 'border-gray-400'
-                                                }`}
-                                        >
-                                            {isActive && (
-                                                <div className="w-2 h-2 bg-[#2b124f] rounded-full" />
-                                            )}
-                                        </div>
+            {/* QUESTIONS */}
+            {fullDataOfStep?.questions?.map((q) => (
+                <div key={q.id} className="space-y-4">
 
-                                        {/* TEXT */}
-                                        <div>
-                                            <h3 className="font-semibold text-[#2b124f]">
-                                                {option.title}
-                                            </h3>
-                                            <p className="text-sm text-gray-600">
-                                                {option.desc}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </button>
-                            );
-                        })}
+                    <div>
+                        <h3 className="font-semibold">{q.title}</h3>
+                        {q.helperText && (
+                            <p className="text-sm text-gray-500">
+                                {q.helperText}
+                            </p>
+                        )}
                     </div>
+
+                    {/* 🔥 TEXT INPUT */}
+                    {q.type === 'Text Input' && (
+                        <input
+                            type="text"
+                            value={answers[q.id] || ''}
+                            onChange={(e) => handleInput(q.id, e.target.value)}
+                            placeholder={q.helperText}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-[#2b124f]"
+                        />
+                    )}
+
+                    {/* 🔥 SINGLE SELECT */}
+                    {q.type === 'Single Select' && (
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            {q.options.map((opt) => {
+                                const isActive = answers[q.id] === opt.details;
+
+                                return (
+                                    <button
+                                        key={opt.sl}
+                                        type="button"
+                                        onClick={() =>
+                                            handleSelect(q.id, opt.details)
+                                        }
+                                        className={`text-left p-4 rounded-lg border transition
+                                            ${isActive
+                                                ? 'border-[#2b124f] bg-[#2b124f]/5'
+                                                : 'border-gray-300 hover:border-[#2b124f]'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+
+                                            {/* RADIO */}
+                                            <div
+                                                className={`w-4 h-4 rounded-full border flex items-center justify-center
+                                                    ${isActive
+                                                        ? 'border-[#2b124f]'
+                                                        : 'border-gray-400'
+                                                    }`}
+                                            >
+                                                {isActive && (
+                                                    <div className="w-2 h-2 bg-[#2b124f] rounded-full" />
+                                                )}
+                                            </div>
+
+                                            {/* TEXT */}
+                                            <span className="text-sm">
+                                                {opt.details}
+                                            </span>
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+
                 </div>
             ))}
 
-            {/* SAVE */}
+            {/* SAVE BUTTON */}
             <button
                 onClick={handleSave}
-                disabled={Object.keys(answers).length !== questions.length || loading}
+                disabled={
+                    !fullDataOfStep?.questions ||
+                    Object.values(answers).some(v => v === '') ||
+                    loading
+                }
                 className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
             >
                 {loading ? 'Saving...' : 'Save & Continue'}
             </button>
+
         </div>
     );
 };
