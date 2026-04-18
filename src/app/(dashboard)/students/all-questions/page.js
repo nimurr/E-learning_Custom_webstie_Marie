@@ -33,7 +33,7 @@ const Page = () => {
 
     const { data: questionsCategory, isLoading } = useGetAllQuestionCategoryQuery();
     const apiCategories = questionsCategory?.data || [];
-   
+
 
     // Merge API titles with fixed components by index
     const steps = stepComponents.map((component, index) => ({
@@ -59,6 +59,10 @@ const Page = () => {
     };
     useEffect(() => {
         router.push(`/students/all-questions?StepId=${steps[0].id}`);
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            router.push(`/students/all-questions?StepId=${steps[0].id}`);
+        }, 2000)
     }, [])
 
     return (

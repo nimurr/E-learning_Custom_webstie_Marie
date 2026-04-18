@@ -1,55 +1,107 @@
+'use client';
+
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 import { FaRocket } from 'react-icons/fa6';
+import { CiLocationOn } from "react-icons/ci";
+import { HiLanguage } from "react-icons/hi2";
+import Link from 'next/link';
 
 const Mentors = ({ item }) => {
     return (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0b0b1f] via-[#15153a] to-[#0b0b1f] text-white h-[260px]">
+        <div className="relative overflow-hidden rounded-3xl text-white h-[260px]">
 
-            {/* BACKGROUND BLUR IMAGE */}
-            {/* <div className="absolute inset-0 bg-[url('/Images/Cards/uiux-bg.png')] bg-cover object-fill bg-center opacity-30" /> */}
+            {/* BACKGROUND */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0b1f] via-[#15153a] to-[#0b0b1f]" />
+
+            {/* GLOBAL DARK OVERLAY */}
+            <div className="absolute inset-0 bg-black/40" />
 
             {/* CONTENT */}
             <div className="relative z-10 flex h-full">
 
                 {/* LEFT CONTENT */}
-                <div className="flex flex-col w-full justify-between p-4  z-10">
+                <div className="flex flex-col w-full justify-between p-4">
+
                     <div>
-                        <span className="inline-block bg-white/10 px-4 py-1 rounded-full text-sm mb-4">
-                            Ideal for beginners
+
+                        {/* BADGE */}
+                        <span className="inline-block bg-white/10 px-3 py-1 rounded-full text-xs mb-3">
+                            {item?.availableIn || 'Online'}
                         </span>
 
-                        <h2 className="text-2xl font-semibold mb-2">
-                            Basic UI/UX
+                        {/* NAME */}
+                        <h2 className="text-2xl font-semibold">
+                            {item?.name}
                         </h2>
 
-                        <p className="text-gray-300">
-                            Figma • Principles • UI
+                        {/* JOB */}
+                        <p className="text-gray-300 text-sm">
+                            {item?.currentJobTitle} • {item?.companyName}
                         </p>
+
+                        {/* INFO */}
+                        <div className="text-gray-300 text-xs flex flex-wrap gap-3 mt-2">
+
+                            <span className="flex items-center gap-1">
+                                <CiLocationOn />
+                                {item?.location}
+                            </span>
+
+                            <span className="flex items-center gap-1">
+                                <HiLanguage />
+                                {item?.language?.join(', ')}
+                            </span>
+
+                            <span>
+                                ⭐ {item?.avgRating}
+                            </span>
+
+                            <span>
+                                {item?.yearsOfExperience} yrs exp
+                            </span>
+
+                        </div>
+
+                        {/* FOCUS AREA */}
+                        <p className="text-gray-300 text-sm mt-2 line-clamp-1">
+                            {item?.focusArea?.join(' • ')}
+                        </p>
+
                     </div>
 
                     {/* BUTTONS */}
-                    <div className="flex gap-2 w-full mt-6">
-                        <button className="flex w-full text-sm items-center justify-center gap-2 customSignUpButton border px-3 py-3 rounded-xl">
+                    <div className="flex gap-2 w-full mt-4">
+
+                        <Link href={`/students/mentors/${item?.mentorId}`} className="flex w-full text-sm items-center justify-center gap-2 border px-3 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition">
                             <FaInfoCircle />
                             View Details
-                        </button>
+                        </Link>
 
-                        <button className="flex w-full text-sm items-center justify-center gap-2 border bg-white text-[#15153a] customSignUpButtonHover transition px-2 py-3 rounded-xl">
+                        <button className="flex w-full text-sm items-center justify-center gap-2 border bg-white text-[#15153a] px-3 py-3 rounded-xl hover:bg-gray-200 transition">
                             <FaRocket />
-                            <span> Start Learning</span>
+                            Book Session
                         </button>
+
                     </div>
+
                 </div>
 
-                {/* RIGHT IMAGE */}
-                <div className="absolute right-0 bottom-0 z-0 h-full flex items-end">
+                {/* RIGHT IMAGE WITH PROPER OVERLAY */}
+                <div className="absolute right-0 bottom-0 -z-10 h-full flex items-end">
+
+                    {/* IMAGE */}
                     <img
-                        src={item.image}
-                        alt="Mentor"
-                        className="h-[70%] object-contain"
+                        src={item?.avatarUrl}
+                        alt={item?.name}
+                        className="h-[75%] object-contain rounded-lg relative z-10"
                     />
+
+                    {/* IMAGE OVERLAY (IMPORTANT FIX) */}
+                    <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0b0b1f]/40 to-[#0b0b1f] z-20" />
+
                 </div>
+
             </div>
         </div>
     );
