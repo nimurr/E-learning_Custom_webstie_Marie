@@ -1,11 +1,10 @@
-
-
 'use client';
 
 import IsLoading from '@/Components/IsLoading';
 import {
     useAnswerTheQuestionsMutation,
-    useGetAllQuestionCategoryPaidQuery
+    useGetAllQuestionCategoryPaidQuery,
+    useGetresumeQuestionAnswerQuery
 } from '@/redux/fetures/allQuestion/allQuestion';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +17,11 @@ const Step2Identification = ({ onNext }) => {
     const { data: step, isLoading } =
         useGetAllQuestionCategoryPaidQuery({ id: stepId });
 
+    const { data: resume } =
+        useGetresumeQuestionAnswerQuery({ questionaryId: stepId });
+
     const fullDataOfStep = step?.data;
+    const fullDataOfResume = resume?.data?.answers;
 
     const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
         useAnswerTheQuestionsMutation();
@@ -26,30 +29,41 @@ const Step2Identification = ({ onNext }) => {
     const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // ✅ Initialize answers (same as Step1)
+    // ✅ INIT + PREFILL (IMPORTANT FIX)
     useEffect(() => {
-        if (fullDataOfStep?.questions) {
-            const initial = fullDataOfStep.questions.map((q) => ({
-                questionId: q.id,
-                answer: '',
-            }));
-            setAnswers(initial);
-        }
-    }, [fullDataOfStep]);
+        if (!fullDataOfStep?.questions) return;
 
-    // ✅ Handle change (works for both input & select)
+        // 🔥 map resume answers
+        const answerMap = {};
+
+        fullDataOfResume?.forEach((item) => {
+            answerMap[item.questionId] = item.answer;
+        });
+
+        // 🔥 merge with questions
+        const initial = fullDataOfStep.questions.map((q) => ({
+            questionId: q.id,
+            answer: answerMap[q.id] || '',
+        }));
+
+        setAnswers(initial);
+    }, [fullDataOfStep, fullDataOfResume]);
+
+    // ✅ UPDATE ANSWER
     const handleChange = (questionId, value) => {
-        const updated = answers.map((item) =>
-            item.questionId === questionId
-                ? { ...item, answer: value }
-                : item
+        setAnswers((prev) =>
+            prev.map((item) =>
+                item.questionId === questionId
+                    ? { ...item, answer: value }
+                    : item
+            )
         );
-        setAnswers(updated);
     };
 
-    // ✅ Submit API
+    // ✅ SUBMIT
     const handleSave = async () => {
         const allAnswered = answers.every((a) => a.answer !== '');
+
         if (!allAnswered) {
             toast.error('Please answer all questions');
             return;
@@ -64,7 +78,6 @@ const Step2Identification = ({ onNext }) => {
             };
 
             const res = await answerTheQuestions(payload).unwrap();
-            console.log(res)
 
             if (res?.code === 200) {
                 toast.success(res?.message);
@@ -123,7 +136,7 @@ const Step2Identification = ({ onNext }) => {
                                     handleChange(q.id, e.target.value)
                                 }
                                 placeholder={q.helperText}
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-[#2b124f]"
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2"
                             />
                         )}
 
@@ -141,30 +154,13 @@ const Step2Identification = ({ onNext }) => {
                                             onClick={() =>
                                                 handleChange(q.id, opt.details)
                                             }
-                                            className={`text-left p-4 rounded-lg border transition
+                                            className={`p-4 border rounded-lg text-left
                                                 ${isActive
                                                     ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                                    : 'border-gray-300 hover:border-[#2b124f]'
-                                                }`}
+                                                    : 'border-gray-300'}
+                                            `}
                                         >
-                                            <div className="flex items-center gap-3">
-
-                                                <div
-                                                    className={`w-4 h-4 rounded-full border flex items-center justify-center
-                                                        ${isActive
-                                                            ? 'border-[#2b124f]'
-                                                            : 'border-gray-400'
-                                                        }`}
-                                                >
-                                                    {isActive && (
-                                                        <div className="w-2 h-2 bg-[#2b124f] rounded-full" />
-                                                    )}
-                                                </div>
-
-                                                <span className="text-sm">
-                                                    {opt.details}
-                                                </span>
-                                            </div>
+                                            {opt.details}
                                         </button>
                                     );
                                 })}
@@ -179,11 +175,9 @@ const Step2Identification = ({ onNext }) => {
             <button
                 onClick={handleSave}
                 disabled={loading || isLoadingAnswer}
-                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
+                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg"
             >
-                {loading || isLoadingAnswer
-                    ? 'Saving...'
-                    : 'Save & Continue'}
+                {loading || isLoadingAnswer ? 'Saving...' : 'Save & Continue'}
             </button>
 
         </div>

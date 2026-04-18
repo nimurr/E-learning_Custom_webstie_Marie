@@ -3,7 +3,8 @@
 import IsLoading from '@/Components/IsLoading';
 import {
     useAnswerTheQuestionsMutation,
-    useGetAllQuestionCategoryPaidQuery
+    useGetAllQuestionCategoryPaidQuery,
+    useGetresumeQuestionAnswerQuery
 } from '@/redux/fetures/allQuestion/allQuestion';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -16,7 +17,11 @@ const Step4Identification = ({ onNext }) => {
     const { data: step, isLoading } =
         useGetAllQuestionCategoryPaidQuery({ id: stepId });
 
+    const { data: resume } =
+        useGetresumeQuestionAnswerQuery({ questionaryId: stepId });
+
     const fullDataOfStep = step?.data;
+    const fullDataOfResume = resume?.data?.answers;
 
     const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
         useAnswerTheQuestionsMutation();
@@ -24,18 +29,28 @@ const Step4Identification = ({ onNext }) => {
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(false);
 
-    // ✅ Initialize
+    // -----------------------------
+    // INIT + PREFILL FROM RESUME
+    // -----------------------------
     useEffect(() => {
-        if (fullDataOfStep?.questions) {
-            const initial = {};
-            fullDataOfStep.questions.forEach((q) => {
-                initial[q.id] = '';
-            });
-            setAnswers(initial);
-        }
-    }, [fullDataOfStep]);
+        if (!fullDataOfStep?.questions) return;
 
-    // ✅ INPUT
+        const initial = {};
+
+        fullDataOfStep.questions.forEach((q) => {
+            const saved = fullDataOfResume?.find(
+                (a) => a.questionId === q.id
+            );
+
+            initial[q.id] = saved?.answer || '';
+        });
+
+        setAnswers(initial);
+    }, [fullDataOfStep, fullDataOfResume]);
+
+    // -----------------------------
+    // HANDLERS
+    // -----------------------------
     const handleInput = (id, value) => {
         setAnswers((prev) => ({
             ...prev,
@@ -43,7 +58,6 @@ const Step4Identification = ({ onNext }) => {
         }));
     };
 
-    // ✅ SELECT
     const handleSelect = (id, value) => {
         setAnswers((prev) => ({
             ...prev,
@@ -51,7 +65,9 @@ const Step4Identification = ({ onNext }) => {
         }));
     };
 
-    // ✅ Convert to API format
+    // -----------------------------
+    // FORMAT FOR API
+    // -----------------------------
     const formatAnswers = () => {
         return Object.entries(answers).map(([questionId, answer]) => ({
             questionId,
@@ -59,9 +75,13 @@ const Step4Identification = ({ onNext }) => {
         }));
     };
 
-    // ✅ Submit API
+    // -----------------------------
+    // SAVE
+    // -----------------------------
     const handleSave = async () => {
-        const allAnswered = Object.values(answers).every(v => v !== '');
+        const allAnswered = Object.values(answers).every(
+            (v) => v !== '' && v !== null && v !== undefined
+        );
 
         if (!allAnswered) {
             toast.error('Please answer all questions');
@@ -152,9 +172,10 @@ const Step4Identification = ({ onNext }) => {
                                                 handleSelect(q.id, opt.details)
                                             }
                                             className={`p-4 rounded-lg border text-left transition
-                                                ${isActive
-                                                    ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                                    : 'border-gray-300 hover:border-[#2b124f]'
+                                                ${
+                                                    isActive
+                                                        ? 'border-[#2b124f] bg-[#2b124f]/5'
+                                                        : 'border-gray-300 hover:border-[#2b124f]'
                                                 }`}
                                         >
                                             {opt.details}
@@ -174,9 +195,7 @@ const Step4Identification = ({ onNext }) => {
                 disabled={loading || isLoadingAnswer}
                 className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
             >
-                {loading || isLoadingAnswer
-                    ? 'Saving...'
-                    : 'Save & Continue'}
+                {loading || isLoadingAnswer ? 'Saving...' : 'Save & Continue'}
             </button>
         </div>
     );

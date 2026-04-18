@@ -3,7 +3,8 @@
 import IsLoading from '@/Components/IsLoading';
 import {
     useAnswerTheQuestionsMutation,
-    useGetAllQuestionCategoryPaidQuery
+    useGetAllQuestionCategoryPaidQuery,
+    useGetresumeQuestionAnswerQuery
 } from '@/redux/fetures/allQuestion/allQuestion';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +19,11 @@ const Step6Identification = ({ onNext }) => {
     const { data: step, isLoading } =
         useGetAllQuestionCategoryPaidQuery({ id: stepId });
 
+    const { data: resume } =
+        useGetresumeQuestionAnswerQuery({ questionaryId: stepId });
+
     const fullDataOfStep = step?.data;
+    const resumeAnswers = resume?.data?.answers;
 
     const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
         useAnswerTheQuestionsMutation();
@@ -26,17 +31,26 @@ const Step6Identification = ({ onNext }) => {
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(false);
 
-    // ✅ Initialize
+    // ✅ INIT + PREFILL
     useEffect(() => {
-        if (fullDataOfStep?.questions) {
-            const initial = {};
-            fullDataOfStep.questions.forEach((q) => {
-                initial[q.id] =
-                    q.type === 'Multiple Select' ? [] : '';
-            });
-            setAnswers(initial);
-        }
-    }, [fullDataOfStep]);
+        if (!fullDataOfStep?.questions) return;
+
+        const initial = {};
+
+        fullDataOfStep.questions.forEach((q) => {
+            const existing = resumeAnswers?.find(
+                (r) => r.questionId === q.id
+            );
+
+            if (q.type === 'Multiple Select') {
+                initial[q.id] = existing?.answer || [];
+            } else {
+                initial[q.id] = existing?.answer || '';
+            }
+        });
+
+        setAnswers(initial);
+    }, [fullDataOfStep, resumeAnswers]);
 
     // INPUT
     const handleInput = (id, value) => {
@@ -64,18 +78,18 @@ const Step6Identification = ({ onNext }) => {
                     ...prev,
                     [id]: current.filter((v) => v !== value),
                 };
-            } else {
-                if (current.length >= MAX_SELECTION) return prev;
-
-                return {
-                    ...prev,
-                    [id]: [...current, value],
-                };
             }
+
+            if (current.length >= MAX_SELECTION) return prev;
+
+            return {
+                ...prev,
+                [id]: [...current, value],
+            };
         });
     };
 
-    // ✅ Convert format
+    // FORMAT API
     const formatAnswers = () => {
         return Object.entries(answers).map(([questionId, answer]) => ({
             questionId,
@@ -83,7 +97,7 @@ const Step6Identification = ({ onNext }) => {
         }));
     };
 
-    // ✅ Submit API
+    // SUBMIT
     const handleSave = async () => {
         const allAnswered = Object.values(answers).every((val) =>
             Array.isArray(val) ? val.length > 0 : val !== ''
@@ -105,22 +119,19 @@ const Step6Identification = ({ onNext }) => {
             const res = await answerTheQuestions(payload).unwrap();
 
             if (res?.code === 200) {
-                toast.success(res?.message);
-                onNext();
+                toast.success('Saved successfully ✅');
+                onNext?.();
             } else {
                 toast.error(res?.message);
             }
         } catch (err) {
-            console.error(err);
             toast.error(err?.data?.message || 'Submit failed');
         } finally {
             setLoading(false);
         }
     };
 
-    if (isLoading) {
-        return <IsLoading row={10} />;
-    }
+    if (isLoading) return <IsLoading row={10} />;
 
     return (
         <div className="space-y-10">
@@ -154,7 +165,6 @@ const Step6Identification = ({ onNext }) => {
                         {/* TEXT INPUT */}
                         {q.type === 'Text Input' && (
                             <input
-                                type="text"
                                 value={value || ''}
                                 onChange={(e) =>
                                     handleInput(q.id, e.target.value)
@@ -184,10 +194,10 @@ const Step6Identification = ({ onNext }) => {
                                     return (
                                         <button
                                             key={opt.sl}
+                                            type="button"
                                             onClick={() =>
                                                 handleSelect(q.id, opt.details)
                                             }
-                                            type="button"
                                             className={`p-4 border rounded-lg text-left
                                                 ${isActive
                                                     ? 'border-[#2b124f] bg-[#2b124f]/5'
@@ -209,20 +219,22 @@ const Step6Identification = ({ onNext }) => {
                                         const list = value || [];
                                         const isActive = list.includes(opt.details);
                                         const isDisabled =
-                                            !isActive && list.length >= MAX_SELECTION;
+                                            !isActive &&
+                                            list.length >= MAX_SELECTION;
 
                                         return (
                                             <button
                                                 key={opt.sl}
+                                                type="button"
                                                 onClick={() =>
                                                     toggleMulti(q.id, opt.details)
                                                 }
                                                 disabled={isDisabled}
-                                                type="button"
                                                 className={`p-4 border rounded-lg text-left
                                                     ${isActive
                                                         ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                                        : 'border-gray-300'}
+                                                        : 'border-gray-300'
+                                                    }
                                                     ${isDisabled ? 'opacity-50' : ''}
                                                 `}
                                             >
@@ -246,11 +258,9 @@ const Step6Identification = ({ onNext }) => {
             <button
                 onClick={handleSave}
                 disabled={loading || isLoadingAnswer}
-                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg"
+                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
             >
-                {loading || isLoadingAnswer
-                    ? 'Saving...'
-                    : 'Save & Continue'}
+                {loading ? 'Saving...' : 'Save & Continue'}
             </button>
         </div>
     );
