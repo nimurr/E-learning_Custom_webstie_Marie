@@ -9,13 +9,23 @@ const allQuestion = apiSlice.injectEndpoints({
             }),
         }),
         getAllQuestionCategoryPaid: builder.query({
-            query: ({id}) => ({
+            query: ({ id }) => ({
                 url: `/question-system/student/questionary/${id}`,
                 method: "GET",
             }),
         }),
-        
+        answerTheQuestions: builder.mutation({
+            query: ({ data, questionaryId }) => ({
+                url: `/student/questionary/${questionaryId}/answers`,
+                method: "POST",
+                body: data,
+            }),
+        }),
     }),
 });
 
-export const { useGetAllQuestionCategoryQuery , useGetAllQuestionCategoryPaidQuery} = allQuestion;
+export const {
+    useGetAllQuestionCategoryQuery,
+    useGetAllQuestionCategoryPaidQuery,
+    useAnswerTheQuestionsMutation
+} = allQuestion;

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Step1Identification from '@/Components/Students/All/Questions/Step1Identification';
 import Step2Identification from '@/Components/Students/All/Questions/Step2Identification';
@@ -8,7 +8,7 @@ import Step4Identification from '@/Components/Students/All/Questions/Step4Identi
 import Step5Identification from '@/Components/Students/All/Questions/Step5Identification';
 import Step6Identification from '@/Components/Students/All/Questions/Step6Identification';
 import Step7Identification from '@/Components/Students/All/Questions/Step7Identification';
-import { useGetAllQuestionCategoryQuery } from '@/redux/fetures/allQuestion/allQuestion';
+import { useAnswerTheQuestionsMutation, useGetAllQuestionCategoryQuery } from '@/redux/fetures/allQuestion/allQuestion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -33,6 +33,7 @@ const Page = () => {
 
     const { data: questionsCategory, isLoading } = useGetAllQuestionCategoryQuery();
     const apiCategories = questionsCategory?.data || [];
+   
 
     // Merge API titles with fixed components by index
     const steps = stepComponents.map((component, index) => ({
@@ -56,6 +57,9 @@ const Page = () => {
             router.push(`/students/all-questions?StepId=${nextStepId}`);
         }
     };
+    useEffect(() => {
+        router.push(`/students/all-questions?StepId=${steps[0].id}`);
+    }, [])
 
     return (
         <div className="relative min-h-screen lg:p-10 p-5 z-0">
