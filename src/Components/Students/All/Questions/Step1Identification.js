@@ -1,108 +1,14 @@
-// 'use client';
-// import IsLoading from '@/Components/IsLoading';
-// import { useAnswerTheQuestionsMutation, useGetAllQuestionCategoryPaidQuery } from '@/redux/fetures/allQuestion/allQuestion';
-// import { useSearchParams } from 'next/navigation';
-// import React, { useState } from 'react';
-
-// const Step1Identification = ({ onNext }) => {
-//     // StepId get in search params
-//     const searchParams = useSearchParams();
-//     const stepId = searchParams.get('StepId');
-//     console.log(stepId)
-//     const { data: step, isLoading } = useGetAllQuestionCategoryPaidQuery({ id: stepId });
-//     const fullDataOfStep = step?.data;
-//     console.log(fullDataOfStep)
-
-//      const [answerTheQuestions, { isLoading: isLoadingAnswer }] = useAnswerTheQuestionsMutation();
-
-
-//     const [name, setName] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [loading, setLoading] = useState(false);
-
-//     const handleSave = async () => {
-//         setLoading(true);
-
-//         const payload = {
-//             name,
-//             email,
-//         };
-
-//         try {
-//             // 🔥 save only this step
-//             console.log('Saving Step 1', payload);
-//             // await api.post('/steps/1', payload);
-
-//             onNext(); // 🚀 go next AFTER save
-//         } catch (error) {
-//             console.error(error);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-
-//     if (isLoading) {
-//         return <IsLoading row={10} />
-//     }
-
-//     return (
-//         <div>
-//             <h2 className="text-xl font-semibold mb-3">
-//                 {fullDataOfStep?.questionary?.title}
-//             </h2>
-//             <h2 className="text-sm text-gray-400 mb-6">
-//                 {fullDataOfStep?.questionary?.brief}
-//             </h2>
-
-//             {
-//                 fullDataOfStep?.questions.map((question, index) => (
-//                     <div key={index} className="mb-6">
-//                         <label className="block font-semibold mb-2">
-//                             {question?.title}
-//                         </label>
-//                         <input
-//                             type="text"
-//                             value={question.answer}
-//                             placeholder={question?.helperText}
-//                             onChange={(e) => {
-//                                 const updatedQuestions = fullDataOfStep.questionary.questions.map((q, i) =>
-//                                     i === index ? { ...q, answer: e.target.value } : q
-//                                 );
-//                                 console.log(updatedQuestions);
-//                             }}
-//                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500"
-//                         />
-//                     </div>
-//                 ))
-//             }
-
-
-//             {/* SAVE & NEXT */}
-//             <button
-//                 onClick={handleSave}
-//                 disabled={loading}
-//                 className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
-//             >
-//                 {loading ? 'Saving...' : 'Save & Continue'}
-//             </button>
-//         </div>
-//     );
-// };
-
-// export default Step1Identification;
-
-
-
 'use client';
 
 import IsLoading from '@/Components/IsLoading';
 import {
     useAnswerTheQuestionsMutation,
-    useGetAllQuestionCategoryPaidQuery
+    useGetAllQuestionCategoryPaidQuery,
+    useGetresumeQuestionAnswerQuery
 } from '@/redux/fetures/allQuestion/allQuestion';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Step1Identification = ({ onNext }) => {
     const searchParams = useSearchParams();
@@ -111,7 +17,11 @@ const Step1Identification = ({ onNext }) => {
     const { data: step, isLoading } =
         useGetAllQuestionCategoryPaidQuery({ id: stepId });
 
+    const { data: resume } =
+        useGetresumeQuestionAnswerQuery({ questionaryId: stepId });
+
     const fullDataOfStep = step?.data;
+    const fullDataOfResume = resume?.data?.answers;
 
     const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
         useAnswerTheQuestionsMutation();
@@ -119,41 +29,54 @@ const Step1Identification = ({ onNext }) => {
     const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // ✅ Initialize answers
+    // ✅ INIT + PREFILL LOGIC
     useEffect(() => {
-        if (fullDataOfStep?.questions) {
-            const initialAnswers = fullDataOfStep.questions.map((q) => ({
-                questionId: q._id,
-                answer: '',
-            }));
-            setAnswers(initialAnswers);
-        }
-    }, [fullDataOfStep]);
+        if (!fullDataOfStep?.questions) return;
 
-    // ✅ Handle input change
+        // 🔥 convert resume array → map
+        const answerMap = {};
+
+        fullDataOfResume?.forEach((item) => {
+            answerMap[item.questionId] = item.answer;
+        });
+
+        // 🔥 merge with questions
+        const initialAnswers = fullDataOfStep.questions.map((q) => ({
+            questionId: q.id,
+            answer: answerMap[q.id] || '',
+        }));
+
+        setAnswers(initialAnswers);
+    }, [fullDataOfStep, fullDataOfResume]);
+
+    // ✅ INPUT CHANGE
     const handleChange = (index, value) => {
         const updated = [...answers];
         updated[index].answer = value;
         setAnswers(updated);
     };
 
-    // ✅ Submit API
+    // ✅ SUBMIT
     const handleSave = async () => {
         setLoading(true);
 
         try {
             const payload = {
-                questionaryId: fullDataOfStep?.questionary?._id,
-                answers: answers,
+                data: { answers },
+                questionaryId: fullDataOfStep?.questionary?.id,
             };
 
-            console.log('Submitting:', payload);
+            const res = await answerTheQuestions(payload).unwrap();
 
-            await answerTheQuestions(payload).unwrap();
-
-            onNext(); // go next step
+            if (res?.code === 200) {
+                toast.success(res?.message);
+                onNext();
+            } else {
+                toast.error(res?.message);
+            }
         } catch (error) {
             console.error('Submit error:', error);
+            toast.error(error?.data?.message || 'Submit failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -165,6 +88,7 @@ const Step1Identification = ({ onNext }) => {
 
     return (
         <div>
+            {/* TITLE */}
             <h2 className="text-xl font-semibold mb-3">
                 {fullDataOfStep?.questionary?.title}
             </h2>
@@ -173,8 +97,9 @@ const Step1Identification = ({ onNext }) => {
                 {fullDataOfStep?.questionary?.brief}
             </p>
 
+            {/* QUESTIONS */}
             {fullDataOfStep?.questions?.map((question, index) => (
-                <div key={question._id} className="mb-6">
+                <div key={question.id} className="mb-6">
                     <label className="block font-semibold mb-2">
                         {question?.title}
                     </label>
@@ -197,9 +122,7 @@ const Step1Identification = ({ onNext }) => {
                 disabled={loading || isLoadingAnswer}
                 className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
             >
-                {loading || isLoadingAnswer
-                    ? 'Saving...'
-                    : 'Save & Continue'}
+                {loading || isLoadingAnswer ? 'Saving...' : 'Save & Continue'}
             </button>
         </div>
     );

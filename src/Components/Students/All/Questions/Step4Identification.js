@@ -1,15 +1,25 @@
 'use client';
+
 import IsLoading from '@/Components/IsLoading';
-import { useGetAllQuestionCategoryPaidQuery } from '@/redux/fetures/allQuestion/allQuestion';
+import {
+    useAnswerTheQuestionsMutation,
+    useGetAllQuestionCategoryPaidQuery
+} from '@/redux/fetures/allQuestion/allQuestion';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Step4Identification = ({ onNext }) => {
     const searchParams = useSearchParams();
     const stepId = searchParams.get('StepId');
 
-    const { data: step , isLoading} = useGetAllQuestionCategoryPaidQuery({ id: stepId });
+    const { data: step, isLoading } =
+        useGetAllQuestionCategoryPaidQuery({ id: stepId });
+
     const fullDataOfStep = step?.data;
+
+    const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
+        useAnswerTheQuestionsMutation();
 
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(false);
@@ -25,7 +35,7 @@ const Step4Identification = ({ onNext }) => {
         }
     }, [fullDataOfStep]);
 
-    // TEXT / TEXTAREA
+    // ✅ INPUT
     const handleInput = (id, value) => {
         setAnswers((prev) => ({
             ...prev,
@@ -33,7 +43,7 @@ const Step4Identification = ({ onNext }) => {
         }));
     };
 
-    // SINGLE SELECT
+    // ✅ SELECT
     const handleSelect = (id, value) => {
         setAnswers((prev) => ({
             ...prev,
@@ -41,31 +51,49 @@ const Step4Identification = ({ onNext }) => {
         }));
     };
 
+    // ✅ Convert to API format
+    const formatAnswers = () => {
+        return Object.entries(answers).map(([questionId, answer]) => ({
+            questionId,
+            answer,
+        }));
+    };
+
+    // ✅ Submit API
     const handleSave = async () => {
         const allAnswered = Object.values(answers).every(v => v !== '');
-        if (!allAnswered) return;
+
+        if (!allAnswered) {
+            toast.error('Please answer all questions');
+            return;
+        }
 
         setLoading(true);
 
-        const payload = {
-            stepId,
-            answers,
-        };
-
         try {
-            console.log('Saving Step 4', payload);
-            // await api.post('/steps/4', payload);
+            const payload = {
+                data: { answers: formatAnswers() },
+                questionaryId: fullDataOfStep?.questionary?.id,
+            };
 
-            onNext();
+            const res = await answerTheQuestions(payload).unwrap();
+
+            if (res?.code === 200) {
+                toast.success(res?.message);
+                onNext();
+            } else {
+                toast.error(res?.message);
+            }
         } catch (err) {
             console.error(err);
+            toast.error(err?.data?.message || 'Submit failed');
         } finally {
             setLoading(false);
         }
     };
 
     if (isLoading) {
-        return <IsLoading row={10} />
+        return <IsLoading row={10} />;
     }
 
     return (
@@ -140,19 +168,16 @@ const Step4Identification = ({ onNext }) => {
                 );
             })}
 
-            {/* SAVE */}
+            {/* BUTTON */}
             <button
                 onClick={handleSave}
-                disabled={
-                    !fullDataOfStep?.questions ||
-                    Object.values(answers).some(v => v === '') ||
-                    loading
-                }
+                disabled={loading || isLoadingAnswer}
                 className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
             >
-                {loading ? 'Saving...' : 'Save & Continue'}
+                {loading || isLoadingAnswer
+                    ? 'Saving...'
+                    : 'Save & Continue'}
             </button>
-
         </div>
     );
 };

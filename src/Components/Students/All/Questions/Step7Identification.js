@@ -1,8 +1,13 @@
 'use client';
+
 import IsLoading from '@/Components/IsLoading';
-import { useGetAllQuestionCategoryPaidQuery } from '@/redux/fetures/allQuestion/allQuestion';
-import { useSearchParams } from 'next/navigation';
+import {
+    useAnswerTheQuestionsMutation,
+    useGetAllQuestionCategoryPaidQuery
+} from '@/redux/fetures/allQuestion/allQuestion';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const MAX_SELECTION = 4;
 
@@ -10,54 +15,56 @@ const Step7Identification = ({ onNext }) => {
     const searchParams = useSearchParams();
     const stepId = searchParams.get('StepId');
 
-    const { data: step, isLoading } = useGetAllQuestionCategoryPaidQuery({ id: stepId });
+    const { data: step, isLoading } =
+        useGetAllQuestionCategoryPaidQuery({ id: stepId });
+
     const fullDataOfStep = step?.data;
+
+    const [answerTheQuestions, { isLoading: isLoadingAnswer }] =
+        useAnswerTheQuestionsMutation();
 
     const [answers, setAnswers] = useState({});
     const [loading, setLoading] = useState(false);
 
-    // ✅ init dynamic state
+    // ✅ init
     useEffect(() => {
         if (!fullDataOfStep?.questions) return;
 
         const initial = {};
 
         fullDataOfStep.questions.forEach((q) => {
-            if (q.type === 'Multiple Select') {
-                initial[q.id] = [];
-            } else {
-                initial[q.id] = '';
-            }
+            initial[q.id] =
+                q.type === 'Multiple Select' ? [] : '';
         });
 
         setAnswers(initial);
     }, [fullDataOfStep]);
 
-    // TEXT / TEXTAREA
+    // INPUT
     const handleInput = (id, value) => {
-        setAnswers(prev => ({
+        setAnswers((prev) => ({
             ...prev,
             [id]: value,
         }));
     };
 
-    // SINGLE SELECT
+    // SINGLE
     const handleSingle = (id, value) => {
-        setAnswers(prev => ({
+        setAnswers((prev) => ({
             ...prev,
             [id]: value,
         }));
     };
 
-    // MULTI SELECT
+    // MULTI
     const toggleMulti = (id, value) => {
-        setAnswers(prev => {
+        setAnswers((prev) => {
             const current = prev[id] || [];
 
             if (current.includes(value)) {
                 return {
                     ...prev,
-                    [id]: current.filter(v => v !== value),
+                    [id]: current.filter((v) => v !== value),
                 };
             }
 
@@ -70,35 +77,53 @@ const Step7Identification = ({ onNext }) => {
         });
     };
 
+    // ✅ format
+    const formatAnswers = () => {
+        return Object.entries(answers).map(([questionId, answer]) => ({
+            questionId,
+            answer,
+        }));
+    };
+    const router = useRouter();
+
+    // ✅ submit
     const handleSave = async () => {
-        const allFilled = Object.values(answers).every(v =>
-            Array.isArray(v) ? v.length > 0 : v.trim?.() !== ''
+        const allFilled = Object.values(answers).every((v) =>
+            Array.isArray(v) ? v.length > 0 : v.trim() !== ''
         );
 
-        if (!allFilled) return;
+        if (!allFilled) {
+            toast.error('Please answer all questions');
+            return;
+        }
 
         setLoading(true);
 
-        const payload = {
-            stepId,
-            answers,
-        };
-
         try {
-            console.log('Saving Step 7 (Skills)', payload);
+            const payload = {
+                data: { answers: formatAnswers() },
+                questionaryId: fullDataOfStep?.questionary?.id,
+            };
 
-            // await api.post('/steps/7', payload);
+            const res = await answerTheQuestions(payload).unwrap();
 
-            onNext();
+            if (res?.code === 200) {
+                toast.success(res?.message);
+                onNext();
+                router.push('/students/question-summary');
+            } else {
+                toast.error(res?.message);
+            }
         } catch (err) {
             console.error(err);
+            toast.error(err?.data?.message || 'Submit failed');
         } finally {
             setLoading(false);
         }
     };
 
     if (isLoading) {
-        return <IsLoading row={10} />
+        return <IsLoading row={10} />;
     }
 
     return (
@@ -130,15 +155,14 @@ const Step7Identification = ({ onNext }) => {
                             )}
                         </div>
 
-                        {/* TEXT INPUT */}
+                        {/* TEXT */}
                         {q.type === 'Text Input' && (
                             <input
                                 value={value || ''}
                                 onChange={(e) =>
                                     handleInput(q.id, e.target.value)
                                 }
-                                placeholder={q.helperText}
-                                className="w-full border rounded-lg px-3 py-2"
+                                className="w-full border px-3 py-2 rounded-lg"
                             />
                         )}
 
@@ -150,15 +174,14 @@ const Step7Identification = ({ onNext }) => {
                                 onChange={(e) =>
                                     handleInput(q.id, e.target.value)
                                 }
-                                placeholder={q.helperText}
-                                className="w-full border rounded-lg px-3 py-2"
+                                className="w-full border px-3 py-2 rounded-lg"
                             />
                         )}
 
-                        {/* SINGLE SELECT */}
+                        {/* SINGLE */}
                         {q.type === 'Single Select' && (
                             <div className="grid sm:grid-cols-2 gap-4">
-                                {q.options.map(opt => {
+                                {q.options.map((opt) => {
                                     const isActive = value === opt.details;
 
                                     return (
@@ -168,11 +191,11 @@ const Step7Identification = ({ onNext }) => {
                                             onClick={() =>
                                                 handleSingle(q.id, opt.details)
                                             }
-                                            className={`p-4 border rounded-lg text-left
+                                            className={`p-4 border rounded-lg
                                                 ${isActive
                                                     ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                                    : 'border-gray-300'
-                                                }`}
+                                                    : 'border-gray-300'}
+                                            `}
                                         >
                                             {opt.details}
                                         </button>
@@ -181,11 +204,11 @@ const Step7Identification = ({ onNext }) => {
                             </div>
                         )}
 
-                        {/* MULTIPLE SELECT */}
+                        {/* MULTI */}
                         {q.type === 'Multiple Select' && (
                             <>
                                 <div className="grid sm:grid-cols-2 gap-4">
-                                    {q.options.map(opt => {
+                                    {q.options.map((opt) => {
                                         const selected = value || [];
                                         const isActive = selected.includes(opt.details);
                                         const isDisabled =
@@ -200,11 +223,10 @@ const Step7Identification = ({ onNext }) => {
                                                 onClick={() =>
                                                     toggleMulti(q.id, opt.details)
                                                 }
-                                                className={`p-4 border rounded-lg text-left
+                                                className={`p-4 border rounded-lg
                                                     ${isActive
                                                         ? 'border-[#2b124f] bg-[#2b124f]/5'
-                                                        : 'border-gray-300'
-                                                    }
+                                                        : 'border-gray-300'}
                                                     ${isDisabled ? 'opacity-50' : ''}
                                                 `}
                                             >
@@ -224,18 +246,15 @@ const Step7Identification = ({ onNext }) => {
                 );
             })}
 
-            {/* SAVE */}
+            {/* BUTTON */}
             <button
                 onClick={handleSave}
-                disabled={
-                    loading ||
-                    Object.values(answers).some(v =>
-                        Array.isArray(v) ? v.length === 0 : !v
-                    )
-                }
-                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg disabled:opacity-50"
+                disabled={loading || isLoadingAnswer}
+                className="px-8 py-3 bg-[#2b124f] text-white rounded-lg"
             >
-                {loading ? 'Saving...' : 'Continue'}
+                {loading || isLoadingAnswer
+                    ? 'Saving...'
+                    : 'Continue'}
             </button>
         </div>
     );

@@ -16,16 +16,23 @@ const allQuestion = apiSlice.injectEndpoints({
         }),
         answerTheQuestions: builder.mutation({
             query: ({ data, questionaryId }) => ({
-                url: `/student/questionary/${questionaryId}/answers`,
+                url: `/question-system/student/questionary/${questionaryId}/answers`,
                 method: "POST",
                 body: data,
             }),
         }),
+        getresumeQuestionAnswer: builder.query({
+            query: ({ questionaryId }) => ({
+                url: `/question-system/student/questionary/${questionaryId}`,
+                method: "GET",
+            }),
+        })
     }),
 });
 
 export const {
     useGetAllQuestionCategoryQuery,
     useGetAllQuestionCategoryPaidQuery,
-    useAnswerTheQuestionsMutation
+    useAnswerTheQuestionsMutation,
+    useGetresumeQuestionAnswerQuery
 } = allQuestion;
