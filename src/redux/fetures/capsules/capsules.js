@@ -2,13 +2,19 @@ import { apiSlice } from "../../api/apiSlice";
 
 const capsules = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAllCapsules: builder.query({
+        getAllCapsulesCategory: builder.query({
             query: () => ({
-                url: `/capsules`,
+                url: `/student-dashboard/capsule-categories?page=1&limit=10`,
+                method: "GET",
+            }),
+        }),
+        getAllCapsulesbyId: builder.query({
+            query: ({categoryId}) => ({
+                url: `/student-dashboard/capsules?categoryId=${categoryId}&rating=4&page=1&limit=10`,
                 method: "GET",
             }),
         }),
     }),
 });
 
-export const { useGetAllCapsulesQuery } = capsules;
+export const { useGetAllCapsulesCategoryQuery, useGetAllCapsulesbyIdQuery } = capsules;

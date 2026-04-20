@@ -1,27 +1,32 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
-
-const categories = [
-    { title: 'Web Development & Design', icon: '💻' },
-    { title: 'Product Management', icon: '📊' },
-    { title: 'Business & Marketing', icon: '💼' },
-    { title: 'Creatives', icon: '🎨' },
-    { title: 'Data Engineering', icon: '📈' },
-    { title: 'Product Management', icon: '📦' },
-    { title: 'Business & Marketing', icon: '💡' },
-    { title: 'Creatives', icon: '🧠' },
-    { title: 'Web Development', icon: '⚙️' },
-];
+import { useGetAllCapsulesCategoryQuery, } from '@/redux/fetures/capsules/capsules';
 
 const CategoryCarosal = () => {
 
+    const { data, isLoading } = useGetAllCapsulesCategoryQuery();
+
+    console.log(data)
+
+    useEffect(() => {
+        // set id in serarch perams for get all capsules first category
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set('category', data?.data[0]?._id);
+        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+
+    }, [data]);
     
+    if (isLoading) {
+        return <p className="text-center py-5">Loading...</p>;
+    }
+
 
     return (
         <div className="relative w-full py-4 my-5">
@@ -37,13 +42,24 @@ const CategoryCarosal = () => {
                 }}
                 className="!px-10"
             >
-                {categories.map((item, index) => (
-                    <SwiperSlide key={index}>
+                {data?.data?.map((item) => (
+                    <SwiperSlide key={item._id}>
                         <div className="flex items-center justify-center gap-2 overflow-hidden px-4 py-2 border rounded-full bg-white shadow-sm hover:shadow-md transition cursor-pointer whitespace-nowrap">
-                            <span className="text-lg">{item.icon}</span>
+
+                            {/* Thumbnail */}
+                            <img
+                                src={item.thumbnail}
+                                alt={item.title}
+                                className="w-6 h-6 rounded-full object-cover"
+                            />
+
+                            {/* Title */}
                             <span className="text-sm font-medium text-gray-700">
-                                {item.title.length > 20 ? item.title.slice(0, 20) + '...' : item.title}
+                                {item.title.length > 20
+                                    ? item.title.slice(0, 20) + '...'
+                                    : item.title}
                             </span>
+
                         </div>
                     </SwiperSlide>
                 ))}

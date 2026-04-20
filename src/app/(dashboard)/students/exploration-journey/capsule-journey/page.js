@@ -1,3 +1,5 @@
+
+'use client';
 import Link from "next/link";
 import React from "react";
 
@@ -8,8 +10,13 @@ const capsules = new Array(6).fill({
 });
 
 const Page = () => {
+
+    const handleUnlockCapsule = () => {
+        alert("Unlocking the full expedition for $150! 🚀");
+    }
+
     return (
-        <Link href="/students/exploration-journey/single-capsul-item" className="min-h-screen bg-gray-100 flex justify-center py-10 px-4">
+        <div className="min-h-screen bg-gray-100 flex justify-center py-10 px-4">
             <div className="w-full max-w-5xl bg-white rounded-2xl shadow-sm p-8">
 
                 {/* Header */}
@@ -19,11 +26,11 @@ const Page = () => {
                 <div className="flex items-center justify-between flex-wrap gap-5 mb-10">
                     <div>
                         <p className="text-sm text-gray-500 mt-2 tracking-wide flex items-center gap-2">
-                          <span className="h-3 w-3 rounded-full bg-primary inline-block"></span>  DISCOVER YOUR VALUES, UNLOCK YOUR STRENGTHS, AND CHART YOUR PROFESSIONAL DESTINY
+                            <span className="h-3 w-3 rounded-full bg-primary inline-block"></span>  DISCOVER YOUR VALUES, UNLOCK YOUR STRENGTHS, AND CHART YOUR PROFESSIONAL DESTINY
                         </p>
                     </div>
 
-                    <button className="bg-primary hover:bg-indigo-800 text-white text-sm font-medium px-5 py-3 rounded-lg shadow">
+                    <button onClick={handleUnlockCapsule} className="bg-primary hover:bg-indigo-800 text-white text-sm font-medium px-5 py-3 rounded-lg shadow">
                         Unlock Full Expedition - $150
                     </button>
                 </div>
@@ -46,13 +53,13 @@ const Page = () => {
                                 </div>
 
                                 {/* Card */}
-                                <div className="flex-1 border border-indigo-200 rounded-xl p-6 bg-gray-50 hover:shadow-md transition">
+                                <Link href={`/students/exploration-journey/${index}`} className="flex-1 border border-indigo-200 rounded-xl p-6 bg-gray-50 hover:shadow-md transition">
 
                                     <div className="flex justify-between items-start">
 
                                         <div>
                                             <p className="text-sm text-primary font-medium mb-1">
-                                                Capsule 01
+                                                Capsule {index + 1}
                                             </p>
                                             <h3 className="text-lg font-semibold text-gray-800">
                                                 {capsule.title}
@@ -72,14 +79,14 @@ const Page = () => {
                                         </div>
 
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         ))}
                     </div>
                 </div>
 
             </div>
-        </Link>
+        </div>
     );
 };
 
