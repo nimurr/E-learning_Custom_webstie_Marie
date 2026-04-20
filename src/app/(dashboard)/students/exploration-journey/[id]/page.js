@@ -1,44 +1,36 @@
+'use client';
+
+import { useGetJourneyDetailsQuery } from "@/redux/fetures/capsules/capsules";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
-const roadmap = [
-  {
-    title: "Founder's Welcome",
-    desc: "A video introduction to the Stellar methodology and the path ahead.",
-    time: "45 Mins",
-  },
-  {
-    title: "Inspiration: Stellar Videos",
-    desc: "Curated deep-dives into the neurobiology of Happiness & Purpose.",
-    time: "45 Mins",
-  },
-  {
-    title: "Internal Diagnostics",
-    desc: "5 core introspective questions to map your psychological landscape.",
-    time: "— — — —",
-  },
-  {
-    title: "Practical Exercise",
-    desc: "Draft your Propulsion Fuel Statement — the draft of your career mission.",
-    time: "— — — —",
-  },
-  {
-    title: "The Science of Meaning",
-    desc: "Concluding framework on the psychology pillars that sustain fulfillment.",
-    time: "— — — —",
-  },
-];
-
 const Page = () => {
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const { data: capsuleJourney, isLoading } =
+    useGetJourneyDetailsQuery(
+      { journeyId: id },
+      { skip: !id }
+    );
+
+  const capsule = capsuleJourney?.data;
+
+  if (isLoading) {
+    return <p className="text-center py-5">Loading...</p>;
+  }
+
   return (
     <div className="min-h-screen bg-[#f4f5fb] px-6 py-10 flex justify-center">
       <div className="w-full max-w-6xl bg-white rounded-3xl shadow-sm p-10">
 
-        {/* Capsule Tag */}
+        {/* Capsule Tag (Dynamic) */}
         <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 text-sm px-3 py-1 rounded-full mb-4">
-          ⭐ Capsule 01
+          ⭐ Capsule {capsule?.capsuleNumber || "01"}
         </div>
 
-        {/* Header */}
+        {/* 🔥 KEEP STATIC CONTENT */}
         <h1 className="text-3xl font-bold text-indigo-900">
           Launch Base : Ignite Your Engines
         </h1>
@@ -51,8 +43,8 @@ const Page = () => {
         {/* Top Cards */}
         <div className="grid md:grid-cols-3 gap-6 mt-8">
 
-          {/* Mission Briefing */}
-          <div className="md:col-span-2 bg-gray-100 rounded-2xl p-6 shadow-sm border border-gray-200">
+          {/* 🔥 Static Mission Briefing */}
+          <div className="md:col-span-2 bg-gray-100 rounded-2xl p-6 border">
             <h2 className="text-xl font-semibold text-indigo-900 mb-4">
               Your Mission Briefing
             </h2>
@@ -77,8 +69,8 @@ const Page = () => {
             </div>
           </div>
 
-          {/* Mission Details */}
-          <div className="bg-gray-100 rounded-2xl p-6 shadow-sm border border-gray-200">
+          {/* ✅ Dynamic Mission Details */}
+          <div className="bg-gray-100 rounded-2xl p-6 border">
             <h2 className="text-xl font-semibold text-indigo-900 mb-6">
               Mission Details
             </h2>
@@ -86,80 +78,93 @@ const Page = () => {
             <div className="space-y-5 text-sm text-gray-600">
               <div className="flex justify-between">
                 <span>⏱ Estimated Time</span>
-                <span className="font-medium text-gray-800">45 Mins</span>
+                <span className="font-medium text-gray-800">
+                  {capsule?.estimatedTime || "45 Mins"}
+                </span>
               </div>
 
               <div className="flex justify-between">
                 <span>📚 Total Modules</span>
-                <span className="font-medium text-gray-800">6</span>
+                <span className="font-medium text-gray-800">
+                  {capsule?.totalModule || "0"}
+                </span>
               </div>
 
               <div className="flex justify-between">
-                <span>🤖 AI</span>
-                <span className="font-medium text-gray-800">Active</span>
+                <span>🎬 Intro Video</span>
+                <span className="font-medium text-gray-800">
+                  {capsule?.introduction?.estimatedTime || "--"}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Capsule Roadmap */}
+        {/* ✅ Dynamic Roadmap */}
         <div className="mt-12">
           <h2 className="text-2xl font-semibold text-indigo-900 mb-6">
             Capsule Roadmap
           </h2>
 
           <div className="relative">
-
-            {/* Vertical Line */}
             <div className="absolute left-4 top-0 bottom-0 w-px bg-indigo-200"></div>
 
             <div className="space-y-4">
-              {roadmap.map((item, index) => (
-                <div key={index} className="relative flex items-start  gap-6">
 
-                  {/* Icon */}
+              {/* Intro */}
+              <div className="relative flex items-start gap-6">
+                <div className="relative z-10">
+                  <div className="w-8 h-8 bg-white border rounded-full flex items-center justify-center">
+                    ▶
+                  </div>
+                </div>
+
+                <div className="flex-1 bg-gray-100 border rounded-xl p-4 flex justify-between">
+                  <div>
+                    <h3 className="font-medium text-indigo-900">
+                      {capsule?.introduction?.title || "Introduction"}
+                    </h3>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {capsule?.introduction?.roadMapBrief}
+                    </p>
+                  </div>
+
+                  <div className="text-sm text-gray-500">
+                    {capsule?.introduction?.estimatedTime}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modules */}
+              {capsule?.modules?.map((mod, index) => (
+                <div key={index} className="relative flex items-start gap-6">
+
                   <div className="relative z-10">
-                    <div className="w-8 h-8 bg-white border border-indigo-300 rounded-full flex items-center justify-center text-indigo-600 text-sm shadow-sm">
-                      {index === 0 ? "▶" : "•"}
+                    <div className="w-8 h-8 bg-white border rounded-full flex items-center justify-center">
+                      •
                     </div>
                   </div>
 
-                  {/* Roadmap Card */}
-                  <div className="flex-1 bg-gray-100 border border-gray-200 rounded-xl p-4 shadow-sm flex justify-between items-center">
+                  <div className="flex-1 bg-gray-100 border rounded-xl p-4 flex justify-between">
                     <div>
                       <h3 className="font-medium text-indigo-900">
-                        {item.title}
+                        {mod.title}
                       </h3>
                       <p className="text-xs text-gray-500 mt-1">
-                        {item.desc}
+                        {mod.description}
                       </p>
                     </div>
 
-                    <div className="text-sm text-gray-500 whitespace-nowrap">
-                      {item.time}
+                    <div className="text-sm text-gray-500">
+                      {mod.time || "--"}
                     </div>
                   </div>
 
                 </div>
               ))}
+
             </div>
           </div>
-        </div>
-
-        {/* Bottom CTA Section */}
-        <div className="mt-16 bg-gray-100 border border-gray-200 rounded-2xl p-10 text-center shadow-sm">
-          <h2 className="text-2xl font-semibold text-indigo-900">
-            Ready To Initialize?
-          </h2>
-
-          <p className="text-gray-500 mt-3 text-sm">
-            Click below to enter the portal. Luna will start your Mission
-            Briefing immediately.
-          </p>
-
-          <button className="mt-6 bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-3 rounded-xl shadow transition">
-            Begin Journey ▼
-          </button>
         </div>
 
       </div>
