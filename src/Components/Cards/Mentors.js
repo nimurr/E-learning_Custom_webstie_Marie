@@ -6,8 +6,27 @@ import { FaRocket } from 'react-icons/fa6';
 import { CiLocationOn } from "react-icons/ci";
 import { HiLanguage } from "react-icons/hi2";
 import Link from 'next/link';
+import { useBookingMentorMutation } from '@/redux/fetures/Mentors/Mentors';
+import { toast } from 'react-toastify';
 
 const Mentors = ({ item }) => {
+
+    const [bookMentor] = useBookingMentorMutation();
+
+    const handleBooking = async (mentorId) => {
+        try {
+            const res = await bookMentor({ mentorId });
+            console.log(res?.data)
+            if (res?.data?.code === 200) {
+                toast.success(res?.data?.message);
+                window.open(res?.data?.data?.url, '_blank');
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message || 'Failed to book mentor. Please try again later.');
+        }
+    }
+
     return (
         <div className="relative overflow-hidden rounded-3xl text-white h-[260px]">
 
@@ -78,7 +97,7 @@ const Mentors = ({ item }) => {
                             View Details
                         </Link>
 
-                        <button className="flex w-full text-sm items-center justify-center gap-2 border bg-white text-[#15153a] px-3 py-3 rounded-xl hover:bg-gray-200 transition">
+                        <button onClick={() => handleBooking(item?.mentorId)} className="flex w-full text-sm items-center justify-center gap-2 border bg-white text-[#15153a] px-3 py-3 rounded-xl hover:bg-gray-200 transition">
                             <FaRocket />
                             Book Session
                         </button>

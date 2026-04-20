@@ -2,12 +2,12 @@
 
 import React from 'react';
 import RecommendedMentorsCard from './RecommendedMentorsCard';
-import { useGetAllRecommendedMentorsQuery } from '@/redux/fetures/Mentors/Mentors';
+import {  useGetAllRecommendedMentorsQuery } from '@/redux/fetures/Mentors/Mentors';
 import IsLoading from '@/Components/IsLoading';
 
 const RecommendedMentors = () => {
     const { data, isLoading, isError } = useGetAllRecommendedMentorsQuery();
-
+   
     const mentors = data?.data || [];
 
     if (isLoading) {
@@ -35,6 +35,7 @@ const RecommendedMentors = () => {
                         <RecommendedMentorsCard
                             key={mentor.mentorId}
                             mentor={mentor}
+                            
                         />
                     ))
                 ) : (

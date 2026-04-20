@@ -58,11 +58,11 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
         setShowLogoutModal(false);
 
         // 🔴 Clear auth data here
-        // localStorage.removeItem('token');
-        // localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         toast.success('Logout successful');
 
-        // router.push('/login');
+        router.push('/login');
     };
 
     return (

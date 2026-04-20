@@ -20,6 +20,9 @@ const categories = [
 ];
 
 const CategoryCarosal = () => {
+
+    
+
     return (
         <div className="relative w-full py-4 my-5">
             <Swiper

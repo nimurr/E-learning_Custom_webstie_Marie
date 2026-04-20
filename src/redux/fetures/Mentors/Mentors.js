@@ -8,13 +8,23 @@ const mentors = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
-        getTopMentors : builder.query({
+        getTopMentors: builder.query({
             query: () => ({
                 url: `/student-dashboard/mentors?page=1&limit=6&type=top`,
                 method: "GET",
             }),
         }),
+        bookingMentor: builder.mutation({
+            query: ({ mentorId }) => ({
+                url: `/mentors/${mentorId}/book-session`,
+                method: "POST",
+            }),
+        }),
     }),
 });
 
-export const { useGetAllRecommendedMentorsQuery , useGetTopMentorsQuery } = mentors;
+export const { 
+    useGetAllRecommendedMentorsQuery, 
+    useGetTopMentorsQuery , 
+    useBookingMentorMutation 
+} = mentors;

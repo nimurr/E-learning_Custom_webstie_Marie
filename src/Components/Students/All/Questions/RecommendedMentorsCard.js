@@ -1,10 +1,30 @@
+import { useBookingMentorMutation } from '@/redux/fetures/Mentors/Mentors';
 import Link from 'next/link';
 import React from 'react';
 import { CiLocationOn } from "react-icons/ci";
 import { GrLanguage } from "react-icons/gr";
 import { HiLanguage } from "react-icons/hi2";
+import { toast } from 'react-toastify';
 
 const RecommendedMentorsCard = ({ mentor }) => {
+
+    const [bookMentor] = useBookingMentorMutation();
+
+    const handleBooking = async (mentorId) => {
+        try {
+            const res = await bookMentor({ mentorId });
+            console.log(res?.data)
+            if (res?.data?.code === 200) {
+                toast.success(res?.data?.message);
+                window.open(res?.data?.data?.url, '_blank');
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message || 'Failed to book mentor. Please try again later.');
+        }
+    }
+
+
     return (
         <div className="bg-white border rounded-lg p-6 space-y-4">
 
@@ -85,7 +105,7 @@ const RecommendedMentorsCard = ({ mentor }) => {
                     View Details
                 </Link>
 
-                <button className="flex-1 bg-primary text-white rounded-lg py-3">
+                <button onClick={() => handleBooking(mentor?.mentorId)} className="flex-1 bg-primary text-white rounded-lg py-3">
                     Book Session
                 </button>
 
