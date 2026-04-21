@@ -26,6 +26,12 @@ const Topmentors = () => {
                 Top Mentors
             </h2>
 
+
+            {!mentors?.length && (
+                <p className="text-center py-5 ">No mentors found</p>
+            )}
+
+
             <Swiper
                 slidesPerView={3}
                 spaceBetween={20}

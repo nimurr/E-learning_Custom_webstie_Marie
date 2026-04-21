@@ -14,6 +14,18 @@ const mentors = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        getBookMentors: builder.query({
+            query: () => ({
+                url: `/student-dashboard/mentors?page=1&limit=10&type=booked`,
+                method: "GET",
+            }),
+        }),
+        getRecommendedMentors: builder.query({
+            query: () => ({
+                url: `/student-dashboard/mentors?page=1&limit=10&type=recommended`,
+                method: "GET",
+            }),
+        }),
         bookingMentor: builder.mutation({
             query: ({ mentorId }) => ({
                 url: `/mentors/${mentorId}/book-session`,
@@ -23,8 +35,10 @@ const mentors = apiSlice.injectEndpoints({
     }),
 });
 
-export const { 
-    useGetAllRecommendedMentorsQuery, 
-    useGetTopMentorsQuery , 
-    useBookingMentorMutation 
+export const {
+    useGetAllRecommendedMentorsQuery,
+    useGetTopMentorsQuery,
+    useGetBookMentorsQuery,
+    useGetRecommendedMentorsQuery,
+    useBookingMentorMutation
 } = mentors;
