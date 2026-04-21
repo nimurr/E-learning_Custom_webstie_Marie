@@ -26,6 +26,12 @@ const mentors = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        getMentorDetails: builder.query({
+            query: (mentorId) => ({
+                url: `/mentors/${mentorId}`,
+                method: "GET",
+            }),
+        }),
         bookingMentor: builder.mutation({
             query: ({ mentorId }) => ({
                 url: `/mentors/${mentorId}/book-session`,
@@ -40,5 +46,6 @@ export const {
     useGetTopMentorsQuery,
     useGetBookMentorsQuery,
     useGetRecommendedMentorsQuery,
+    useGetMentorDetailsQuery,
     useBookingMentorMutation
 } = mentors;
