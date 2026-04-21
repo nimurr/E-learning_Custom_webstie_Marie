@@ -1,9 +1,12 @@
 'use client';
 
+import url from '@/redux/api/baseUrl';
+import { useGetMyMentorsQuery, useGetStudentMyProfileInfoQuery, useGetStudentProfileProgressQuery } from '@/redux/fetures/profile/profile';
 import React from 'react';
 
 // --- Circular Progress Component ---
-const CircularProgress = ({ percentage, label, sublabel, size = 120, stroke = 10 }) => {
+const CircularProgress = ({ percentage, sublabel, size = 120, stroke = 10 }) => {
+
     const radius = (size - stroke) / 2;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage / 100) * circumference;
@@ -34,16 +37,21 @@ const CircularProgress = ({ percentage, label, sublabel, size = 120, stroke = 10
                         strokeLinecap="round"
                     />
                 </svg>
+
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-xl font-bold text-gray-800 leading-tight">{percentage}%</span>
-                    <span className="text-xs text-gray-500 leading-tight">{sublabel}</span>
+                    <span className="text-xl font-bold text-gray-800 leading-tight">
+                        {percentage}%
+                    </span>
+                    <span className="text-xs text-gray-500 leading-tight">
+                        {sublabel}
+                    </span>
                 </div>
             </div>
         </div>
     );
 };
 
-// --- Mentor Card ---
+// --- Mentor Card (UNCHANGED) ---
 const MentorCard = ({ name, role, imgSrc }) => (
     <div className="flex items-center justify-between bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
@@ -65,7 +73,7 @@ const MentorCard = ({ name, role, imgSrc }) => (
     </div>
 );
 
-// --- Course Row ---
+// --- Course Row (UNCHANGED) ---
 const CourseRow = ({ title, date, imgSrc }) => (
     <div className="flex items-center justify-between bg-white border border-gray-100 rounded-2xl px-3 lg:px-5 py-2 lg:py-4 shadow-sm">
         <div className="flex items-center gap-4">
@@ -92,11 +100,21 @@ const CourseRow = ({ title, date, imgSrc }) => (
 
 // --- Main Page ---
 const Page = () => {
-    const mentors = [
-        { name: 'James Chan', role: 'Career Develop Coach' },
-        { name: 'James Chan', role: 'Sr. UI/UX Designer' },
-        { name: 'James Chan', role: 'Flutter Developer' },
-    ];
+
+    const { data, isLoading } = useGetStudentProfileProgressQuery();
+    const progress = data?.data;
+    const { data: MyMentors } = useGetMyMentorsQuery();
+    const mentorsData = MyMentors?.data?.mentors || [];
+
+    const { data: profileInfo } = useGetStudentMyProfileInfoQuery();
+    const profile = profileInfo?.data;
+    console.log(profile)
+
+    if (isLoading) {
+        return <p className="text-center py-5">Loading...</p>;
+    }
+
+
 
     const courses = [
         { title: 'Advanced Product Design Mentorship', date: 'Aug 10,2025' },
@@ -113,21 +131,21 @@ const Page = () => {
         >
             <div className="max-w-7xl mx-auto space-y-5">
 
-                {/* ── Profile Header ── */}
+                {/* Profile Header */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-5 flex items-center gap-5 shadow-sm">
                     <img
-                        src="https://randomuser.me/api/portraits/women/44.jpg"
+                        src={url + (profile?.profileImage?.imageUrl)}
                         alt="Maire Wagner"
                         className="w-20 h-20 rounded-full object-cover ring-4 ring-indigo-100"
                     />
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Maire Wagner</h1>
-                        <p className="text-sm text-gray-400 mt-0.5">Student • Marie@Gmail.Com</p>
+                        <h1 className="text-2xl font-bold text-gray-900">{profile?.name || 'Demo User'}</h1>
+                        <p className="text-sm text-gray-400 mt-0.5">{profile?.email || 'demo@example.com'}</p>
                     </div>
                 </div>
 
-                {/* ── Middle Row: Learning Progress + My Mentors ── */}
-                <div className="grid md:grid-cols-3  xl:grid-cols-5 gap-5">
+                {/* Middle Section */}
+                <div className="grid md:grid-cols-3 xl:grid-cols-5 gap-5">
 
                     {/* Learning Progress */}
                     <div className="lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
@@ -143,35 +161,59 @@ const Page = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
+
                             {/* Current Capsule */}
                             <div className="border border-gray-100 rounded-xl p-5 flex flex-col items-center gap-3">
-                                <p className="text-xs text-gray-500 font-medium">Current Capsule Progress</p>
-                                <CircularProgress percentage={75} sublabel="Complete" size={130} stroke={11} />
+                                <p className="text-xs text-gray-500 font-medium">
+                                    Current Capsule Progress
+                                </p>
+
+                                <CircularProgress
+                                    percentage={progress?.currentCapsuleProgress || 0}
+                                    sublabel={progress?.currentCapsuleName || "No Capsule"}
+                                    size={130}
+                                    stroke={11}
+                                />
                             </div>
 
-                            {/* Overall Expedition */}
+                            {/* Overall */}
                             <div className="border border-gray-100 rounded-xl p-5 flex flex-col items-center gap-3">
-                                <p className="text-xs text-gray-500 font-medium">Overall Expedition Progress</p>
-                                <CircularProgress percentage={32} sublabel="Capsule 03" size={130} stroke={11} />
+                                <p className="text-xs text-gray-500 font-medium">
+                                    Overall Expedition Progress
+                                </p>
+
+                                <CircularProgress
+                                    percentage={progress?.overallJourneyProgress || 0}
+                                    sublabel="Capsule Progress"
+                                    size={130}
+                                    stroke={11}
+                                />
                             </div>
+
                         </div>
                     </div>
 
-                    {/* My Mentors */}
+                    {/* Mentors */}
                     <div className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
                         <div className="flex items-center gap-2 mb-5">
                             <span className="text-lg">🧑‍🏫</span>
                             <h2 className="font-semibold text-gray-800">My Mentors</h2>
                         </div>
+
                         <div className="space-y-3">
-                            {mentors.map((mentor, i) => (
+                            {mentorsData?.map((mentor, i) => (
                                 <MentorCard key={i} name={mentor.name} role={mentor.role} />
                             ))}
+                            {
+                                mentorsData.length === 0 && (
+                                    <p className="text-center text-gray-500 py-5">No mentors assigned yet.</p>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
 
-                {/* ── Completed Courses ── */}
+                {/* Courses */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-5">
                         <span className="w-6 h-6 rounded-full bg-indigo-900 flex items-center justify-center">

@@ -3,16 +3,19 @@ import FAQTab from '@/Components/Students/Mentors/FAQTab';
 import PrivacyTab from '@/Components/Students/Mentors/PrivacyTab';
 import ProfileTab from '@/Components/Students/Mentors/ProfileTab';
 import TermsTab from '@/Components/Students/Mentors/TermsTab';
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 
 const tabs = [
-    { label: 'Profile',             component: <ProfileTab /> },
-    { label: 'Terms & Conditions',  component: <TermsTab /> },
-    { label: 'Privacy Policy',      component: <PrivacyTab /> },
-    { label: 'FAQ',                 component: <FAQTab /> },
+    { label: 'Profile', component: <ProfileTab /> },
+    { label: 'Terms & Conditions', component: <TermsTab /> },
+    { label: 'Privacy Policy', component: <PrivacyTab /> },
+    { label: 'FAQ', component: <FAQTab /> },
 ];
 
 const Page = () => {
+
+
+
     const [activeTab, setActiveTab] = useState(0);
 
     return (
