@@ -16,7 +16,7 @@ const capsules = apiSlice.injectEndpoints({
         }),
         getAllCapsulesCategoryFullData: builder.query({
             query: ({ journeyId }) => ({
-                url: `/journey-capsule?journeyId=${journeyId}&page=1&limit=10`,
+                url: `/student-journey/${journeyId}/capsules`,
                 method: "GET",
             }),
         }),
@@ -34,13 +34,27 @@ const capsules = apiSlice.injectEndpoints({
         }),
         getJourneyDetails: builder.query({
             query: ({ journeyId }) => ({
-                url: `/journey-capsule/${journeyId}/full-details`,
+                url: `/journey-capsule/${journeyId}/modules-without-video`,
                 method: "GET",
             }),
         }),
+
+        getAllYouCapsulesJourney: builder.query({
+            query: ({ journeyId }) => ({
+                url: `/student-journey/${journeyId}/capsules`,
+                method: "GET",
+            }),
+        }),
+
     }),
 });
 
-export const { useGetAllCapsulesCategoryQuery, usePurchasedCapsuleJourneyMutation, useGetAllCapsulesCategoryFullDataQuery, useGetAllCapsulesbyIdQuery, useGetCapsuleJourneyQuery,
-    useGetJourneyDetailsQuery
+export const {
+    useGetAllCapsulesCategoryQuery,
+    usePurchasedCapsuleJourneyMutation,
+    useGetAllCapsulesCategoryFullDataQuery,
+    useGetAllCapsulesbyIdQuery,
+    useGetCapsuleJourneyQuery,
+    useGetJourneyDetailsQuery,
+    useGetAllYouCapsulesJourneyQuery
 } = capsules;
