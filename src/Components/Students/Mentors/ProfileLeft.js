@@ -4,11 +4,10 @@ import React from 'react';
 import { CiLocationOn } from 'react-icons/ci';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { GrLanguage } from 'react-icons/gr';
-import { IoIosCamera } from 'react-icons/io';
 import { LuLanguages } from "react-icons/lu";
 
+const ProfileLeft = ({ mentor }) => {
 
-const ProfileLeft = () => {
     return (
         <div className="space-y-5">
 
@@ -17,27 +16,35 @@ const ProfileLeft = () => {
 
                 <div className='border-4 border-indigo-100 w-28 h-28 mx-auto rounded-full'>
                     <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
-                        className="w-full h-full  rounded-full mb-4 object-cover "
+                        src={mentor?.avatarUrl || "https://randomuser.me/api/portraits/men/32.jpg"}
+                        className="w-full h-full rounded-full mb-4 object-cover"
+                        alt={mentor?.name}
                     />
                 </div>
 
                 <h2 className="text-xl font-semibold text-gray-800">
-                    James Chan
+                    {mentor?.name || "Unknown Mentor"}
                 </h2>
 
                 <p className="text-sm text-gray-500">
-                    Career Develop Coach at  <br /><span className="text-blue-600 cursor-pointer">Facebook</span>
+                    {mentor?.currentJobTitle} at <br />
+                    <span className="text-blue-600 cursor-pointer">
+                        {mentor?.companyName}
+                    </span>
                 </p>
 
                 <p className="mt-3 font-semibold text-gray-800">
-                    $70/Session <span className="text-sm text-gray-400">(60min)</span>
+                    ${mentor?.sessionPrice}/Session{" "}
+                    <span className="text-sm text-gray-400">(60min)</span>
                 </p>
 
                 {/* Rating */}
                 <div className="flex justify-center gap-1 my-2 text-yellow-400">
-                    ★ ★ ★ ★ ☆
-                    <span className="text-gray-400 text-sm ml-2">(24)</span>
+                    {"★".repeat(Math.round(mentor?.avgRating || 0))}
+                    {"☆".repeat(5 - Math.round(mentor?.avgRating || 0))}
+                    <span className="text-gray-400 text-sm ml-2">
+                        ({mentor?.totalRatingCount || 0})
+                    </span>
                 </div>
 
                 {/* Buttons */}
@@ -55,11 +62,25 @@ const ProfileLeft = () => {
                 <h3 className="font-semibold text-gray-800 mb-4">Information</h3>
 
                 <div className="space-y-3 text-sm text-gray-600">
-                    <p className='flex items-center gap-2'><CiLocationOn /> Lyon, France</p>
-                    <p className='flex items-center gap-2'><LuLanguages /> French, English</p>
-                    <p className='flex items-center gap-2'><GrLanguage /> Online, In-Person</p>
+
+                    <p className='flex items-center gap-2'>
+                        <CiLocationOn />
+                        {mentor?.location || "N/A"}
+                    </p>
+
+                    <p className='flex items-center gap-2'>
+                        <LuLanguages />
+                        {mentor?.language?.join(", ") || "N/A"}
+                    </p>
+
+                    <p className='flex items-center gap-2'>
+                        <GrLanguage />
+                        {mentor?.availableIn || "Online"}
+                    </p>
+
                 </div>
 
+                {/* Social (static for now) */}
                 <div className="flex gap-5 mt-4 text-xl">
                     <FaFacebook className='text-4xl cursor-pointer text-blue-600' />
                     <FaInstagram className='text-4xl cursor-pointer text-fuchsia-500' />

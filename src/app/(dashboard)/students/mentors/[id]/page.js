@@ -1,4 +1,5 @@
 'use client';
+
 import ProfileLeft from '@/Components/Students/Mentors/ProfileLeft';
 import ProfileRight from '@/Components/Students/Mentors/ProfileRight';
 import { useGetMentorDetailsQuery } from '@/redux/fetures/Mentors/Mentors';
@@ -10,9 +11,19 @@ const Page = () => {
   const params = useParams();
   const mentorId = params?.id;
 
-  const { data } = useGetMentorDetailsQuery(mentorId);
-  
-  console.log(data)
+  const { data, isLoading, isError } = useGetMentorDetailsQuery(mentorId);
+
+  const mentor = data?.data; // ✅ important
+
+  console.log("Mentor Data:", mentor);
+
+  if (isLoading) {
+    return <p className="text-center py-10">Loading...</p>;
+  }
+
+  if (isError) {
+    return <p className="text-center py-10 text-red-500">Failed to load mentor</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 p-6">
@@ -20,12 +31,12 @@ const Page = () => {
 
         {/* LEFT */}
         <div className="lg:col-span-1">
-          <ProfileLeft />
+          <ProfileLeft mentor={mentor} />
         </div>
 
         {/* RIGHT */}
         <div className="lg:col-span-2">
-          <ProfileRight />
+          <ProfileRight mentor={mentor} />
         </div>
 
       </div>

@@ -16,15 +16,15 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-const ProfileRight = () => {
+const ProfileRight = ({ mentor }) => {
+
   return (
     <div>
 
       {/* ABOUT */}
       <Section title="About Me">
         <p className="text-gray-600 mb-4 leading-relaxed">
-          I'm a career transition coach who believes work should energize, not drain you.
-          I help professionals in tech and creative fields move from burnout to purpose.
+          {mentor?.bio || "No bio available"}
         </p>
 
         <p className="font-medium mb-2">I'm passionate about:</p>
@@ -40,41 +40,44 @@ const ProfileRight = () => {
       {/* VALUES */}
       <Section title="Values">
         <div className="flex flex-wrap gap-2">
-          <Tag>Creativity</Tag>
-          <Tag>Balance</Tag>
-          <Tag>Impact</Tag>
-          <Tag>Autonomy</Tag>
-          <Tag>Empathy</Tag>
-          <Tag>Growth</Tag>
-          <Tag>Authenticity</Tag>
+          {mentor?.values?.length > 0 ? (
+            mentor.values.map((item, i) => (
+              <Tag key={i}>{item}</Tag>
+            ))
+          ) : (
+            <p className="text-sm text-gray-400">No values found</p>
+          )}
         </div>
       </Section>
 
       {/* SPECIALTIES */}
       <Section title="Specialties">
         <div className="flex flex-wrap gap-2">
-          <Tag>Career Clarity (Mid-Level)</Tag>
-          <Tag>Burnout Recovery</Tag>
-          <Tag>Corporate-to-Creative Transition</Tag>
-          <Tag>Values Alignment</Tag>
-          <Tag>Confidence Building</Tag>
-          <Tag>Remote Work Optimization</Tag>
-          <Tag>Purpose-Driven Design</Tag>
+          {mentor?.specialties?.length > 0 ? (
+            mentor.specialties.map((item, i) => (
+              <Tag key={i}>{item}</Tag>
+            ))
+          ) : (
+            <p className="text-sm text-gray-400">No specialties found</p>
+          )}
         </div>
       </Section>
 
-      {/* METHODOLOGIES */}
+      {/* METHODOLOGIES */} 
       <Section title="Methodologies">
         <div className="flex flex-wrap gap-2">
-          <Tag>Mindful Reflection</Tag>
-          <Tag>Action Planning</Tag>
-          <Tag>Design Thinking</Tag>
-          <Tag>Positive Psychology</Tag>
-          <Tag>Accountability Systems</Tag>
+          {mentor?.methodologies?.length > 0 ? (
+            mentor.methodologies.map((item, i) => (
+              <Tag key={i}>{item}</Tag>
+            ))
+          ) : (
+            <p className="text-sm text-gray-400">No methodologies found</p>
+          )}
         </div>
       </Section>
 
-      <MentorProfileRateing />
+      {/* RATINGS */}
+      <MentorProfileRateing mentor={mentor} />
 
     </div>
   );
