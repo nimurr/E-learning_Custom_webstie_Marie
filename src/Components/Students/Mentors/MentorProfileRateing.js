@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { Modal, Rate, Avatar, Progress, Input } from 'antd';
 import 'antd/dist/reset.css';
+import { useReviewMantorMutation } from '@/redux/fetures/Mentors/Mentors';
+import { useParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
@@ -41,19 +44,44 @@ const ratingDistribution = [
 const averageRating = 4.8;
 
 export default function MentorProfileRateing() {
+    const params = useParams();
+    const mentorId = params?.id;
+
+    const [giveReview] = useReviewMantorMutation(); // ✅ important 
+
+
     const [open, setOpen] = useState(false);
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
 
-    const submitRating = () => {
-        console.log('Rating:', rating);
-        console.log('Review:', reviewText);
+    const submitRating = async () => {
 
         // 👉 send to backend here
+        const body = {
+            mentorId: mentorId, // replace with actual mentor ID
+            rating,
+            review: reviewText,
+        };
 
-        setOpen(false);
-        setRating(0);
-        setReviewText('');
+        try {
+            const res = await giveReview({ mentorId, body }).unwrap();
+
+            if (res?.code === 200) {
+                toast.success("Review submitted successfully!");
+                setOpen(false);
+                setRating(0);
+                setReviewText('');
+            } else {
+                toast.error(res?.message || "Failed to submit review");
+            }
+            // Optionally show success message or update UI
+        }
+        catch (error) {
+            console.error("Failed to submit review:", error);
+            // Optionally show error message to user
+        }
+
+
     };
 
     return (

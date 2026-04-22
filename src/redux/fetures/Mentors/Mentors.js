@@ -38,6 +38,13 @@ const mentors = apiSlice.injectEndpoints({
                 method: "POST",
             }),
         }),
+        reviewMantor: builder.mutation({
+            query: ({ mentorId, body }) => ({
+                url: `/mentors/${mentorId}/review`,
+                method: "POST",
+                body: body,
+            }),
+        }),
     }),
 });
 
@@ -47,5 +54,6 @@ export const {
     useGetBookMentorsQuery,
     useGetRecommendedMentorsQuery,
     useGetMentorDetailsQuery,
-    useBookingMentorMutation
+    useBookingMentorMutation,
+    useReviewMantorMutation,
 } = mentors;

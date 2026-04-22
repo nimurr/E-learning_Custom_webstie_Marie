@@ -2,6 +2,7 @@
 
 import React from 'react';
 import MentorProfileRateing from './MentorProfileRateing';
+import { useReviewMantorMutation } from '@/redux/fetures/Mentors/Mentors';
 
 const Tag = ({ children }) => (
   <span className="px-3 py-1 text-sm border rounded-full bg-gray-50">
@@ -17,6 +18,7 @@ const Section = ({ title, children }) => (
 );
 
 const ProfileRight = ({ mentor }) => {
+
 
   return (
     <div>
@@ -63,7 +65,7 @@ const ProfileRight = ({ mentor }) => {
         </div>
       </Section>
 
-      {/* METHODOLOGIES */} 
+      {/* METHODOLOGIES */}
       <Section title="Methodologies">
         <div className="flex flex-wrap gap-2">
           {mentor?.methodologies?.length > 0 ? (

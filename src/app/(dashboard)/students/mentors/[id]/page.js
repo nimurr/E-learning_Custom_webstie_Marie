@@ -13,10 +13,9 @@ const Page = () => {
 
   const { data, isLoading, isError } = useGetMentorDetailsQuery(mentorId);
 
+
   const mentor = data?.data; // ✅ important
-
-  console.log("Mentor Data:", mentor);
-
+ 
   if (isLoading) {
     return <p className="text-center py-10">Loading...</p>;
   }

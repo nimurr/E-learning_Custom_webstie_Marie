@@ -1,8 +1,10 @@
- 
+
 
 
 'use client';
 
+import url from '@/redux/api/baseUrl';
+import { useGetStudentMyProfileInfoQuery } from '@/redux/fetures/profile/profile';
 import Link from 'next/link';
 import React, { useState, useRef, useEffect } from 'react';
 import { IoIosMenu, IoMdNotifications } from 'react-icons/io';
@@ -39,6 +41,11 @@ const notifications = [
 ];
 
 const StudentsHeader = ({ isOpen, setIsOpen }) => {
+
+    const { data: profileInfo } = useGetStudentMyProfileInfoQuery();
+    const profile = profileInfo?.data;
+    console.log(profile)
+
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifs, setNotifs] = useState(notifications);
     const notifRef = useRef(null);
@@ -163,12 +170,12 @@ const StudentsHeader = ({ isOpen, setIsOpen }) => {
                 >
                     <img
                         className="w-10 h-10 rounded-full object-cover"
-                        src="https://www.fullstackexperts.eu/wp-content/uploads/2024/12/Projekt-bez-nazwy-38-1024x1024.png"
+                        src={url + profile?.profileImage?.imageUrl || 'https://t4.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlGqYqXqQH8aGC2bG.jpg'}
                         alt="profile"
                     />
                     <div>
-                        <h2 className="font-semibold text-sm text-gray-800">John Doe</h2>
-                        <p className="text-gray-500 text-xs">Student</p>
+                        <h2 className="font-semibold text-sm text-gray-800">{profile?.name}</h2>
+                        {/* <p className="text-gray-500 text-xs">Student</p> */}
                     </div>
                 </Link>
             </div>

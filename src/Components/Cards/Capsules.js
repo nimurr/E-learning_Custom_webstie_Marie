@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { HiStar } from 'react-icons/hi2';
@@ -28,12 +29,12 @@ const Capsules = ({ item }) => {
 
                 <div>
                     <hr className='my-3' />
-                    <button className='w-full flex items-center justify-between'>
+                    <Link href={`/students/my-capsules/${item?._id}`} className='w-full flex items-center justify-between'>
                         <span className='text-xl font-semibold'>
                             ${item?.price}
                         </span>
                         <FaArrowRight className='text-2xl text-primary' />
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
