@@ -7,7 +7,9 @@ import { RxCross1 } from "react-icons/rx";
 
 
 const Header = () => {
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  console.log(user)
 
   return (
     <header className="w-full ">
@@ -38,14 +40,29 @@ const Header = () => {
           </ul>
 
           {/* Desktop Buttons */}
-          <div className="hidden 2xl:flex items-center text-[17px] gap-3">
-            <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
-              Sign Up
-            </Link>
-            <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
-              Sign In
-            </Link>
-          </div>
+
+          {
+            user ?
+              <div>
+                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
+                  <Link href={`/${user?.role}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                    Dashboard
+                  </Link>
+                </div>
+              </div>
+              :
+              <div>
+                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
+                  <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                    Sign Up
+                  </Link>
+                  <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
+                    Sign In
+                  </Link>
+                </div>
+              </div>
+          }
+
 
           {/* Mobile Menu Button */}
           <button
@@ -74,14 +91,30 @@ const Header = () => {
             )}
           </ul>
 
-          <div className="flex flex-col gap-3 px-6 text-[17px] py-4">
-            <button className="w-full py-2 rounded-lg customSignUpButton text-white text-sm font-medium">
-              Sign Up
-            </button>
-            <button className="w-full py-2 rounded-lg border border-gray-500 customSignUpButtonHover text-gray-300 text-sm">
-              Sign In
-            </button>
-          </div>
+
+          {
+            user ?
+              <div>
+                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
+                  <Link href={`/${user?.role}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                    Dashboard
+                  </Link>
+                </div>
+              </div>
+              :
+              <div>
+                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
+                  <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                    Sign Up
+                  </Link>
+                  <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
+                    Sign In
+                  </Link>
+                </div>
+              </div>
+          }
+
+
         </div>
       </div>
     </header>

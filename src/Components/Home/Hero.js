@@ -13,8 +13,8 @@ const Hero = () => {
                 <p className="mt-5 text-white font-semibold">Free • Instant insight • No pressure</p>
             </div>
             <div className="lg:flex items-start justify-center hidden ">
-                <img className="w-60 2xl:min-w-96" src="/Images/Home/Hero/hero_position_top.png" alt="" />
-                <img className="w-60 2xl:min-w-96" src="/Images/Home/Hero/hero_position_bottom.png" alt="" />
+                <img className="w-60 2xl:min-w-[400px]" src="/Images/Home/Hero/DE9B4924-92E4-4E93-A2B2-8DADDA025DC5.png" alt="" />
+                <img className="w-60 2xl:min-w-[450px]" src="/Images/Home/Hero/hero_position_top.png" alt="" />
             </div>
         </div>
     );

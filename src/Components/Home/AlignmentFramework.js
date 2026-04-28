@@ -9,7 +9,7 @@ const AlignmentFramework = () => {
                 <span className='p-4 border-orange-400 rounded-lg bg-orange-500/20 block border  max-w-[700px] mx-auto text-orange-400 font-semibold'>Framework built from 15+ years in Human Resources and real professional situations.</span>
             </div>
 
-            <img className='absolute bottom-0 right-0 w-60 lg:block hidden' src="/Images/Home/Framework.png" alt="" />
+            <img className='absolute bottom-0 right-0 w-60 lg:block hidden' src="/Images/Home/A0154B82-8401-4046-9DCA-94370259980F.png" alt="" />
         </div>
     );
 }

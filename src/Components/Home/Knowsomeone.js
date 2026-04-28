@@ -47,7 +47,7 @@ const Knowsomeone = () => {
                 ))}
             </div>
 
-            <img className='absolute bottom-0 right-0 w-72 lg:block hidden' src="/Images/Home/Knowsomeone.png" alt="" />
+            <img className='absolute bottom-0 right-0 w-72 lg:block hidden' src="/Images/Home/357D7696-C6E7-40CA-9F3A-A7818B42392F.png" alt="" />
 
             <div>
                 <div className="text-5xl text-center select-none" style={{ filter: 'drop-shadow(0 0 12px rgba(255,180,0,0.5))' }}>
