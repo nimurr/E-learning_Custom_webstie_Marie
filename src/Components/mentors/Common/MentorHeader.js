@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React, { useState, useRef, useEffect } from 'react';
 import { IoIosMenu, IoMdNotifications } from 'react-icons/io';
+import { useGetOnboardingStatusQuery } from '@/redux/fetures/Mentors/MentorOnboarding';
 
 const notifications = [
     {
@@ -39,6 +40,9 @@ const MentorHeader = ({ isOpen, setIsOpen }) => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifs, setNotifs] = useState(notifications);
     const notifRef = useRef(null);
+
+    const { data: onboardingData } = useGetOnboardingStatusQuery();
+    const basicInfo = onboardingData?.data?.steps?.find(s => s.key === 'basicInfo')?.data || {};
 
     const unreadCount = notifs.filter((n) => !n.read).length;
 
@@ -160,11 +164,11 @@ const MentorHeader = ({ isOpen, setIsOpen }) => {
                 >
                     <img
                         className="w-10 h-10 rounded-full object-cover"
-                        src="https://www.fullstackexperts.eu/wp-content/uploads/2024/12/Projekt-bez-nazwy-38-1024x1024.png"
-                        alt="profile"
+                        src={basicInfo.avatarUrl || '/Images/default-avatar.png'}
+                        alt={basicInfo.name || 'profile'}
                     />
                     <div>
-                        <h2 className="font-semibold text-sm text-gray-800">John Doe</h2>
+                        <h2 className="font-semibold text-sm text-gray-800">{basicInfo.name || 'Mentor'}</h2>
                         <p className="text-gray-500 text-xs">Mentor</p>
                     </div>
                 </Link>

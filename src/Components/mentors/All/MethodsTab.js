@@ -1,8 +1,9 @@
 'use client';
-import React, { useState } from 'react';
-import { Button, Checkbox, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Checkbox, Input, message } from 'antd';
+import { useUpdateMethodsMutation } from '@/redux/fetures/Mentors/MentorOnboarding';
+import { toast } from 'react-toastify';
 
-// ── Data ──────────────────────────────────────────────────────
 const methodologies = [
     {
         value: 'mindful_reflection',
@@ -36,10 +37,19 @@ const methodologies = [
     },
 ];
 
-// ── MethodsTab ────────────────────────────────────────────────
-const MethodsTab = ({ onNext, onBack }) => {
+const MethodsTab = ({ onNext, onBack, initialData }) => {
     const [selectedMethods, setSelectedMethods] = useState([]);
     const [calendlyLink, setCalendlyLink] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const [updateMethods] = useUpdateMethodsMutation();
+
+    useEffect(() => {
+        if (initialData) {
+            setSelectedMethods(initialData.coachingMethodologies || []);
+            setCalendlyLink(initialData.calendlyProfileLink || '');
+        }
+    }, [initialData]);
 
     const toggleMethod = (value) => {
         setSelectedMethods((prev) =>
@@ -47,14 +57,37 @@ const MethodsTab = ({ onNext, onBack }) => {
         );
     };
 
-    const handleSubmit = () => {
-        onNext?.({ coachingMethodologies: selectedMethods, calendlyLink });
+    const handleSubmit = async () => {
+        if (selectedMethods.length === 0) {
+            toast.warning('Please select at least one coaching methodology');
+            return;
+        }
+        if (!calendlyLink) {
+            toast.warning('Please enter your Calendly profile link');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const payload = {
+                coachingMethodologies: selectedMethods,
+                calendlyProfileLink: calendlyLink,
+            };
+
+            await updateMethods(payload).unwrap();
+            toast.success('Methods saved successfully!');
+            onNext(payload);
+        } catch (error) {
+            console.error('Error saving methods:', error);
+            toast.error(error?.data?.message || 'Failed to save methods');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 space-y-6">
 
-            {/* ── Coaching Methodologies ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Coaching Methodologies
@@ -91,7 +124,6 @@ const MethodsTab = ({ onNext, onBack }) => {
                 </div>
             </div>
 
-            {/* ── Calendly Profile Link ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Calendly Profile Link
@@ -106,7 +138,6 @@ const MethodsTab = ({ onNext, onBack }) => {
                 />
             </div>
 
-            {/* ── Buttons ── */}
             <div className="flex gap-3 pt-2">
                 {onBack && (
                     <Button
@@ -123,6 +154,7 @@ const MethodsTab = ({ onNext, onBack }) => {
                     size="large"
                     onClick={handleSubmit}
                     block
+                    loading={loading}
                     className='bg-primary text-white h-12'
                 >
                     Save & Continue

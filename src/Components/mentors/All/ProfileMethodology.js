@@ -1,21 +1,26 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const methodologies = [
-    { value: 'mindful', label: 'Mindful Reflection', sub: 'Focusing on self-awareness and inner growth.' },
-    { value: 'action', label: 'Action Planning', sub: 'Goal-oriented strategy with clear milestones.' },
-    { value: 'basing', label: 'Basing Thinking', sub: 'Iterative problem-solving and rapid ideation.' },
-    { value: 'career', label: 'Career Mapping', sub: 'Structuring long-term professional trajectories.' },
-    { value: 'scenario', label: 'Scenario Method', sub: 'Guiding discovery through critical questioning.' },
-    { value: 'role', label: 'Role Playing', sub: 'Simulating real-world scenarios for practice.' },
+    { value: 'mindful_reflection', label: 'Mindful Reflection', sub: 'Focusing on self-awareness and inner growth.' },
+    { value: 'action_planning', label: 'Action Planning', sub: 'Goal-oriented strategy with clear milestones.' },
+    { value: 'basing_thinking', label: 'Basing Thinking', sub: 'Iterative problem-solving and rapid ideation.' },
+    { value: 'career_mapping', label: 'Career Mapping', sub: 'Structuring long-term professional trajectories.' },
+    { value: 'scenario_method', label: 'Scenario Method', sub: 'Guiding discovery through critical questioning.' },
+    { value: 'role_playing', label: 'Role Playing', sub: 'Simulating real-world scenarios for practice.' },
 ];
 
-const defaultSelected = ['action', 'basing', 'scenario'];
-
-const ProfileMethodology = () => {
+const ProfileMethodology = ({ data = {} }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [selected, setSelected] = useState(defaultSelected);
-    const [saved, setSaved] = useState(defaultSelected);
+    const [selected, setSelected] = useState([]);
+    const [saved, setSaved] = useState([]);
+
+    useEffect(() => {
+        if (data?.coachingMethodologies) {
+            setSelected(data.coachingMethodologies);
+            setSaved(data.coachingMethodologies);
+        }
+    }, [data]);
 
     const toggle = (value) => {
         if (!isEditing) return;

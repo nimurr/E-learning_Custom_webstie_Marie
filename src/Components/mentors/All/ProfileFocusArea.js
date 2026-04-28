@@ -1,17 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const defaultFocusAreas = [
-    'Technology', 'Growth', 'Empathy',
-    'Technology', 'Growth', 'Empathy',
-    'Technology', 'Growth', 'Empathy',
-];
-
-const ProfileFocusArea = () => {
-    const [isEditing,  setIsEditing]  = useState(false);
-    const [areas,      setAreas]      = useState(defaultFocusAreas);
-    const [saved,      setSaved]      = useState(defaultFocusAreas);
+const ProfileFocusArea = ({ data = [] }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [areas, setAreas] = useState([]);
+    const [saved, setSaved] = useState([]);
     const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+        if (data) {
+            setAreas(data);
+            setSaved(data);
+        }
+    }, [data]);
 
     const handleAdd = () => {
         const trimmed = inputValue.trim();

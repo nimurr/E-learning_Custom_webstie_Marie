@@ -1,43 +1,7 @@
 'use client';
 import React, { useState } from 'react';
+import { useGetMentorReviewsQuery, useGetMentorRatingOverviewQuery } from '@/redux/fetures/Mentors/MentorOnboarding';
 
-// ── Data ──────────────────────────────────────────────────────
-const ratingBars = [
-    { star: 5, percent: 20 },
-    { star: 4, percent: 40 },
-    { star: 3, percent: 35 },
-    { star: 2, percent: 5 },
-    { star: 1, percent: 10 },
-];
-
-const reviews = [
-    {
-        id: 1,
-        name: 'Jennie Yun',
-        time: '2 days ago',
-        rating: 4,
-        text: '"Working With My Mentor Didn\'t Just Change My Job—It Changed How I See My Career. I Finally Have Clarity, Confidence, And A Path That Actually Feels Like Me."',
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    },
-    {
-        id: 2,
-        name: 'Jennie Yun',
-        time: '2 days ago',
-        rating: 4,
-        text: '"Working With My Mentor Didn\'t Just Change My Job—It Changed How I See My Career. I Finally Have Clarity, Confidence, And A Path That Actually Feels Like Me."',
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    },
-    {
-        id: 3,
-        name: 'Jennie Yun',
-        time: '2 days ago',
-        rating: 4,
-        text: '"Working With My Mentor Didn\'t Just Change My Job—It Changed How I See My Career. I Finally Have Clarity, Confidence, And A Path That Actually Feels Like Me."',
-        avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    },
-];
-
-// ── Star Display ──────────────────────────────────────────────
 const Stars = ({ rating, size = 'sm' }) => {
     const sz = size === 'lg' ? 'w-7 h-7' : 'w-4 h-4';
     return (
@@ -51,41 +15,81 @@ const Stars = ({ rating, size = 'sm' }) => {
     );
 };
 
-// ── Page ──────────────────────────────────────────────────────
 const Page = () => {
+    const [page, setPage] = useState(1);
     const [showAll, setShowAll] = useState(false);
+
+    const { data: reviewsData, isLoading: reviewsLoading } = useGetMentorReviewsQuery({ page, limit: 10 });
+    const { data: ratingData, isLoading: ratingLoading } = useGetMentorRatingOverviewQuery();
+
+    const reviews = reviewsData?.data || [];
+    const meta = reviewsData?.meta || {};
+    const ratingOverview = ratingData?.data || {};
+    const ratingBreakdown = ratingOverview.ratingBreakdown || [];
+
+    const formatTimeAgo = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Today';
+        if (diffDays === 1) return '1 day ago';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+        if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+        return `${Math.floor(diffDays / 365)} years ago`;
+    };
+
     const displayed = showAll ? reviews : reviews.slice(0, 3);
+
+    const handleLoadMore = () => {
+        if (meta.hasNextPage) {
+            setPage(prev => prev + 1);
+        }
+    };
+
+    if (reviewsLoading && page === 1) {
+        return (
+            <div className="relative lg:py-10 py-5 w-full px-5 lg:px-0 z-0">
+                <div className="absolute -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
+                <div className="max-w-6xl bg-gray-100 rounded-lg p-5 my-5 mx-auto text-center">
+                    <p className="text-gray-500">Loading reviews...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="relative lg:py-10 py-5 w-full px-5 lg:px-0 z-0">
             <div className="absolute -z-10 inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
             <div className=" space-y-4 max-w-6xl bg-gray-100 rounded-lg p-5 my-5 mx-auto">
 
-                {/* ── Rating Overview ── */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                     <h2 className="text-sm font-bold text-gray-900 mb-4">Rating Overview</h2>
 
                     <div className="flex items-center gap-8">
-                        {/* Left: Score */}
                         <div className="flex-shrink-0 text-center">
-                            <p className="text-5xl font-bold text-gray-900 leading-none mb-2">4.0</p>
-                            <Stars rating={4} size="sm" />
-                            <p className="text-xs text-gray-400 mt-2">By 1.9k Users</p>
+                            <p className="text-5xl font-bold text-gray-900 leading-none mb-2">
+                                {ratingOverview.averageRating || 0}
+                            </p>
+                            <Stars rating={Math.round(ratingOverview.averageRating || 0)} size="sm" />
+                            <p className="text-xs text-gray-400 mt-2">By {ratingOverview.totalStudents || 0} Users</p>
                         </div>
 
-                        {/* Right: Bars */}
                         <div className="flex-1 space-y-2">
-                            {ratingBars.map((row) => (
-                                <div key={row.star} className="flex items-center gap-3">
-                                    <span className="text-xs text-gray-500 w-3 flex-shrink-0">{row.star}</span>
+                            {ratingBreakdown.map((row) => (
+                                <div key={row.rating} className="flex items-center gap-3">
+                                    <span className="text-xs text-gray-500 w-3 flex-shrink-0">{row.rating}</span>
                                     <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
                                         <div
                                             className="h-full bg-indigo-800 rounded-full"
-                                            style={{ width: `${row.percent}%` }}
+                                            style={{ width: `${row.percentage}%` }}
                                         />
                                     </div>
                                     <span className="text-xs text-gray-400 w-7 text-right flex-shrink-0">
-                                        {String(row.percent).padStart(2, '0')}%
+                                        {String(row.percentage).padStart(2, '0')}%
                                     </span>
                                 </div>
                             ))}
@@ -93,7 +97,6 @@ const Page = () => {
                     </div>
                 </div>
 
-                {/* ── Review Overview ── */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-sm font-bold text-gray-900">Review Overview</h2>
@@ -104,40 +107,53 @@ const Page = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
                             </svg>
-                            All Reviews
+                            {showAll ? 'Show Less' : 'All Reviews'}
                         </button>
                     </div>
 
-                    <div className="space-y-3">
-                        {displayed.map((review) => (
-                            <div key={review.id} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
-                                <div className="flex items-start justify-between mb-2">
-                                    <div className="flex items-center gap-3">
-                                        <img
-                                            src={review.avatar}
-                                            alt={review.name}
-                                            className="w-11 h-11 rounded-full object-cover flex-shrink-0"
-                                        />
-                                        <div>
-                                            <p className="text-sm font-semibold text-gray-800">{review.name}</p>
-                                            <p className="text-xs text-gray-400">{review.time}</p>
+                    {reviews.length === 0 ? (
+                        <div className="text-center py-8">
+                            <div className="text-4xl mb-3">📝</div>
+                            <p className="text-gray-500 text-sm">No reviews yet</p>
+                            <p className="text-gray-400 text-xs mt-1">Your reviews will appear here after students review your sessions.</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {displayed.map((review, index) => (
+                                <div key={review._id || index} className="border border-gray-100 rounded-xl p-4 bg-gray-50/50">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="flex items-center gap-3">
+                                            <img
+                                                src={review.student?.avatarUrl || review.avatar || '/Images/default-avatar.png'}
+                                                alt={review.student?.name || 'Student'}
+                                                className="w-11 h-11 rounded-full object-cover flex-shrink-0"
+                                            />
+                                            <div>
+                                                <p className="text-sm font-semibold text-gray-800">{review.student?.name || 'Student'}</p>
+                                                <p className="text-xs text-gray-400">{formatTimeAgo(review.createdAt)}</p>
+                                            </div>
                                         </div>
+                                        <Stars rating={review.rating || 0} size="sm" />
                                     </div>
-                                    <Stars rating={review.rating} size="sm" />
+                                    <p className="text-xs text-gray-600 leading-relaxed mt-2 pl-14">
+                                        {review.comment || review.review || review.message}
+                                    </p>
                                 </div>
-                                <p className="text-xs text-gray-600 leading-relaxed mt-2 pl-14">
-                                    {review.text}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
-                <div className="flex justify-center mt-4">
-                    <button className="customSignUpButton hover:bg-indigo-700 text-white text-sm font-bold py-3 px-10 rounded-lg transition">
-                        Load More
-                    </button>
-                </div>
+                {reviews.length > 0 && meta.hasNextPage && (
+                    <div className="flex justify-center mt-4">
+                        <button 
+                            onClick={handleLoadMore}
+                            className="customSignUpButton hover:bg-indigo-700 text-white text-sm font-bold py-3 px-10 rounded-lg transition"
+                        >
+                            Load More
+                        </button>
+                    </div>
+                )}
 
             </div>
         </div>

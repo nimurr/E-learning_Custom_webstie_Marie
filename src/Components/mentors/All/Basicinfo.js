@@ -1,25 +1,70 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useUpdateProfileWithAvatarMutation, useUpdateMethodsMutation } from '@/redux/fetures/Mentors/MentorOnboarding';
 
-const Basicinfo = () => {
+const Basicinfo = ({ data = {} }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [form, setForm] = useState({
-        fullName: 'Lilly Potter',
-        jobTitle: 'UI/UX Designer',
-        company: 'Facebook',
-        experience: '03',
-        sessionPrice: '70',
-        shortBio: "I'm A Career Transition Coach Who Believes Work Should Energize, Not Drain You. I Help Professionals In Tech And Creative Fields Move From Burnout To Purpose By Blending Practical Strategy With Mindful Introspection. My Focus Isn't Just On Finding A New Job—It's On Designing A Career That Aligns With Who You Are And How You Want To Live. I've Guided Over 200 Clients Toward More Balanced, Meaningful Work, And I'd Be Honored To Help You Chart Your Path.",
-        calendlyLink: 'Https://Calendly.Com/MarieWagner',
+        fullName: '',
+        jobTitle: '',
+        company: '',
+        experience: '',
+        sessionPrice: '',
+        shortBio: '',
+        calendlyLink: '',
     });
     const [saved, setSaved] = useState({ ...form });
+
+    const [updateProfileWithAvatar] = useUpdateProfileWithAvatarMutation();
+    const [updateMethods] = useUpdateMethodsMutation();
+
+    useEffect(() => {
+        if (data) {
+            const newForm = {
+                fullName: data.name || '',
+                jobTitle: data.currentJobTitle || '',
+                company: data.companyName || '',
+                experience: data.yearsOfExperience || '',
+                sessionPrice: data.sessionPrice || '',
+                shortBio: data.bio || '',
+                calendlyLink: data.calendlyProfileLink || '',
+            };
+            setForm(newForm);
+            setSaved(newForm);
+        }
+    }, [data]);
 
     const wordCount = form.shortBio.trim() === '' ? 0 : form.shortBio.trim().split(/\s+/).length;
     const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
-    const handleSave = () => {
-        setSaved({ ...form });
-        setIsEditing(false);
+    const handleSave = async () => {
+        try {
+            const basicInfoPayload = {
+                name: form.fullName,
+                currentJobTitle: form.jobTitle,
+                companyName: form.company,
+                yearsOfExperience: Number(form.experience),
+                sessionPrice: Number(form.sessionPrice),
+                bio: form.shortBio,
+                language: data.language || ['English'],
+                availableIn: data.availableIn || 'both',
+                location: data.location || '',
+            };
+
+            await updateProfileWithAvatar({ data: basicInfoPayload, avatarUrl: data.avatarUrl }).unwrap();
+
+            const methodsPayload = {
+                coachingMethodologies: data.coachingMethodologies || [],
+                calendlyProfileLink: form.calendlyLink,
+            };
+            await updateMethods(methodsPayload).unwrap();
+
+            setSaved({ ...form });
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Failed to save profile:', error);
+            alert('Failed to save profile. Please try again.');
+        }
     };
 
     const handleCancel = () => {

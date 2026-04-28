@@ -1,21 +1,26 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const careerStages = [
-    { value: 'students', label: 'Students & Interns', sub: 'Staring their journey' },
-    { value: 'early', label: 'Early Career', sub: '0-3 years experience' },
-    { value: 'mid', label: 'Mid-Level', sub: '3-7 years experience' },
+    { value: 'students', label: 'Students & Interns', sub: 'Starting their journey' },
+    { value: 'early_career', label: 'Early Career', sub: '0-3 years experience' },
+    { value: 'mid_level', label: 'Mid-Level', sub: '3-7 years experience' },
     { value: 'senior', label: 'Senior Leadership', sub: 'Manager, Director, VP' },
     { value: 'executives', label: 'Executives', sub: 'C-Suite, Founders' },
-    { value: 'pivoters', label: 'Career Pivoters', sub: 'Charging Industries' },
+    { value: 'career_pivoters', label: 'Career Pivoters', sub: 'Changing Industries' },
 ];
 
-const defaultSelected = ['early', 'mid', 'executives'];
-
-const ProfileMentor = () => {
+const ProfileMentor = ({ data = [] }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [selected, setSelected] = useState(defaultSelected);
-    const [saved, setSaved] = useState(defaultSelected);
+    const [selected, setSelected] = useState([]);
+    const [saved, setSaved] = useState([]);
+
+    useEffect(() => {
+        if (data) {
+            setSelected(data);
+            setSaved(data);
+        }
+    }, [data]);
 
     const toggle = (value) => {
         if (!isEditing) return;

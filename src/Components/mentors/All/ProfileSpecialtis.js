@@ -1,19 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const defaultSpecialties = [
-    'Career Clarity',
-    'UX Design',
-    'Career Strategy',
-    'Frontend Dev',
-    'Portfolio Review',
-];
+const ProfileSpecialtis = ({ data = [] }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [specialties, setSpecialties] = useState([]);
+    const [saved, setSaved] = useState([]);
+    const [inputValue, setInputValue] = useState('');
 
-const ProfileSpecialtis = () => {
-    const [isEditing,    setIsEditing]    = useState(false);
-    const [specialties,  setSpecialties]  = useState(defaultSpecialties);
-    const [saved,        setSaved]        = useState(defaultSpecialties);
-    const [inputValue,   setInputValue]   = useState('');
+    useEffect(() => {
+        if (data) {
+            setSpecialties(data);
+            setSaved(data);
+        }
+    }, [data]);
 
     const handleAdd = () => {
         const trimmed = inputValue.trim();

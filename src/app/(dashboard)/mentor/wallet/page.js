@@ -1,25 +1,18 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import React, { useState } from 'react';
-
-// ── Data ──────────────────────────────────────────────────────
-const transactions = [
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-    { id: '01', date: '01-01-2026', txId: '#485d6A456i', amount: '$70.00' },
-];
-
-const withdrawalHistory = [
-    { id: '01', date: '15-12-2025', txId: '#WD9821Ab3x', amount: '$200.00', status: 'Approved' },
-    { id: '02', date: '20-12-2025', txId: '#WD1234Cd7y', amount: '$150.00', status: 'Pending' },
-];
+import {
+    useGetWalletOverviewQuery,
+    useGetSuccessfulPaymentsQuery,
+    useGetWithdrawalHistoryQuery,
+    useGetWithdrawalDetailsQuery,
+    useGetBankInfoQuery,
+    useRequestWithdrawalMutation,
+    useUpdateBankInfoMutation,
+} from '@/redux/api/mentorApi';
 
 const ITEMS_PER_PAGE = 6;
 
-// ── Modal Overlay ─────────────────────────────────────────────
 const Modal = ({ open, onClose, children }) => {
     if (!open) return null;
     return (
@@ -32,8 +25,7 @@ const Modal = ({ open, onClose, children }) => {
     );
 };
 
-// ── Withdrawal Request Modal ──────────────────────────────────
-const WithdrawalModal = ({ open, onClose, balance }) => {
+const WithdrawalModal = ({ open, onClose, balance, onSubmit, isLoading }) => {
     const [amount, setAmount] = useState('');
     const [error, setError] = useState('');
 
@@ -42,10 +34,7 @@ const WithdrawalModal = ({ open, onClose, balance }) => {
         if (!amount || isNaN(val)) return setError('Please enter an amount.');
         if (val < 10) return setError('Minimum withdrawal is $10.');
         if (val > balance) return setError(`Cannot exceed current balance of $${balance.toFixed(2)}.`);
-        alert(`Withdrawal request of $${val.toFixed(2)} submitted!`);
-        setAmount('');
-        setError('');
-        onClose();
+        onSubmit({ amount: val });
     };
 
     return (
@@ -81,14 +70,16 @@ const WithdrawalModal = ({ open, onClose, balance }) => {
                     <button
                         onClick={onClose}
                         className="flex-1 border border-gray-200 text-gray-600 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition"
+                        disabled={isLoading}
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="flex-1 bg-indigo-800 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition"
+                        disabled={isLoading}
+                        className="flex-1 bg-indigo-800 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition disabled:opacity-50"
                     >
-                        Submit Request
+                        {isLoading ? 'Processing...' : 'Submit Request'}
                     </button>
                 </div>
             </div>
@@ -96,14 +87,40 @@ const WithdrawalModal = ({ open, onClose, balance }) => {
     );
 };
 
-// ── Edit Account Modal ────────────────────────────────────────
-const EditAccountModal = ({ open, onClose, account, onSave }) => {
-    const [form, setForm] = useState({ ...account });
+const EditAccountModal = ({ open, onClose, account, onSave, isLoading }) => {
+    const [form, setForm] = useState({
+        bankName: '',
+        bankBranch: '',
+        holderName: '',
+        accountNumber: '',
+        routingNumber: '',
+        accountType: 'Savings',
+    });
+
+    useEffect(() => {
+        if (account) {
+            setForm({
+                bankName: account.bankName || '',
+                bankBranch: account.branchName || '',
+                holderName: account.accountHolderName || '',
+                accountNumber: '',
+                routingNumber: account.routingNumber || '',
+                accountType: account.accountType === 'savings' ? 'Savings' : account.accountType === 'current' ? 'Current' : 'Savings',
+            });
+        }
+    }, [account]);
+
     const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
     const handleSave = () => {
-        onSave(form);
-        onClose();
+        onSave({
+            bankName: form.bankName,
+            bankBranch: form.bankBranch,
+            bankAccountHolderName: form.holderName,
+            bankAccountNumber: form.accountNumber,
+            bankRoutingNumber: form.routingNumber,
+            bankAccountType: form.accountType.toLowerCase(),
+        });
     };
 
     return (
@@ -127,7 +144,7 @@ const EditAccountModal = ({ open, onClose, account, onSave }) => {
                     </div>
                     <div>
                         <label className="text-xs text-gray-500 block mb-1">Account Number</label>
-                        <input value={form.accountNumber} onChange={set('accountNumber')} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+                        <input value={form.accountNumber} onChange={set('accountNumber')} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200" placeholder="Enter account number" />
                     </div>
                     <div>
                         <label className="text-xs text-gray-500 block mb-1">Routing Number</label>
@@ -157,14 +174,16 @@ const EditAccountModal = ({ open, onClose, account, onSave }) => {
                     <button
                         onClick={onClose}
                         className="flex-1 border border-gray-200 text-gray-600 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition"
+                        disabled={isLoading}
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleSave}
-                        className="flex-1 bg-indigo-800 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition"
+                        disabled={isLoading}
+                        className="flex-1 bg-indigo-800 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 rounded-xl transition disabled:opacity-50"
                     >
-                        Save Changes
+                        {isLoading ? 'Saving...' : 'Save Changes'}
                     </button>
                 </div>
             </div>
@@ -172,7 +191,6 @@ const EditAccountModal = ({ open, onClose, account, onSave }) => {
     );
 };
 
-// ── Info Tooltip Modal ────────────────────────────────────────
 const InfoModal = ({ open, onClose, tx }) => (
     <Modal open={open} onClose={onClose}>
         <div className="bg-white rounded-2xl shadow-2xl p-6">
@@ -181,9 +199,9 @@ const InfoModal = ({ open, onClose, tx }) => (
                 <div className="space-y-3 text-sm">
                     {[
                         ['No', tx.id],
-                        ['Processed Date', tx.date],
-                        ['Transaction ID', tx.txId],
-                        ['Amount', tx.amount],
+                        ['Processed Date', tx.processedDate ? new Date(tx.processedDate).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A'],
+                        ['Transaction ID', tx.transactionId || 'N/A'],
+                        ['Amount', `$${(tx.amount || 0).toFixed(2)}`],
                     ].map(([label, value]) => (
                         <div key={label} className="flex justify-between border-b border-gray-50 pb-2">
                             <span className="text-gray-400">{label}</span>
@@ -202,28 +220,134 @@ const InfoModal = ({ open, onClose, tx }) => (
     </Modal>
 );
 
-// ── Main Page ─────────────────────────────────────────────────
+const WithdrawDetailsModal = ({ open, onClose, withdrawalId }) => {
+    const { data: detailsData, isLoading } = useGetWithdrawalDetailsQuery(withdrawalId, {
+        skip: !open || !withdrawalId,
+    });
+
+    const details = detailsData?.data || detailsData || {};
+
+    return (
+        <Modal open={open} onClose={onClose}>
+            <div className="bg-white rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
+                <h2 className="text-base font-bold text-gray-900 mb-1">Withdrawal Details</h2>
+                <p className="text-xs text-gray-400 mb-5">Withdrawal request information</p>
+
+                {isLoading ? (
+                    <div className="space-y-3">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="h-8 bg-gray-100 animate-pulse rounded"></div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="space-y-3 text-sm">
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Withdrawal ID</span>
+                            <span className="font-medium text-gray-800">{details._id || details.id || 'N/A'}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Requested Date</span>
+                            <span className="font-medium text-gray-800">
+                                {details.requestDate ? new Date(details.requestDate).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A'}
+                            </span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Processed Date</span>
+                            <span className="font-medium text-gray-800">
+                                {details.processedDate ? new Date(details.processedDate).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'N/A'}
+                            </span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Amount</span>
+                            <span className="font-medium text-gray-800">${(details.amount || 0).toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Status</span>
+                            <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
+                                ${details.status === 'Approved' || details.status === 'Completed'
+                                    ? 'bg-green-50 text-green-600 border-green-200'
+                                    : details.status === 'Rejected'
+                                        ? 'bg-red-50 text-red-600 border-red-200'
+                                        : 'bg-yellow-50 text-yellow-600 border-yellow-200'
+                                }`}>
+                                <span className={`w-1.5 h-1.5 rounded-full inline-block ${details.status === 'Approved' || details.status === 'Completed' ? 'bg-green-500' : details.status === 'Rejected' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+                                {details.status || 'Pending'}
+                            </span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Bank Name</span>
+                            <span className="font-medium text-gray-800">{details.bankName || 'N/A'}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Account Number</span>
+                            <span className="font-medium text-gray-800">{details.accountNumber || 'N/A'}</span>
+                        </div>
+                        {details.adminNotes && (
+                            <div className="flex flex-col border-b border-gray-50 pb-2">
+                                <span className="text-gray-400 text-xs mb-1">Admin Notes</span>
+                                <span className="font-medium text-gray-800 text-sm">{details.adminNotes}</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                <button
+                    onClick={onClose}
+                    className="w-full mt-5 border border-gray-200 text-gray-600 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition"
+                >
+                    Close
+                </button>
+            </div>
+        </Modal>
+    );
+};
+
 const Page = () => {
     const [activeTab, setActiveTab] = useState('payments');
     const [page, setPage] = useState(1);
     const [withdrawalOpen, setWithdrawalOpen] = useState(false);
     const [editAccountOpen, setEditAccountOpen] = useState(false);
     const [infoTx, setInfoTx] = useState(null);
+    const [withdrawDetailsId, setWithdrawDetailsId] = useState(null);
 
-    const [account, setAccount] = useState({
-        holderName: 'John Doe',
-        bankName: 'Chase Bank',
-        bankBranch: 'Manhattan Main Branch',
-        accountNumber: '****5678',
-        routingNumber: '02100000254',
-        accountType: 'Savings',
-    });
+    const { data: walletData, isLoading: walletLoading } = useGetWalletOverviewQuery();
+    const { data: paymentsData, isLoading: paymentsLoading } = useGetSuccessfulPaymentsQuery({ page, limit: ITEMS_PER_PAGE });
+    const { data: withdrawalData, isLoading: withdrawalLoading } = useGetWithdrawalHistoryQuery({ page: 1, limit: 10 });
+    const { data: bankInfoData, isLoading: bankLoading } = useGetBankInfoQuery();
+    const [requestWithdrawal, { isLoading: withdrawalSubmitting }] = useRequestWithdrawalMutation();
+    const [updateBankInfo, { isLoading: bankSaveLoading }] = useUpdateBankInfoMutation();
 
-    const balance = 2450.75;
-    const totalPages = Math.ceil(transactions.length / ITEMS_PER_PAGE);
-    const currentData = activeTab === 'payments'
-        ? transactions.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
-        : withdrawalHistory;
+    const wallet = walletData?.data || walletData;
+    const payments = paymentsData?.data || paymentsData || [];
+    const withdrawals = withdrawalData?.data || withdrawalData || [];
+    const bankInfo = bankInfoData?.data || bankInfoData;
+
+    const balance = wallet?.currentBalance || 0;
+    const pendingCount = wallet?.pendingWithdrawalsCount || 0;
+    const totalEarnings = wallet?.totalEarnings || 0;
+
+    const handleWithdrawalSubmit = async (data) => {
+        try {
+            await requestWithdrawal(data).unwrap();
+            alert('Withdrawal request submitted successfully!');
+            setWithdrawalOpen(false);
+        } catch (error) {
+            alert(error?.data?.message || 'Failed to submit withdrawal request');
+        }
+    };
+
+    const handleBankSave = async (data) => {
+        try {
+            await updateBankInfo(data).unwrap();
+            alert('Bank information saved successfully!');
+            setEditAccountOpen(false);
+        } catch (error) {
+            alert(error?.data?.message || 'Failed to save bank information');
+        }
+    };
+
+    const currentData = activeTab === 'payments' ? payments : withdrawals;
+    const isLoadingPayments = activeTab === 'payments' ? paymentsLoading : withdrawalLoading;
 
     return (
         <div className="relative py-10">
@@ -231,39 +355,45 @@ const Page = () => {
 
             <div className="p-4 z-[999] space-y-4 max-w-6xl mx-auto bg-gray-100 rounded-2xl my-5 shadow-sm">
 
-                {/* ── Stat Cards ── */}
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
-                    {/* Current Balance */}
                     <div className="bg-indigo-900 text-white rounded-2xl p-10 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
                             <p className="text-xs font-medium opacity-80">Current Balance</p>
                             <span className="text-3xl">💵</span>
                         </div>
-                        <p className="text-5xl font-bold">${balance.toFixed(2)}</p>
+                        {walletLoading ? (
+                            <div className="h-12 bg-indigo-800 animate-pulse rounded"></div>
+                        ) : (
+                                <p className="text-5xl font-bold">${balance.toFixed(2)}</p>
+                        )}
                     </div>
 
-                    {/* Pending Withdrawals */}
                     <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
                             <p className="text-xs font-medium text-gray-500">Pending Withdrawals</p>
                             <span className="text-3xl">⏰</span>
                         </div>
-                        <p className="text-5xl font-bold text-red-500">2</p>
+                        {walletLoading ? (
+                            <div className="h-12 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <p className="text-5xl font-bold text-red-500">{pendingCount}</p>
+                        )}
                     </div>
 
-                    {/* Total Earnings */}
                     <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
                             <p className="text-xs font-medium text-gray-500">Total Earnings</p>
                             <span className="text-3xl">📈</span>
                         </div>
-                        <p className="text-5xl font-bold text-green-500">$7705.75</p>
+                        {walletLoading ? (
+                            <div className="h-12 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <p className="text-5xl font-bold text-green-500">${totalEarnings.toFixed(2)}</p>
+                        )}
                     </div>
                 </div>
 
-                {/* ── Transaction History ── */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-                    {/* Header */}
                     <div className="flex items-start justify-between mb-1">
                         <div>
                             <h2 className=" font-bold text-gray-900">Transaction History</h2>
@@ -277,7 +407,6 @@ const Page = () => {
                         </button>
                     </div>
 
-                    {/* Tabs */}
                     <div className="flex bg-gray-100 rounded-xl p-1 my-4 ">
                         {[['payments', 'Successful Payments'], ['withdrawals', 'Withdrawal History']].map(([key, label]) => (
                             <button
@@ -291,10 +420,8 @@ const Page = () => {
                         ))}
                     </div>
 
-                    {/* Table */}
                     <div className="rounded-xl overflow-x-auto  border border-gray-100">
                         <div className="min-w-[600px]">
-                            {/* Header */}
                             <div className={`grid text-xs font-semibold text-indigo-700 bg-indigo-50 px-4 py-3 ${activeTab === 'payments' ? 'grid-cols-5' : 'grid-cols-5'}`}>
                                 <span>No</span>
                                 <span>Processed Date</span>
@@ -303,65 +430,69 @@ const Page = () => {
                                 <span className="text-center">Details</span>
                             </div>
 
-                            {/* Rows */}
-                            {currentData.map((row, i) => (
-                                <div
-                                    key={i}
-                                    className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
-                                >
-                                    <span className="text-gray-400">{row.id}</span>
-                                    <span>{row.date}</span>
-                                    <span className="text-gray-500">{row.txId}</span>
-                                    <span>{row.amount}</span>
-                                    <Link href={`/mentor/wallet/${row.id}`} className="flex justify-center">
-                                        {activeTab === 'payments' ? (
-                                            <button
-                                                // onClick={() => setInfoTx(row)}
-                                                className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                            </button>
-                                        ) : (
-                                            <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border
-                                        ${row.status === 'Approved'
-                                                    ? 'bg-green-50 text-green-600 border-green-200'
-                                                    : 'bg-yellow-50 text-yellow-600 border-yellow-200'
-                                                }`}>
-                                                <span className={`w-1.5 h-1.5 rounded-full inline-block ${row.status === 'Approved' ? 'bg-green-500' : 'bg-yellow-500'}`} />
-                                                {row.status}
-                                            </span>
-                                        )}
-                                    </Link>
+                            {isLoadingPayments ? (
+                                Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
+                                    <div key={i} className="grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50">
+                                        <div className="h-4 bg-gray-100 animate-pulse rounded"></div>
+                                    </div>
+                                ))
+                            ) : currentData.length > 0 ? (
+                                currentData.map((row, i) => (
+                                    <div
+                                        key={i}
+                                        className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}
+                                    >
+                                        <span className="text-gray-400">{i + 1}</span>
+                                        <span>
+                                            {row.processedDate || row.requestDate
+                                                ? new Date(row.processedDate || row.requestDate).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                                : 'N/A'}
+                                        </span>
+                                        <span className="text-gray-500">{row.transactionId || row._id}</span>
+                                        <span>${(row.amount || 0).toFixed(2)}</span>
+                                        <Link href={`/mentor/wallet/${row._id || row.id}`} className="flex justify-center">
+                                            {activeTab === 'payments' ? (
+                                                <button
+                                                    onClick={() => setInfoTx(row)}
+                                                    className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => setWithdrawDetailsId(row._id || row.id)}
+                                                    className="w-7 h-7 rounded-full border border-indigo-200 bg-indigo-50 flex items-center justify-center hover:bg-indigo-100 transition"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            )}
+                                        </Link>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="px-4 py-8 text-center text-gray-400 text-sm">
+                                    No data found
                                 </div>
-                            ))}
+                            )}
                         </div>
                     </div>
 
-                    {/* Pagination (only for payments) */}
                     {activeTab === 'payments' && (
                         <div className="flex items-center justify-end gap-2 mt-4">
                             <button
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
-                                disabled={page === 1}
+                                disabled={page === 1 || paymentsLoading}
                                 className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
                             >
                                 Previous
                             </button>
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                                <button
-                                    key={n}
-                                    onClick={() => setPage(n)}
-                                    className={`w-7 h-7 rounded-lg text-xs font-medium transition-all
-                                    ${page === n ? 'bg-indigo-800 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
-                                >
-                                    {n}
-                                </button>
-                            ))}
                             <button
-                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                                disabled={page === totalPages}
+                                onClick={() => setPage(p => p + 1)}
+                                disabled={currentData.length < ITEMS_PER_PAGE || paymentsLoading}
                                 className="text-xs text-gray-500 hover:text-gray-800 disabled:opacity-30 px-2 py-1"
                             >
                                 Next
@@ -370,7 +501,6 @@ const Page = () => {
                     )}
                 </div>
 
-                {/* ── Account Information ── */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                     <div className="flex items-start justify-between mb-4">
                         <div>
@@ -388,40 +518,57 @@ const Page = () => {
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        {[
-                            { icon: '👤', label: 'Account Holder', value: account.holderName },
-                            { icon: '🏦', label: 'Bank Name', value: account.bankName },
-                            { icon: '💳', label: 'Account Number', value: account.accountNumber },
-                            { icon: '#', label: 'Routing Number', value: account.routingNumber },
-                        ].map((item) => (
-                            <div key={item.label} className="border border-gray-100 rounded-xl p-3">
-                                <div className="flex items-center gap-1.5 mb-1">
-                                    <span className="text-sm">{item.icon}</span>
-                                    <span className="text-xs text-gray-400">{item.label}</span>
+                    {bankLoading ? (
+                        <div className="grid grid-cols-2 gap-4">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                                <div key={i} className="border border-gray-100 rounded-xl p-3">
+                                    <div className="h-4 bg-gray-100 animate-pulse rounded"></div>
                                 </div>
-                                <p className="text-sm font-semibold text-gray-800">{item.value}</p>
+                            ))}
+                        </div>
+                    ) : (
+                            <div className="grid grid-cols-2 gap-4">
+                                {[
+                                    { icon: '👤', label: 'Account Holder', value: bankInfo?.accountHolderName || 'Not set' },
+                                    { icon: '🏦', label: 'Bank Name', value: bankInfo?.bankName || 'Not set' },
+                                    { icon: '💳', label: 'Account Number', value: bankInfo?.accountNumber || 'Not set' },
+                                    { icon: '#', label: 'Routing Number', value: bankInfo?.routingNumber || 'Not set' },
+                                ].map((item) => (
+                                    <div key={item.label} className="border border-gray-100 rounded-xl p-3">
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <span className="text-sm">{item.icon}</span>
+                                            <span className="text-xs text-gray-400">{item.label}</span>
+                                        </div>
+                                        <p className="text-sm font-semibold text-gray-800">{item.value}</p>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                    )}
                 </div>
 
-                {/* ── Modals ── */}
                 <WithdrawalModal
                     open={withdrawalOpen}
                     onClose={() => setWithdrawalOpen(false)}
                     balance={balance}
+                    onSubmit={handleWithdrawalSubmit}
+                    isLoading={withdrawalSubmitting}
                 />
                 <EditAccountModal
                     open={editAccountOpen}
                     onClose={() => setEditAccountOpen(false)}
-                    account={account}
-                    onSave={(updated) => setAccount(updated)}
+                    account={bankInfo}
+                    onSave={handleBankSave}
+                    isLoading={bankSaveLoading}
                 />
                 <InfoModal
                     open={!!infoTx}
                     onClose={() => setInfoTx(null)}
                     tx={infoTx}
+                />
+                <WithdrawDetailsModal
+                    open={!!withdrawDetailsId}
+                    onClose={() => setWithdrawDetailsId(null)}
+                    withdrawalId={withdrawDetailsId}
                 />
             </div>
         </div>

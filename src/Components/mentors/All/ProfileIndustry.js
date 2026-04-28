@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const industries = [
     'Technology',
@@ -11,10 +11,17 @@ const industries = [
     'E-Commerce',
 ];
 
-const ProfileIndustry = () => {
+const ProfileIndustry = ({ data = [] }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [selected,  setSelected]  = useState('Technology');
-    const [saved,     setSaved]     = useState('Technology');
+    const [selected, setSelected] = useState('');
+    const [saved, setSaved] = useState('');
+
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setSelected(data[0]);
+            setSaved(data[0]);
+        }
+    }, [data]);
 
     const handleSave = () => {
         setSaved(selected);

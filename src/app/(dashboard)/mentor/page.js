@@ -1,3 +1,5 @@
+'use client';
+
 import MentorDashboardFullDetails from '@/Components/mentors/All/MentorDashboardFullDetails';
 import WelcomeFutureMentor from '@/Components/mentors/All/WelcomeFutureMentor';
 import BeginQuestionnaire from '@/Components/Students/All/Questions/BeginQuestionnaire';

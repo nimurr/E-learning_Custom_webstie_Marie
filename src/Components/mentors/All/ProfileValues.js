@@ -1,13 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const defaultValues = ['Technology', 'Growth', 'Empathy', 'Technology', 'Growth', 'Empathy'];
-
-const ProfileValues = () => {
-    const [isEditing,  setIsEditing]  = useState(false);
-    const [values,     setValues]     = useState(defaultValues);
-    const [saved,      setSaved]      = useState(defaultValues);
+const ProfileValues = ({ data = [] }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [values, setValues] = useState([]);
+    const [saved, setSaved] = useState([]);
     const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+        if (data) {
+            setValues(data);
+            setSaved(data);
+        }
+    }, [data]);
 
     const handleAdd = () => {
         const trimmed = inputValue.trim();

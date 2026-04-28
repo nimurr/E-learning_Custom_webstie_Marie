@@ -1,28 +1,40 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const plans = [
-    {
-        value: 'galactic',
-        name: 'Galactic Guide',
-        tagline: 'For serious mentors growing their reach.',
-        price: 49,
-        badge: 'On Going',
-        features: [
-            'Priority Profile Visibility',
-            'Unlimited Leads',
-            '"Verified Mentor" Badge',
-            'Smart AI Matching',
-        ],
-    },
-    {
-        value: 'stellar',
-        name: 'Stellar Explorer',
-        tagline: 'Essential tools new mentors',
-        price: 19,
-        badge: null,
-        features: [
-            'Basic profile visibility',
+const ProfileSubscription = ({ data = {}, isLive = false }) => {
+    const [isChanging, setIsChanging] = useState(false);
+    const [selected, setSelected] = useState(data.subscriptionPlanId || '');
+    const [saved, setSaved] = useState(data.subscriptionPlanId || '');
+
+    useEffect(() => {
+        if (data?.subscriptionPlanId) {
+            setSelected(data.subscriptionPlanId);
+            setSaved(data.subscriptionPlanId);
+        }
+    }, [data]);
+
+    const plans = [
+        {
+            value: 'galactic',
+            name: 'Galactic Guide',
+            tagline: 'For serious mentors growing their reach.',
+            price: 49,
+            badge: selected && isLive ? 'Active' : null,
+            features: [
+                'Priority Profile Visibility',
+                'Unlimited Leads',
+                '"Verified Mentor" Badge',
+                'Smart AI Matching',
+            ],
+        },
+        {
+            value: 'stellar',
+            name: 'Stellar Explorer',
+            tagline: 'Essential tools new mentors',
+            price: 19,
+            badge: null,
+            features: [
+                'Basic profile visibility',
             'Up to 3 leads per month',
             'Standard search listing',
             'Smart AI Matching',
@@ -42,11 +54,6 @@ const plans = [
         ],
     },
 ];
-
-const ProfileSubscription = () => {
-    const [selected, setSelected] = useState('universal');
-    const [isChanging, setIsChanging] = useState(false);
-    const [saved, setSaved] = useState('universal');
 
     const handleChangePlan = () => {
         if (isChanging) {

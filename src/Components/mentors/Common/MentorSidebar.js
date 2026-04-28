@@ -80,8 +80,8 @@ const MentorSidebar = ({ isOpen, setIsOpen }) => {
                 {/* LOGO */}
                 <Link href="/" className="p-4 border-b border-gray-300 relative">
                     <img
-                        className="w-2/3 mx-auto"
-                        src="/Images/Auth/logo_student_dash.png"
+                        className="w-[100px] mx-auto"
+                        src="/Images/Auth/main_logo.jpg"
                         alt="Logo"
                     />
                 </Link>

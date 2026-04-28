@@ -1,9 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Checkbox, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useUpdateInnerFuelMutation } from '@/redux/fetures/Mentors/MentorOnboarding';
+import { toast } from 'react-toastify';
 
-// ── Data ──────────────────────────────────────────────────────
 const coreValueOptions = [
     'Growth', 'Empathy', 'Creativity', 'Balance',
     'Impact', 'Authenticity', 'Leadership', 'Innovation',
@@ -17,7 +18,6 @@ const specialtyOptions = [
 
 const MAX_SELECT = 5;
 
-// ── Chip Grid Component ───────────────────────────────────────
 const ChipGrid = ({ options, selected, onToggle, max, customItems = [], onAddCustom }) => {
     const [showInput, setShowInput] = useState(false);
     const [inputVal, setInputVal] = useState('');
@@ -58,7 +58,6 @@ const ChipGrid = ({ options, selected, onToggle, max, customItems = [], onAddCus
                 );
             })}
 
-            {/* Add Custom */}
             {onAddCustom && (
                 showInput ? (
                     <Input
@@ -85,11 +84,20 @@ const ChipGrid = ({ options, selected, onToggle, max, customItems = [], onAddCus
     );
 };
 
-// ── InnerFuelTab ──────────────────────────────────────────────
-const InnerFuelTab = ({ onNext, onBack }) => {
+const InnerFuelTab = ({ onNext, onBack, initialData }) => {
     const [selectedValues, setSelectedValues] = useState([]);
     const [selectedSpecialties, setSelectedSpecialties] = useState([]);
     const [customSpecialties, setCustomSpecialties] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const [updateInnerFuel] = useUpdateInnerFuelMutation();
+
+    useEffect(() => {
+        if (initialData) {
+            setSelectedValues(initialData.coreValues || []);
+            setSelectedSpecialties(initialData.specialties || []);
+        }
+    }, [initialData]);
 
     const toggle = (setter) => (item) =>
         setter((prev) =>
@@ -103,17 +111,37 @@ const InnerFuelTab = ({ onNext, onBack }) => {
         }
     };
 
-    const handleSubmit = () => {
-        onNext?.({
-            coreValues: selectedValues,
-            specialties: selectedSpecialties,
-        });
+    const handleSubmit = async () => {
+        if (selectedValues.length < MAX_SELECT) {
+            toast.warning(`Please select at least ${MAX_SELECT} core values`);
+            return;
+        }
+        if (selectedSpecialties.length < MAX_SELECT) {
+            toast.warning(`Please select at least ${MAX_SELECT} specialties`);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const payload = {
+                coreValues: selectedValues,
+                specialties: selectedSpecialties,
+            };
+
+            await updateInnerFuel(payload).unwrap();
+            toast.success('Inner fuel saved successfully!');
+            onNext(payload);
+        } catch (error) {
+            console.error('Error saving inner fuel:', error);
+            toast.error(error?.data?.message || 'Failed to save inner fuel');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 space-y-6">
 
-            {/* ── Core Values ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Core Value{' '}
@@ -132,7 +160,6 @@ const InnerFuelTab = ({ onNext, onBack }) => {
                 />
             </div>
 
-            {/* ── Specialties ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Specialties{' '}
@@ -153,7 +180,6 @@ const InnerFuelTab = ({ onNext, onBack }) => {
                 />
             </div>
 
-            {/* ── Buttons ── */}
             <div className="flex gap-3 pt-2">
                 {onBack && (
                     <Button
@@ -170,6 +196,7 @@ const InnerFuelTab = ({ onNext, onBack }) => {
                     size="large"
                     onClick={handleSubmit}
                     block
+                    loading={loading}
                     className='bg-primary text-white h-12'
                 >
                     Save & Continue

@@ -1,40 +1,7 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
+import { useGetRevenueDataQuery, useGetRevenueTrendQuery, useGetPayoutHistoryQuery } from '@/redux/api/mentorApi';
 
-// ── Data ──────────────────────────────────────────────────────
-const chartData = {
-    Monthly: [
-        { month: 'Jan', revenue: 4200 },
-        { month: 'Feb', revenue: 11800 },
-        { month: 'Mar', revenue: 5300 },
-        { month: 'Apr', revenue: 10200 },
-        { month: 'May', revenue: 6800 },
-        { month: 'Jun', revenue: 5500 },
-    ],
-    Quarterly: [
-        { month: 'Q1', revenue: 21300 },
-        { month: 'Q2', revenue: 22500 },
-        { month: 'Q3', revenue: 18900 },
-        { month: 'Q4', revenue: 26100 },
-    ],
-    Annually: [
-        { month: '2021', revenue: 38000 },
-        { month: '2022', revenue: 52000 },
-        { month: '2023', revenue: 67000 },
-        { month: '2024', revenue: 82000 },
-    ],
-};
-
-const payoutHistory = [
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-    { id: '01', mentee: 'Tasmia Hassan', email: 'tasmia@gmail.com', amount: '$70.00', status: 'Completed' },
-];
-
-// ── Pure SVG Area Chart (zero dependencies) ───────────────────
 const AreaChart = ({ data }) => {
     const [tooltip, setTooltip] = useState(null);
     const svgRef = useRef(null);
@@ -44,20 +11,29 @@ const AreaChart = ({ data }) => {
     const chartW = W - padL - padR;
     const chartH = H - padT - padB;
 
-    const maxVal = Math.max(...data.map(d => d.revenue));
+    const chartData = useMemo(() => {
+        if (!data || data.length === 0) {
+            return [{ period: '', amount: 0 }];
+        }
+        return data.map(d => ({
+            period: d.period,
+            amount: d.amount || 0
+        }));
+    }, [data]);
+
+    const maxVal = Math.max(...chartData.map(d => d.amount));
     const minVal = 0;
     const range = maxVal - minVal || 1;
 
-    const getX = (i) => padL + (i / (data.length - 1)) * chartW;
+    const getX = (i) => padL + (i / (chartData.length - 1 || 1)) * chartW;
     const getY = (v) => padT + chartH - ((v - minVal) / range) * chartH;
 
-    // Smooth cubic bezier path
     const buildPath = () => {
-        if (data.length < 2) return '';
-        let d = `M ${getX(0)} ${getY(data[0].revenue)}`;
-        for (let i = 1; i < data.length; i++) {
-            const x0 = getX(i - 1), y0 = getY(data[i - 1].revenue);
-            const x1 = getX(i), y1 = getY(data[i].revenue);
+        if (chartData.length < 2) return '';
+        let d = `M ${getX(0)} ${getY(chartData[0].amount)}`;
+        for (let i = 1; i < chartData.length; i++) {
+            const x0 = getX(i - 1), y0 = getY(chartData[i - 1].amount);
+            const x1 = getX(i), y1 = getY(chartData[i].amount);
             const cpX = (x0 + x1) / 2;
             d += ` C ${cpX} ${y0}, ${cpX} ${y1}, ${x1} ${y1}`;
         }
@@ -66,7 +42,7 @@ const AreaChart = ({ data }) => {
 
     const linePath = buildPath();
     const areaPath = linePath
-        + ` L ${getX(data.length - 1)} ${padT + chartH}`
+        + ` L ${getX(chartData.length - 1)} ${padT + chartH}`
         + ` L ${getX(0)} ${padT + chartH} Z`;
 
     const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => ({
@@ -80,13 +56,27 @@ const AreaChart = ({ data }) => {
         const rect = svg.getBoundingClientRect();
         const scaleX = W / rect.width;
         const mx = (e.clientX - rect.left) * scaleX - padL;
-        const idx = Math.round((mx / chartW) * (data.length - 1));
-        const clamped = Math.max(0, Math.min(data.length - 1, idx));
-        setTooltip({ idx: clamped, x: getX(clamped), y: getY(data[clamped].revenue) });
+        const idx = Math.round((mx / chartW) * (chartData.length - 1));
+        const clamped = Math.max(0, Math.min(chartData.length - 1, idx));
+        setTooltip({ idx: clamped, x: getX(clamped), y: getY(chartData[clamped].amount) });
     };
 
     const tooltipX = tooltip ? Math.min(tooltip.x - 44, W - padR - 92) : 0;
     const tooltipY = tooltip ? Math.max(tooltip.y - 44, padT) : 0;
+
+    const formatPeriod = (period) => {
+        if (!period) return '';
+        const parts = period.split('-');
+        if (parts.length === 2) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const monthIdx = parseInt(parts[1]) - 1;
+            return months[monthIdx] || period;
+        }
+        if (parts.length === 3) {
+            return parts[2];
+        }
+        return period;
+    };
 
     return (
         <svg
@@ -104,7 +94,6 @@ const AreaChart = ({ data }) => {
                 </linearGradient>
             </defs>
 
-            {/* Grid lines + Y labels */}
             {yTicks.map((t, i) => (
                 <g key={i}>
                     <line x1={padL} y1={t.y} x2={W - padR} y2={t.y} stroke="#f0f0f0" strokeWidth="1" />
@@ -114,20 +103,15 @@ const AreaChart = ({ data }) => {
                 </g>
             ))}
 
-            {/* Area */}
             <path d={areaPath} fill="url(#areaGrad)" />
-
-            {/* Line */}
             <path d={linePath} fill="none" stroke="#4338ca" strokeWidth="2.5" strokeLinecap="round" />
 
-            {/* X labels */}
-            {data.map((d, i) => (
+            {chartData.map((d, i) => (
                 <text key={i} x={getX(i)} y={H - 6} textAnchor="middle" fontSize="9" fill="#9ca3af">
-                    {d.month}
+                    {formatPeriod(d.period)}
                 </text>
             ))}
 
-            {/* Tooltip */}
             {tooltip && (
                 <g>
                     <line
@@ -139,10 +123,10 @@ const AreaChart = ({ data }) => {
                     <g transform={`translate(${tooltipX}, ${tooltipY})`}>
                         <rect width="92" height="36" rx="8" fill="#3730a3" />
                         <text x="8" y="14" fontSize="9" fill="white" fontWeight="600">
-                            {data[tooltip.idx].month}
+                            {formatPeriod(chartData[tooltip.idx].period)}
                         </text>
                         <text x="8" y="28" fontSize="9" fill="#c7d2fe">
-                            ${data[tooltip.idx].revenue.toLocaleString()}
+                            ${chartData[tooltip.idx].amount.toLocaleString()}
                         </text>
                     </g>
                 </g>
@@ -151,51 +135,76 @@ const AreaChart = ({ data }) => {
     );
 };
 
-// ── Page ──────────────────────────────────────────────────────
 const Page = () => {
-    const [period, setPeriod] = useState('Monthly');
-    const data = chartData[period];
+    const [period, setPeriod] = useState('monthly');
+
+    const { data: revenueData, isLoading: revenueLoading } = useGetRevenueDataQuery();
+    const { data: trendData, isLoading: trendLoading } = useGetRevenueTrendQuery(period);
+    const { data: payoutData, isLoading: payoutLoading } = useGetPayoutHistoryQuery({ page: 1, limit: 10 });
+
+    const revenue = revenueData?.data || revenueData;
+    const payouts = payoutData?.data || payoutData || [];
+    const trend = trendData?.data || trendData || [];
+
+    const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
 
     return (
         <div className="relative py-10">
             <div className="absolute inset-0 bg-[url('/Images/StudentsDash/page_bg.png')] bg-cover bg-no-repeat opacity-60" />
 
-            <div className="p-4 relative space-y-4 bg-gray-100 min-h-screen max-w-6xl mx-auto rounded-lg shadow-md   py-5">
+            <div className="p-4 relative space-y-4 bg-gray-100 min-h-screen max-w-6xl mx-auto rounded-lg shadow-md py-5">
 
-
-                {/* Stat Cards */}
                 <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
                             <p className="text-sm font-semibold text-gray-600">Lifetime Earnings</p>
                             <span className="text-2xl">💵</span>
                         </div>
-                        <p className="text-2xl font-bold text-gray-900 mb-2">$12,400.00</p>
-                        <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                            <span>🗓</span>
-                            <span>06 months' total earning</span>
-                        </div>
+                        {revenueLoading ? (
+                            <div className="h-10 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <>
+                                <p className="text-2xl font-bold text-gray-900 mb-2">
+                                    ${(revenue?.lifetimeEarnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                </p>
+                                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                                    <span>🗓</span>
+                                        <span>{revenue?.timePeriod || '0 months'}' total earning</span>
+                                    </div>
+                            </>
+                        )}
                     </div>
 
                     <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
-                            <p className="text-sm font-semibold text-gray-600">This Month (Jan)</p>
+                            <p className="text-sm font-semibold text-gray-600">This Month ({currentMonthName})</p>
                             <span className="text-2xl">🚀</span>
                         </div>
-                        <p className="text-2xl font-bold text-gray-900 mb-2">$3,240.00</p>
-                        <div className="flex items-center gap-1.5 text-xs text-green-500 font-medium">
-                            <span>↗</span>
-                            <span>5% Increased from last month</span>
-                        </div>
+                        {revenueLoading ? (
+                            <div className="h-10 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <>
+                                <p className="text-2xl font-bold text-gray-900 mb-2">
+                                    ${(revenue?.thisMonthEarnings || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                </p>
+                                <div className="flex items-center gap-1.5 text-xs font-medium">
+                                    <span className={revenue?.monthlyGrowthPercentage >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                        {revenue?.monthlyGrowthPercentage >= 0 ? '↗' : '↘'}
+                                    </span>
+                                    <span className={revenue?.monthlyGrowthPercentage >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                        {Math.abs(revenue?.monthlyGrowthPercentage || 0)}% {revenue?.monthlyGrowthPercentage >= 0 ? 'Increased' : 'Decreased'} from last month
+                                    </span>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                {/* Revenue Trend */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-sm font-semibold text-gray-800">Revenue Trend</h2>
                         <div className="flex border border-gray-200 rounded-lg overflow-hidden text-xs">
-                            {['Monthly', 'Quarterly', 'Annually'].map((p) => (
+                            {['monthly', 'quarterly', 'annually'].map((p) => (
                                 <button
                                     key={p}
                                     onClick={() => setPeriod(p)}
@@ -204,43 +213,58 @@ const Page = () => {
                                         : 'bg-white text-gray-500 hover:bg-gray-50'
                                         }`}
                                 >
-                                    {p}
+                                    {p.charAt(0).toUpperCase() + p.slice(1)}
                                 </button>
                             ))}
                         </div>
                     </div>
-                    <AreaChart key={period} data={data} />
+                    {trendLoading ? (
+                        <div className="h-52 bg-gray-100 animate-pulse rounded"></div>
+                    ) : (
+                        <AreaChart key={period} data={trend} />
+                    )}
                 </div>
 
-                {/* Payout History */}
                 <div className="bg-white border overflow-x-auto border-gray-100 rounded-2xl p-5 shadow-sm">
                     <h2 className="text-sm font-semibold text-gray-800 mb-4">Payout History</h2>
-                    <div className="rounded-xl  min-w-[600px] border border-gray-100">
+                    <div className="rounded-xl min-w-[600px] border border-gray-100">
                         <div className="grid grid-cols-5 bg-indigo-50 px-4 py-2.5 text-xs font-semibold text-indigo-800">
                             <span>No</span>
-                            <span>Mantee</span>
+                            <span>Mentee</span>
                             <span>Email</span>
                             <span>Amount</span>
                             <span>Payment Status</span>
                         </div>
-                        {payoutHistory.map((row, i) => (
-                            <div
-                                key={i}
-                                className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
-                                    }`}
-                            >
-                                <span className="text-gray-400">{row.id}</span>
-                                <span className="font-medium text-gray-700">{row.mentee}</span>
-                                <span className="text-gray-400">{row.email}</span>
-                                <span>{row.amount}</span>
-                                <span>
-                                    <span className="inline-flex items-center gap-1 bg-green-50 text-green-600 border border-green-200 text-xs font-medium px-2.5 py-1.5 rounded-full">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                                        {row.status}
+                        {payoutLoading ? (
+                            Array.from({ length: 5 }).map((_, i) => (
+                                <div key={i} className="grid grid-cols-5 px-4 py-3 border-t border-gray-50">
+                                    <div className="h-4 bg-gray-100 animate-pulse rounded"></div>
+                                </div>
+                            ))
+                        ) : payouts.length > 0 ? (
+                            payouts.map((row, i) => (
+                                <div
+                                    key={i}
+                                    className={`grid grid-cols-5 px-4 py-3 text-xs text-gray-600 items-center border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                                        }`}
+                                >
+                                    <span className="text-gray-400">{i + 1}</span>
+                                    <span className="font-medium text-gray-700">{row.mentorName || 'N/A'}</span>
+                                    <span className="text-gray-400">{row.email || 'N/A'}</span>
+                                    <span>${(row.amount || 0).toFixed(2)}</span>
+                                    <span>
+                                        <span className="inline-flex items-center gap-1 bg-green-50 text-green-600 border border-green-200 text-xs font-medium px-2.5 py-1.5 rounded-full">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+                                            {row.status || 'Completed'}
+                                        </span>
                                     </span>
-                                </span>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="px-4 py-8 text-center text-gray-400 text-sm">
+                                No payout history found
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </div>

@@ -17,9 +17,9 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <img
-              src="/Images/Auth/logo.png"
+              src="/Images/Auth/main_logo.jpg"
               alt="Propulsaria"
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
           </div>
 

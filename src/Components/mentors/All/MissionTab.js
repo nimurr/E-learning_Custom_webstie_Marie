@@ -1,16 +1,17 @@
 'use client';
-import React, { useState } from 'react';
-import { Button, Checkbox, Radio, Tag, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Checkbox, Radio, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useUpdateMissionMutation } from '@/redux/fetures/Mentors/MentorOnboarding';
+import { toast } from 'react-toastify';
 
-// ── Data ──────────────────────────────────────────────────────
 const careerStages = [
-    { value: 'students', label: 'Students & Interns', sub: 'Staring their journey' },
+    { value: 'students', label: 'Students & Interns', sub: 'Starting their journey' },
     { value: 'early_career', label: 'Early Career', sub: '0-3 years experience' },
     { value: 'mid_level', label: 'Mid-Level', sub: '3-7 years experience' },
     { value: 'senior', label: 'Senior Leadership', sub: 'Manager, Director, VP' },
     { value: 'executives', label: 'Executives', sub: 'C-Suite, Founders' },
-    { value: 'career_pivoters', label: 'Career Pivoters', sub: 'Charging Industries' },
+    { value: 'career_pivoters', label: 'Career Pivoters', sub: 'Changing Industries' },
 ];
 
 const focusAreaOptions = [
@@ -23,28 +24,35 @@ const industryOptions = [
     'Education', 'Healthcare', 'E-Commerce',
 ];
 
-// ── MissionTab ────────────────────────────────────────────────
-const MissionTab = ({ onNext, onBack }) => {
+const MissionTab = ({ onNext, onBack, initialData }) => {
     const [selectedStages, setSelectedStages] = useState([]);
     const [selectedFocus, setSelectedFocus] = useState([]);
     const [customFocusItems, setCustomFocusItems] = useState([]);
     const [customInput, setCustomInput] = useState('');
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [selectedIndustry, setSelectedIndustry] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // Career stage toggle
+    const [updateMission] = useUpdateMissionMutation();
+
+    useEffect(() => {
+        if (initialData) {
+            setSelectedStages(initialData.careerStage || []);
+            setSelectedFocus(initialData.focusArea || []);
+            setSelectedIndustry(initialData.industry?.[0] || '');
+        }
+    }, [initialData]);
+
     const toggleStage = (value) =>
         setSelectedStages((prev) =>
             prev.includes(value) ? prev.filter((s) => s !== value) : [...prev, value]
         );
 
-    // Focus area toggle
     const toggleFocus = (value) =>
         setSelectedFocus((prev) =>
             prev.includes(value) ? prev.filter((f) => f !== value) : [...prev, value]
         );
 
-    // Add custom focus area
     const addCustomFocus = () => {
         const trimmed = customInput.trim();
         if (trimmed && !customFocusItems.includes(trimmed)) {
@@ -55,18 +63,41 @@ const MissionTab = ({ onNext, onBack }) => {
         setShowCustomInput(false);
     };
 
-    const handleSubmit = () => {
-        onNext?.({
-            careerStages: selectedStages,
-            focusAreas: selectedFocus,
-            industry: selectedIndustry,
-        });
+    const handleSubmit = async () => {
+        if (selectedStages.length === 0) {
+            toast.warning('Please select at least one career stage');
+            return;
+        }
+        if (selectedFocus.length === 0) {
+            toast.warning('Please select at least one focus area');
+            return;
+        }
+        if (!selectedIndustry) {
+            toast.warning('Please select an industry');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const payload = {
+                careerStage: selectedStages,
+                focusArea: selectedFocus,
+                industry: [selectedIndustry],
+            };
+
+            await updateMission(payload).unwrap();
+            toast.success('Mission saved successfully!');
+            onNext(payload);
+        } catch (error) {
+            console.error('Error saving mission:', error);
+            toast.error(error?.data?.message || 'Failed to save mission');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5 space-y-7">
-
-            {/* ── Section 1: Career Stages ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Who Do You Want To Mentor? <span className="font-normal text-gray-500">(Select Career Stages)</span>
@@ -95,7 +126,6 @@ const MissionTab = ({ onNext, onBack }) => {
                 </div>
             </div>
 
-            {/* ── Section 2: Focus Area ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Focus Area <span className="font-normal text-gray-500">(Select All That Apply)</span>
@@ -119,7 +149,6 @@ const MissionTab = ({ onNext, onBack }) => {
                         );
                     })}
 
-                    {/* Add Custom */}
                     {showCustomInput ? (
                         <Input
                             autoFocus
@@ -144,7 +173,6 @@ const MissionTab = ({ onNext, onBack }) => {
                 </div>
             </div>
 
-            {/* ── Section 3: Industry ── */}
             <div>
                 <h3 className="text-sm font-semibold text-gray-800 mb-3">
                     Industry <span className="font-normal text-gray-500">(Select Relevant Field)</span>
@@ -171,7 +199,6 @@ const MissionTab = ({ onNext, onBack }) => {
                 </Radio.Group>
             </div>
 
-            {/* ── Buttons ── */}
             <div className="flex gap-3 pt-2">
                 {onBack && (
                     <Button
@@ -188,6 +215,7 @@ const MissionTab = ({ onNext, onBack }) => {
                     size="large"
                     block
                     onClick={handleSubmit}
+                    loading={loading}
                     className='bg-primary h-12'
                 >
                     Save & Continue
