@@ -63,11 +63,11 @@ const MentorSidebar = ({ isOpen, setIsOpen }) => {
         setShowLogoutModal(false);
 
         // 🔴 Clear auth data here
-        // localStorage.removeItem('token');
-        // localStorage.removeItem('user');
-        toast.success('Logout successful');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        toast.success('Logout successful'); 
 
-        // router.push('/login');
+        router.push('/');
     };
 
     return (
@@ -80,7 +80,7 @@ const MentorSidebar = ({ isOpen, setIsOpen }) => {
                 {/* LOGO */}
                 <Link href="/" className="p-4 border-b border-gray-300 relative">
                     <img
-                        className="w-[100px] mx-auto"
+                        className="w-[120px] mx-auto"
                         src="/Images/Auth/main_logo.jpg"
                         alt="Logo"
                     />

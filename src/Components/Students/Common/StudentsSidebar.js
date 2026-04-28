@@ -75,7 +75,7 @@ const StudentsSidebar = ({ isOpen, setIsOpen }) => {
                 {/* LOGO */}
                 <Link href="/" className="p-4 border-b border-gray-300 relative">
                     <img
-                        className="w-[100px] mx-auto"
+                        className="w-[120px] mx-auto"
                         src="/Images/Auth/main_logo.jpg"
                         alt="Logo"
                     />

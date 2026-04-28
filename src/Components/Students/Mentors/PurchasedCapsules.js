@@ -6,6 +6,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Capsules from '@/Components/Cards/Capsules';
+import { useGetPurchesAllCapsuleQuery } from '@/redux/fetures/capsules/capsules';
 
 const data = [
     {
@@ -66,6 +67,10 @@ const data = [
 ]
 
 const PurchasedCapsules = () => {
+    const { data: purchasedCapsules } = useGetPurchesAllCapsuleQuery();
+    const fullData = purchasedCapsules?.data?.results;
+    console.log(purchasedCapsules)
+
     return (
         <div className='max-w-7xl mx-auto my-10 bg-gray-100 rounded-2xl p-5 lg:p-10'>
 
@@ -74,7 +79,12 @@ const PurchasedCapsules = () => {
 
             <div className='grid lg:grid-cols-3 sm:grid-cols-2 gap-3'>
                 {
-                    data.map((item, index) => <Capsules key={index} item={item} />)
+                    fullData?.map((item, index) => <Capsules key={index} item={item} />)
+                }
+            </div>
+            <div>
+                {
+                    !fullData?.length && <h2 className='text-center   font-semibold text-red-500 my-10'>No Capsules Purchased</h2>
                 }
             </div>
         </div>
@@ -98,6 +108,8 @@ const categories = [
 ];
 
 const CategoryCarosal = () => {
+
+
     return (
         <div className="relative w-full py-4 my-5">
             <Swiper

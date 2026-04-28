@@ -45,7 +45,30 @@ const capsules = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
-
+        getPurchesAllCapsule: builder.query({
+            query: () => ({
+                url: `/purchased-individual-capsule/paginate?page=1&limit=10`,
+                method: "GET",
+            }),
+        }),
+        getAllgiftCapsule: builder.query({
+            query: () => ({
+                url: `/student-dashboard/my-capsules?type=gifted`,
+                method: "GET",
+            }),
+        }),
+        getMySuggestedCapsule: builder.query({
+            query: (type) => ({
+                url: `/student-dashboard/my-capsules?type=${type}`,
+                method: "GET",
+            }),
+        }),
+        purchasedCapsule: builder.mutation({
+            query: (id) => ({
+                url: `/purchased-individual-capsule/${id}`,
+                method: "POST"
+            }),
+        }),
     }),
 });
 
@@ -56,5 +79,9 @@ export const {
     useGetAllCapsulesbyIdQuery,
     useGetCapsuleJourneyQuery,
     useGetJourneyDetailsQuery,
-    useGetAllYouCapsulesJourneyQuery
+    useGetAllYouCapsulesJourneyQuery,
+    useGetPurchesAllCapsuleQuery,
+    useGetAllgiftCapsuleQuery,
+    useGetMySuggestedCapsuleQuery,
+    usePurchasedCapsuleMutation
 } = capsules;
