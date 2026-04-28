@@ -7,7 +7,7 @@ import { RxCross1 } from "react-icons/rx";
 
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); 
 
   return (
     <header className="w-full ">
