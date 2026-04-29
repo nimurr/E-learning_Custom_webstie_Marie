@@ -69,6 +69,14 @@ const capsules = apiSlice.injectEndpoints({
                 method: "POST"
             }),
         }),
+        // ===========================================================
+        myPurchasedCapsuleModule: builder.query({
+            query: (capsuleId) => ({
+                url: `/journey-capsule/${capsuleId}/modules-without-video`,
+                method: "GET",
+            }),
+        }),
+
     }),
 });
 
@@ -83,5 +91,6 @@ export const {
     useGetPurchesAllCapsuleQuery,
     useGetAllgiftCapsuleQuery,
     useGetMySuggestedCapsuleQuery,
-    usePurchasedCapsuleMutation
+    usePurchasedCapsuleMutation,
+    useMyPurchasedCapsuleModuleQuery
 } = capsules;

@@ -101,7 +101,7 @@ const Page = () => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <Link href={`/students/exploration-journey/after-purchas-capsul`}>
+                                            <Link href={`/students/exploration-journey/after-purchas-capsul?capsuleId=${item._id}`}>
                                                 <div className="flex justify-between items-start">
 
                                                     <div>

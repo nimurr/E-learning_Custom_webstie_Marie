@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import "antd/dist/reset.css"; // AntD styles
 
-const Introduction = () => {
+const Introduction = ({fullModuleCapsuledata}) => {
+   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const openModal = () => setIsModalVisible(true);
@@ -15,17 +16,16 @@ const Introduction = () => {
             {/* Capsule Header */}
             <div className="text-center">
                 <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 text-sm px-4 py-1 rounded-full">
-                    ⭐ Capsule 01
+                    ⭐ Capsule {fullModuleCapsuledata?.capsuleNumber}
                 </div>
 
                 <h1 className="text-3xl font-bold text-indigo-900 mt-6">
-                    Launch Base : <span className="text-indigo-600">Ignite Your Engines</span>
+                    {fullModuleCapsuledata?.title}
                 </h1>
 
                 <p className="text-gray-500 mt-3">
-                    Establish your baseline for meaningful growth. The foundation
-                    of your stellar journey starts here.
-                </p>
+                    {fullModuleCapsuledata?.description}
+                </p> 
             </div>
 
             {/* Video Preview */}
@@ -73,16 +73,10 @@ const Introduction = () => {
                 </h2>
 
                 <p className="text-gray-700 ">
-                    Welcome to the Launch Base. Here we begin our journey into the depth
-                    of your career meaning and personal development.
+                    {fullModuleCapsuledata?.roadMapBrief}
                 </p>
                 <p className="text-gray-700 leading-relaxed mt-2">
-                    This journey is iterative. We will excavate the foundational "why"
-                    beneath your professional pursuits, bringing into focus the values
-                    that give your work weight and direction. We will identify the patterns
-                    — both empowering and limiting — that have shaped your path thus far.
-                    From this place of clarity, we will architect a vision that resonates
-                    not just with your ambition, but with your authentic self.”
+                    {fullModuleCapsuledata?.description}
                 </p>
             </div>
         </div>

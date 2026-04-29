@@ -5,6 +5,9 @@ import Inspiration from "./Inspiration";
 import Diagnostics from "./Diagnostics";
 import Science from "./Science";
 import AISummary from "./AISummary";
+import { useMyPurchasedCapsuleModuleQuery } from "@/redux/fetures/capsules/capsules";
+import { useSearchParams } from "next/navigation";
+
 
 /* ---------------------- STEP DATA ---------------------- */
 
@@ -53,6 +56,15 @@ const ProgressBar = ({ currentStep, totalSteps }) => {
 /* ---------------------- MAIN COMPONENT ---------------------- */
 
 const CapsuleJourneyForSingleItem = () => {
+    // get capsuleId from search params
+    const searchParams = useSearchParams();
+    const capsuleId = searchParams.get('capsuleId');
+
+    const { data } = useMyPurchasedCapsuleModuleQuery(capsuleId);
+    const fullModuleCapsuledata = data?.data?.capsule;
+
+    console.log(data)
+
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = steps.length;
 
@@ -83,7 +95,7 @@ const CapsuleJourneyForSingleItem = () => {
                 {
                     currentStep === 1 && (
                         <div className="text-center mt-10">
-                            <Introduction />
+                            <Introduction fullModuleCapsuledata={fullModuleCapsuledata} />
                         </div>
                     )
                 }

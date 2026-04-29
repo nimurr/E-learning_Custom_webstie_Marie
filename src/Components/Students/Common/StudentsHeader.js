@@ -44,7 +44,7 @@ const StudentsHeader = ({ isOpen, setIsOpen }) => {
 
     const { data: profileInfo } = useGetStudentMyProfileInfoQuery();
     const profile = profileInfo?.data;
-    console.log(profile)
+    
 
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifs, setNotifs] = useState(notifications);
