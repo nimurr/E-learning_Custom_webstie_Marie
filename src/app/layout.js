@@ -1,9 +1,12 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/redux/Providers";
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import { ToastContainer } from "react-toastify";
+import DisableDevtool from 'disable-devtool';
+import OffInspect from "@/Components/Common/OffInspect";
 
 
 const geistSans = Geist({
@@ -22,12 +25,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+
   return (
     <html lang="en">
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <OffInspect > </OffInspect>
         <NextTopLoader
           color="#1d2a65"  // Change to your desired color
           height={6}        // Adjust the height in pixels

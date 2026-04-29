@@ -34,7 +34,7 @@ const Introduction = ({fullModuleCapsuledata}) => {
                 onClick={openModal}
             >
                 <img
-                    src="https://images.unsplash.com/photo-1557683316-973673baf926"
+                    src="https://i.ytimg.com/vi/zob-2dpRtH0/maxresdefault.jpg"
                     alt="Video Preview"
                     className="w-full h-[350px] object-cover"
                 />
@@ -57,7 +57,7 @@ const Introduction = ({fullModuleCapsuledata}) => {
             >
                 <div className="relative w-full h-0" style={{ paddingBottom: "56.25%" }}>
                     <iframe
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        src={fullModuleCapsuledata?.introduction?.introVideo?.url}
                         title="Video"
                         className="absolute top-0 left-0 w-full h-full"
                         allowFullScreen
@@ -69,7 +69,7 @@ const Introduction = ({fullModuleCapsuledata}) => {
             <div className="mt-10 text-left">
                 <h2 className="text-xl font-semibold text-indigo-900 mb-4 flex items-center gap-2">
                     <span className="text-indigo-100 bg-primary rounded-full h-8 w-8 flex items-center justify-center">✔</span> The Founder’s Vision{" "}
-                    <span className="text-sm text-gray-500 ml-2 bg-slate-200 rounded-full py-1 px-2">In Progress</span>
+                    {/* <span className="text-sm text-gray-500 ml-2 bg-slate-200 rounded-full py-1 px-2">In Progress</span> */}
                 </h2>
 
                 <p className="text-gray-700 ">

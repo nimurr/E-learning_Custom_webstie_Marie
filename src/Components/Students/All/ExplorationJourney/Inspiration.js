@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import "antd/dist/reset.css"; // AntD styles
 import { FaChevronDown } from "react-icons/fa";
+import moment from "moment";
 
 const modules = [
     {
@@ -64,11 +65,13 @@ const modules = [
         — both empowering and limiting — that have shaped your path thus far.
         From this place of clarity, we will architect a vision that resonates
         not just with your ambition, but with your authentic self.`
-    }, 
+    },
 ];
 
-const Inspiration = ({fullModuleVideodata}) => {
-    
+const Inspiration = ({ fullModuleVideodata }) => {
+
+    console.log(fullModuleVideodata)
+
     const [activeModuleIndex, setActiveModuleIndex] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentVideo, setCurrentVideo] = useState("");
@@ -92,7 +95,7 @@ const Inspiration = ({fullModuleVideodata}) => {
 
             <h1 className="text-3xl font-semibold mb-6 text-left">Inspiration</h1>
 
-            {modules.map((mod, index) => (
+            {fullModuleVideodata?.map((mod, index) => (
                 <div key={index} className="mb-6 border rounded-xl overflow-hidden shadow-sm">
                     {/* Module Header */}
                     <div
@@ -107,21 +110,21 @@ const Inspiration = ({fullModuleVideodata}) => {
                                 )
                             }
                         </div>
-                        <span className="text-sm text-gray-500">{mod.duration}</span>
+                        <span className="text-sm text-gray-500">{moment.utc(mod?.moduleVideo?.duration * 1000 * 60).format('mm:ss')} Min</span>
                     </div>
 
                     {/* Module Content */}
                     {activeModuleIndex === index && (
                         <div className="p-4 space-y-4 text-left">
-                            <p className="text-gray-700">{mod.content}</p>
+                            <p className="text-gray-700">{mod?.description}</p>
 
                             {/* Video Preview */}
                             <div
                                 className="relative cursor-pointer rounded-lg overflow-hidden border shadow-sm"
-                                onClick={() => openModal(mod.videoUrl)}
+                                onClick={() => openModal(mod?.moduleVideo?.url)}
                             >
                                 <img
-                                    src={mod.previewImage}
+                                    src={'https://i.ytimg.com/vi/zob-2dpRtH0/maxresdefault.jpg'}
                                     alt="Video Preview"
                                     className="w-full h-[250px] object-cover"
                                 />

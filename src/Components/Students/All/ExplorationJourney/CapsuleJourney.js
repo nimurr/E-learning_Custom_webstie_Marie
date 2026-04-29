@@ -24,9 +24,7 @@ const steps = [
     {
         id: 4,
     },
-    {
-        id: 5,
-    }
+   
 ];
 
 /* ---------------------- PROGRESS COMPONENT ---------------------- */
@@ -114,15 +112,15 @@ const CapsuleJourneyForSingleItem = () => {
                         </div>
                     )
                 }
-                {
+                {/* {
                     currentStep === 4 && (
                         <div className="text-center mt-10">
                             <Science />
                         </div>
                     )
-                }
+                } */}
                 {
-                    currentStep === 5 && (
+                    currentStep === 4 && (
                         <div className="text-center mt-10">
                             <AISummary />
                         </div>
