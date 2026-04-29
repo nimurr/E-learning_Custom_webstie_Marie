@@ -45,7 +45,7 @@ const Header = () => {
             user ?
               <div>
                 <div className="hidden 2xl:flex items-center text-[17px] gap-3">
-                  <Link href={`/${user?.role}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                  <Link href={`/${user?.role == 'student' ? 'students' : 'mentor'}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
                     Dashboard
                   </Link>
                 </div>
@@ -96,7 +96,7 @@ const Header = () => {
             user ?
               <div>
                 <div className="hidden 2xl:flex items-center text-[17px] gap-3">
-                  <Link href={`/${user?.role}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                  <Link href={`/${user?.role == 'student' ? 'students' : 'mentor'}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
                     Dashboard
                   </Link>
                 </div>
