@@ -26,7 +26,7 @@ const Page = () => {
             password,
             rememberMe: true
         };
-
+        
         try {
             const response = await loginWithPassowrd(data).unwrap();
             if (response?.code == 200) {
