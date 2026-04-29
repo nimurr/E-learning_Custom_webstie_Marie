@@ -67,7 +67,8 @@ const modules = [
     }, 
 ];
 
-const Inspiration = () => {
+const Inspiration = ({fullModuleVideodata}) => {
+    
     const [activeModuleIndex, setActiveModuleIndex] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentVideo, setCurrentVideo] = useState("");

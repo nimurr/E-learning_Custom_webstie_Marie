@@ -62,6 +62,7 @@ const CapsuleJourneyForSingleItem = () => {
 
     const { data } = useMyPurchasedCapsuleModuleQuery(capsuleId);
     const fullModuleCapsuledata = data?.data?.capsule;
+    const fullModuleVideodata = data?.data?.modules;
 
     console.log(data)
 
@@ -102,7 +103,7 @@ const CapsuleJourneyForSingleItem = () => {
                 {
                     currentStep === 2 && (
                         <div className="text-center mt-10">
-                            <Inspiration />
+                            <Inspiration  fullModuleVideodata={fullModuleVideodata}/>
                         </div>
                     )
                 }
