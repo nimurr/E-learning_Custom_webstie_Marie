@@ -40,11 +40,14 @@ const Page = () => {
                     router.push('/mentor'); // ✅ redirect after login
                 }
             }
-
+            else{
+                toast.error(response?.message);
+            }
             // router.push('/dashboard'); // ✅ redirect after login
         } catch (error) {
             console.error('Login failed:', error);
             toast.error(error?.data?.message || 'Login failed. Please try again.'); // ✅ toast error message
+            alert(error?.data?.message || 'Login failed. Please try again.');
         }
     };
 
