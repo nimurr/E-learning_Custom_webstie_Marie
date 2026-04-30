@@ -108,7 +108,7 @@ const CapsuleJourneyForSingleItem = () => {
                 {
                     currentStep === 3 && (
                         <div className="text-center mt-10">
-                            <Diagnostics />
+                            <Diagnostics capsuleId={capsuleId}/>
                         </div>
                     )
                 }

@@ -76,6 +76,12 @@ const capsules = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        myCapsuleModuleQuestions: builder.query({
+            query: (capsuleId) => ({
+                url: `/question-system/student/questionary/category/free?referenceId=${capsuleId}`,
+                method: "GET",
+            }),
+        }),
 
     }),
 });
@@ -92,5 +98,6 @@ export const {
     useGetAllgiftCapsuleQuery,
     useGetMySuggestedCapsuleQuery,
     usePurchasedCapsuleMutation,
-    useMyPurchasedCapsuleModuleQuery
+    useMyPurchasedCapsuleModuleQuery,
+    useMyCapsuleModuleQuestionsQuery
 } = capsules;

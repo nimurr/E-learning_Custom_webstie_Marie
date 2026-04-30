@@ -1,4 +1,5 @@
 'use client';
+import { useMyCapsuleModuleQuestionsQuery } from "@/redux/fetures/capsules/capsules";
 import React, { useState } from "react";
 
 const initialQuestions = [
@@ -25,7 +26,12 @@ const initialQuestions = [
     },
 ];
 
-const Diagnostics = () => {
+const Diagnostics = ({capsuleId}) => {
+
+    const { data } = useMyCapsuleModuleQuestionsQuery(capsuleId);
+    const fullModuleVideodata = data?.data;
+    console.log("Full Module Video data" ,fullModuleVideodata)
+
     const [questions, setQuestions] = useState(initialQuestions);
     const [submitted, setSubmitted] = useState(false);
 
