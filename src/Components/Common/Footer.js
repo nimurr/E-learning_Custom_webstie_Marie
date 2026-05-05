@@ -5,38 +5,38 @@ const Footer = () => {
     const columns = [
         {
             heading: 'La Propulserie',
-            links: ['Free Dashboard Check', 'Expedition Path', 'Meet a Mentor', 'Take Action'],
+            links: ['Dashboard Check gratuit', 'Parcours d\'expédition', 'Rencontrer un mentor', 'Passer à l\'action'],
         },
         {
             heading: 'Solutions',
-            links: ['For Individuals', 'For Companies'],
+            links: ['Pour les particuliers', 'Pour les entreprises'],
         },
         {
-            heading: 'Ecosystem',
-            links: ['The Explorers', 'The Boosters', 'The Mentors', 'The Boosters'],
+            heading: 'Écosystème',
+            links: ['Les Explorateurs', 'Les Promoteurs', 'Les Mentors', 'Les Promoteurs'],
         },
         {
-            heading: 'For Mentors',
-            links: ['Become a Mentor', 'Application Process'],
+            heading: 'Pour les Mentors',
+            links: ['Devenir mentor', 'Processus de candidature'],
         },
         {
-            heading: 'About',
-            links: ['The Approach', 'How It Works', 'Contact'],
+            heading: 'À propos',
+            links: ['L\'approche', 'Comment ça marche', 'Contact'],
         },
         {
-            heading: 'Legal',
-            links: ['Terms of Use', 'Privacy Policy', 'Cookie Policy', 'Legal Notice'],
+            heading: 'Légal',
+            links: ['Conditions d\'utilisation', 'Politique de confidentialité', 'Politique relative aux cookies', 'Avis légal'],
         },
     ];
 
     return (
-        <div className="bg-gradient-to-b from-blue-950 to-black">
+        <div className="bg-gradient-to-b from-black to-black">
             <footer className="container mx-auto text-white">
 
                 {/* Top bar: logo + tagline */}
                 <div className="flex flex-wrap items-center justify-between px-12 pt-9 pb-7 gap-3">
                     <div className="leading-tight">
-                        <img src="/Images/Auth/logo.png" alt="" />
+                        <img className='w-32'  src="/Images/Auth/main_logo.jpg" alt="" />
                     </div>
                     <p className="text-xs text-slate-400 m-0">
                         Your journey to professional alignment starts here
@@ -77,7 +77,7 @@ const Footer = () => {
                     <p className="text-xs text-slate-400 m-0">
                         © 2026 La Propulserie.{' '}
                         <span className="text-amber-400">★</span>
-                        {' '}All rights reserved.
+                        {' '}Tous droits réservés.
                     </p>
                 </div>
 

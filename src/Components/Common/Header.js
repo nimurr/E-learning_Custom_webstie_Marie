@@ -4,12 +4,31 @@ import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
 
-
-
 const Header = () => {
   const [open, setOpen] = useState(false);
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
-  console.log(user)
+
+  const navigationItems = [
+    { label: "L'approche", id: "approach" },
+    { label: "Comment ça marche", id: "how-it-works" },
+    { label: "Pour les particuliers", id: "path" },
+    { label: "Pour les entreprises", id: "for-companies" },
+    { label: "Pour les mentors", id: "for-mentors" },
+    { label: "Témoignages", id: "testimonials" },
+    // { label: "Contact", id: "contact" }
+  ];
+
+  const handleNavClick = (id) => {
+    if (id === "contact") {
+      // Handle contact separately if needed
+      return;
+    }
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setOpen(false);
+    }
+  };
 
   return (
     <header className="w-full ">
@@ -18,35 +37,35 @@ const Header = () => {
 
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img
-              src="/Images/Auth/main_logo.jpg"
-              alt="Propulsaria"
-              className="h-12 w-auto"
-            />
+            <Link href="/">
+              <img
+                src="/Images/Auth/main_logo.jpg"
+                alt="Propulsaria"
+                className="h-12 w-auto cursor-pointer"
+              />
+            </Link>
           </div>
 
           {/* Desktop Nav */}
           <ul className="hidden 2xl:flex items-center gap-10 text-gray-300 text-sm">
-            {["The Approach", "How It Works", "For Individuals", "For Companies", "For Mentors", "Testimonials", "Contact"].map(
-              (item) => (
-                <li
-                  key={item}
-                  className="cursor-pointer hover:text-white text-[17px] transition"
-                >
-                  {item}
-                </li>
-              )
-            )}
+            {navigationItems.map((item) => (
+              <li
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className="cursor-pointer hover:text-white text-[17px] transition"
+              >
+                {item.label}
+              </li>
+            ))}
           </ul>
 
           {/* Desktop Buttons */}
-
           {
             user ?
               <div>
                 <div className="hidden 2xl:flex items-center text-[17px] gap-3">
                   <Link href={`/${user?.role == 'student' ? 'students' : 'mentor'}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
-                    Dashboard
+                    Tableau de bord
                   </Link>
                 </div>
               </div>
@@ -54,15 +73,14 @@ const Header = () => {
               <div>
                 <div className="hidden 2xl:flex items-center text-[17px] gap-3">
                   <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
-                    Sign Up
+                    S'inscrire
                   </Link>
                   <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
-                    Sign In
+                    Se connecter
                   </Link>
                 </div>
               </div>
           }
-
 
           {/* Mobile Menu Button */}
           <button
@@ -79,41 +97,38 @@ const Header = () => {
             }`}
         >
           <ul className="flex flex-col text-gray-300 text-sm divide-y divide-gray-700">
-            {["The Approach", "How It Works", "For Individuals", "For Companies", "For Mentors", "Testimonials", "Contact"].map(
-              (item) => (
-                <li
-                  key={item}
-                  className="px-6 py-4 hover:text-white  hover:bg-black transition cursor-pointer"
-                >
-                  {item}
-                </li>
-              )
-            )}
+            {navigationItems.map((item) => (
+              <li
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className="px-6 py-4 hover:text-white  hover:bg-black transition cursor-pointer"
+              >
+                {item.label}
+              </li>
+            ))}
           </ul>
-
 
           {
             user ?
               <div>
-                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
+                <div className="flex items-center text-[17px] gap-3 px-6 py-4">
                   <Link href={`/${user?.role == 'student' ? 'students' : 'mentor'}`} className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
-                    Dashboard
+                    Tableau de bord
                   </Link>
                 </div>
               </div>
               :
               <div>
-                <div className="hidden 2xl:flex items-center text-[17px] gap-3">
-                  <Link href="/signup" className="px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
-                    Sign Up
+                <div className="flex items-center text-[17px] gap-3 px-6 py-4 flex-col">
+                  <Link href="/signup" className="w-full text-center px-8 customSignUpButton py-4 rounded-lg  text-white text-sm font-medium hover:opacity-90 transition">
+                    S'inscrire
                   </Link>
-                  <Link href="/login" className="px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
-                    Sign In
+                  <Link href="/login" className="w-full text-center px-8 py-4 rounded-lg border border-gray-500 text-gray-300 text-sm customSignUpButtonHover hover:opacity-90 transition">
+                    Se connecter
                   </Link>
                 </div>
               </div>
           }
-
 
         </div>
       </div>
@@ -122,3 +137,4 @@ const Header = () => {
 };
 
 export default Header;
+

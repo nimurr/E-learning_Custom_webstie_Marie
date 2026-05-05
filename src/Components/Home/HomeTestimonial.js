@@ -5,23 +5,23 @@ const HomeTestimonial = () => {
 
     const data = [
         {
-            userName: 'John Doe',
+            userName: 'Jean Dupont',
             userImg: '/Images/Home/Testimonial/user.png',
-            userDesignation: 'CEO, Propulsaria',
+            userDesignation: 'PDG, Propulsaria',
             feedback: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.',
             rating: 5
         },
         {
-            userName: 'John Doe',
+            userName: 'Jean Dupont',
             userImg: '/Images/Home/Testimonial/user.png',
-            userDesignation: 'CEO, Propulsaria',
+            userDesignation: 'PDG, Propulsaria',
             feedback: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.',
             rating: 4
         },
         {
-            userName: 'John Doe',
+            userName: 'Jean Dupont',
             userImg: '/Images/Home/Testimonial/user.png',
-            userDesignation: 'CEO, Propulsaria',
+            userDesignation: 'PDG, Propulsaria',
             feedback: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.',
             rating: 4
         },
@@ -31,10 +31,10 @@ const HomeTestimonial = () => {
         <div className='my-20 lg:my-32 px-4'>
             <div className='text-center max-w-3xl mx-auto'>
                 <h2 className="text-2xl lg:text-3xl font-semibold text-primary">
-                    For Mentors To Share Your Starlight
+                    Pour les mentors : partagez votre lumière stellaire
                 </h2>
                 <p className="mt-4 text-gray-700 ">
-                    A gentle, guided progression toward career clarity
+                    Une progression douce et guidée vers la clarté professionnelle
                 </p>
             </div>
 
@@ -51,3 +51,4 @@ const HomeTestimonial = () => {
 }
 
 export default HomeTestimonial;
+

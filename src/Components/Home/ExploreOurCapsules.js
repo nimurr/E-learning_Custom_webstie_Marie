@@ -6,9 +6,9 @@ const ExploreOurCapsules = () => {
 
     const data = [
         {
-            title: 'Digital Marketing',
-            discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-            type: 'Intermediate Level',
+            title: 'Marketing Numérique',
+            discription: 'Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine',
+            type: 'Niveau Intermédiaire',
             image: '/Images/Cards/card-image.png',
             price: 40,
             totalRatings: 52,
@@ -16,27 +16,27 @@ const ExploreOurCapsules = () => {
 
         },
         {
-            title: 'Advanced Product Design Management ',
-            discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-            type: 'Intermediate Level',
+            title: 'Gestion Avancée de la Conception de Produits ',
+            discription: 'Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine',
+            type: 'Niveau Intermédiaire',
             image: '/Images/Cards/card-image.png',
             price: 45,
             totalRatings: 78,
             avgRating: 4.6,
         },
         {
-            title: 'Web Development & Design',
-            discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-            type: 'Intermediate Level',
+            title: 'Développement Web et Design',
+            discription: 'Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine',
+            type: 'Niveau Intermédiaire',
             image: '/Images/Cards/card-image.png',
             price: 60,
             totalRatings: 45,
             avgRating: 4.5,
         },
         {
-            title: 'Web Development & Design',
-            discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-            type: 'Intermediate Level',
+            title: 'Développement Web et Design',
+            discription: 'Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine Un doux voyage de lincertitude professionnelle au but aligné, guidé par la sagesse cosmique et la connexion humaine',
+            type: 'Niveau Intermédiaire',
             image: '/Images/Cards/card-image.png',
             price: 150,
             totalRatings: 45,
@@ -47,7 +47,7 @@ const ExploreOurCapsules = () => {
     return (
         <div className='my-20 lg:my-32 px-4'>
             <h2 className="text-4xl lg:text-5xl text-center font-semibold text-primary">
-                Explore Our Capsules
+                Explorez Nos Capsules
             </h2>
             {/* carosal with lg:grid-cols-8 item show swiper */}
             <div>
@@ -63,3 +63,4 @@ const ExploreOurCapsules = () => {
 }
 
 export default ExploreOurCapsules;
+

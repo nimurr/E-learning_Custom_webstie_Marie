@@ -9,7 +9,7 @@ const ForMentors = () => {
                     <circle cx="12" cy="12" r="3" stroke="#c9a96e" strokeWidth="1.5" />
                 </svg>
             ),
-            text: 'Visibility in a qualified ecosystem',
+            text: 'Visibilité dans un écosystème qualifié',
         },
         {
             icon: (
@@ -17,7 +17,7 @@ const ForMentors = () => {
                     <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Structured digital framework',
+            text: 'Cadre numérique structuré',
         },
         {
             icon: (
@@ -26,7 +26,7 @@ const ForMentors = () => {
                     <path d="M12 6v6l4 2" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Subscription model',
+            text: 'Modèle d\'abonnement',
         },
         {
             icon: (
@@ -36,7 +36,7 @@ const ForMentors = () => {
                     </svg>
                 </div>
             ),
-            text: 'Mandatory interview before approval',
+            text: 'Entretien obligatoire avant approbation',
         },
     ];
 
@@ -99,7 +99,7 @@ const ForMentors = () => {
                         boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
                     }}
                 >
-                    Apply to join the ecosystem
+                    Postulez pour rejoindre l'écosystème
                 </button>
             </div>
         </div>

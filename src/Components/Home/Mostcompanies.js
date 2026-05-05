@@ -10,7 +10,7 @@ const Mostcompanies = () => {
                     <rect x="17" y="11" width="5" height="10" rx="1" fill="#a78bfa" opacity="0.9" />
                 </svg>
             ),
-            text: 'Detect early disengagement signals',
+            text: 'Détecter les premiers signaux de désengagement',
         },
         {
             icon: (
@@ -21,7 +21,7 @@ const Mostcompanies = () => {
                     <path d="M15 13l3-2.5" stroke="#60a5fa" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Support employee alignment journeys',
+            text: 'Soutenir les parcours d\'alignement des employés',
         },
         {
             icon: (
@@ -35,7 +35,7 @@ const Mostcompanies = () => {
                     <line x1="12" y1="17" x2="12" y2="21" stroke="#f87171" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Recruit candidates with clearer motivations',
+            text: 'Recruter des candidats avec des motivations plus claires',
         },
     ];
 
@@ -109,7 +109,7 @@ const Mostcompanies = () => {
                             stroke="#f5a623" strokeWidth="1.5" strokeLinejoin="round"
                         />
                     </svg>
-                    Launching soon
+                    Lancement bientôt
                 </div>
 
                 {/* CTA Button */}
@@ -120,7 +120,7 @@ const Mostcompanies = () => {
                         boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
                     }}
                 >
-                    Discover corporate solutions
+                    Découvrez les solutions d'entreprise
                 </button>
             </div>
         </div>

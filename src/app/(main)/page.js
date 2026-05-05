@@ -17,26 +17,54 @@ import YourPathThrough from '@/Components/Home/YourPathThrough';
 import React from 'react';
 
 const Page = () => {
-
-
     return (
         <div className=''>
-            <Hero />
+            <section id="hero">
+                <Hero />
+            </section>
             <div className='container mx-auto'>
-                <Theirprofessionallife />
-                <DashboardCheck />
-                <AlignmentFramework />
-                <YourPathThrough />
-                <ChooseYourMission />
-                <CosmicEcosystem />
-                <YourExploration />
-                <WhatExplorersSay />
-                <ForMentors />
-                <Knowsomeone />
-                <Mostcompanies />
-                {/* <ExploreOurCapsules />
-                <ExpertGuideMentor />
-                <HomeTestimonial /> */}
+                <section id="approach">
+                    <Theirprofessionallife />
+                </section>
+                <section id="how-it-works">
+                    <DashboardCheck />
+                </section>
+                <section id="alignment">
+                    <AlignmentFramework />
+                </section>
+                <section id="path">
+                    <YourPathThrough />
+                </section>
+                <section id="mission">
+                    <ChooseYourMission />
+                </section>
+                <section id="ecosystem">
+                    <CosmicEcosystem />
+                </section>
+                <section id="exploration">
+                    <YourExploration />
+                </section>
+                <section id="testimonials">
+                    <WhatExplorersSay />
+                </section>
+                <section id="for-mentors">
+                    <ForMentors />
+                </section>
+                <section id="know-someone">
+                    <Knowsomeone />
+                </section>
+                <section id="for-companies">
+                    <Mostcompanies />
+                </section>
+                {/* <section id="capsules">
+                    <ExploreOurCapsules />
+                </section>
+                <section id="guide-mentor">
+                    <ExpertGuideMentor />
+                </section>
+                <section id="testimonial">
+                    <HomeTestimonial />
+                </section> */}
             </div>
         </div>
     );

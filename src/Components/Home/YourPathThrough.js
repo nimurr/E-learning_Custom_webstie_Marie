@@ -15,36 +15,30 @@ import { MdOutlineDocumentScanner } from "react-icons/md";
 
 const steps = [
   {
-    title: "Free Dashboard Check  ",
-    desc:
-      "Answer simple questions to assess your situation.",
-    icon: MdOutlineDocumentScanner ,
+    title: "Bilan de tableau de bord gratuit",
+    desc: "Répondez à de simples questions pour évaluer votre situation.",
+    icon: MdOutlineDocumentScanner,
   },
   {
-    title: "Understand What’s Happening",
-    desc:
-      "Identify values, motivations and tensions.",
+    title: "Comprendre ce qui se passe",
+    desc: "Identifier les valeurs, motivations et tensions.",
     icon: HiOutlineChatBubbleLeftRight,
   },
   {
-    title: "Expedition Path ",
-    desc:
-      "A guided capsule journey to clarify direction.",
+    title: "Parcours d’expédition",
+    desc: "Un voyage guidé en capsules pour clarifier votre direction.",
     icon: HiOutlineMap,
   },
   {
-    title: "Meet the Crew (optional)",
-    desc:
-      "Connect with a mentor. ",
+    title: "Rencontrer l’équipe (optionnel)",
+    desc: "Échanger avec un mentor.",
     icon: HiOutlineUsers,
   },
   {
-    title: "Take Action",
-    desc:
-      "Move forward with clearer decisions.",
+    title: "Passer à l’action",
+    desc: "Avancer avec des décisions plus claires.",
     icon: FaRoute,
   },
-
 ];
 
 const YourPathThrough = () => {
@@ -53,10 +47,10 @@ const YourPathThrough = () => {
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-4xl lg:text-5xl font-semibold text-white">
-          Your Exploration in <span className="text-orange-400">5 Phases</span>
+          Votre exploration en <span className="text-orange-400">5 Phases</span>
         </h2>
         <p className="mt-4 text-gray-300 font-medium">
-          A Gentle, Guided Progression Toward Career Clarity
+          Une progression douce et guidée vers la clarté de carrière
         </p>
       </div>
 

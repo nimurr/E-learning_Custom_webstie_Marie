@@ -10,7 +10,7 @@ const Knowsomeone = () => {
                     <path d="M12 2v13" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Share the free Dashboard Check',
+            text: 'Partagez le Dashboard Check gratuit',
         },
         {
             icon: (
@@ -18,7 +18,7 @@ const Knowsomeone = () => {
                     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#a0aec0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Encourage reflection without pressure',
+            text: 'Encouragez la réflexion sans pression',
         },
         {
             icon: (
@@ -30,7 +30,7 @@ const Knowsomeone = () => {
                     <path d="M20.5 9C21.5 9.5 22 10.5 22 12s-.5 2.5-1.5 3" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Support them without replacing a professional',
+            text: 'Soutenez-les sans remplacer un professionnel',
         },
     ];
 
@@ -56,11 +56,10 @@ const Knowsomeone = () => {
 
                 <div className="text-center my-10 max-w-3xl">
                     <h1 className="text-4xl font-bold text-white">
-                        Know someone who feels <span style={{ color: '#f5a623' }}>lost</span> at work?
+                        Connaissez-vous quelqu'un qui se sent <span style={{ color: '#f5a623' }}>perdu</span> au travail?
                     </h1>
                     <p className="mt-2" style={{ color: '#8898b8' }}>
-                        Sometimes people around us see the misalignment before we do.
-                        Recommend the Dashboard Check to someone you care about.
+                        Parfois, les gens autour de nous voient le désalignement avant nous. Recommandez le Dashboard Check à quelqu'un que vous aimez.
                     </p>
                 </div>
 
