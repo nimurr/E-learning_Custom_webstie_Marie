@@ -1,13 +1,11 @@
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import Providers from "@/redux/Providers";
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { PrimeReactProvider } from 'primereact/api';
 import { ToastContainer } from "react-toastify";
-import DisableDevtool from 'disable-devtool';
-import OffInspect from "@/Components/Common/OffInspect";
-
+import OffInspect from "@/Components/Common/OffInspect"; 
+import NovaChatbot from "@/Components/Common/NovaChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,27 +23,22 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
-
   return (
     <html lang="en">
-
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <OffInspect > </OffInspect>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <OffInspect />
         <NextTopLoader
-          color="#1d2a65"  // Change to your desired color
-          height={6}        // Adjust the height in pixels
-          speed={800}       // Animation speed in milliseconds
-          showSpinner={false} // Hide the loading spinner
-          easing="ease"     // Animation easing
-
+          color="#1d2a65"
+          height={6}
+          speed={800}
+          showSpinner={false}
+          easing="ease"
         />
         <ToastContainer />
         <Providers>
           <PrimeReactProvider>
             {children}
+            <NovaChatbot /> {/* 👈 add this — renders on every page */}
           </PrimeReactProvider>
         </Providers>
       </body>
