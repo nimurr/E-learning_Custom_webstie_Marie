@@ -8,9 +8,9 @@ const Hero = () => {
                 <p className="text-white  my-8">Parce que personne ne vous a jamais appris à vraiment vous connaître</p>
                 <div className=" flex flex-wrap gap-5">
                     <button className="px-8 py-4    text-[#ffffff] bg-orange-500 font-semibold rounded-lg ">Profitez gratuitement de votre bilan personnalisé sur le tableau de bord</button>
-                    <button className="px-8 py-4  border bg-white text-[#301f4b] customSignUpButtonHover font-semibold rounded-lg ">Découvrez l’approche</button>
+                    <button className="px-8 py-4  border bg-white text-[#301f4b] customSignUpButtonHover font-semibold rounded-lg ">Faire mon bilan gratuit</button>
                 </div>
-                <p className="mt-5 text-white font-semibold">Gratuit • Aperçu instantané • Aucune pression</p>
+                <p className="mt-5 text-white font-semibold">Gratuit • 15 minutes • Sans engagement</p>
             </div>
             <div className="lg:flex items-start justify-center hidden ">
                 <img className="w-60 2xl:min-w-[400px]" src="/Images/Home/Hero/DE9B4924-92E4-4E93-A2B2-8DADDA025DC5.png" alt="" />

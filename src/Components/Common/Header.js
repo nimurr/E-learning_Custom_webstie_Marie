@@ -33,7 +33,7 @@ const Header = () => {
   return (
     <header className="w-full ">
       <div className="container mx-auto fixed z-[999] px-4 left-0 right-0 top-5">
-        <div className="flex items-center justify-between rounded-xl bg-black/60 backdrop-blur-md px-6 2xl:py-3 py-5 border border-gray-300">
+        <div className="flex items-center justify-between rounded-xl bg-white/60 backdrop-blur-md px-6 2xl:py-3 py-5 border border-gray-300">
 
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -47,12 +47,12 @@ const Header = () => {
           </div>
 
           {/* Desktop Nav */}
-          <ul className="hidden 2xl:flex items-center gap-10 text-gray-300 text-sm">
+          <ul className="hidden 2xl:flex items-center gap-10 text-gray-900 text-sm">
             {navigationItems.map((item) => (
               <li
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className="cursor-pointer hover:text-white text-[17px] transition"
+                className="cursor-pointer hover:text-orange-500 text-[17px] transition"
               >
                 {item.label}
               </li>

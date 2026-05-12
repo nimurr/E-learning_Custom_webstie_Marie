@@ -15,28 +15,28 @@ import { MdOutlineDocumentScanner } from "react-icons/md";
 
 const steps = [
   {
-    title: "Bilan de tableau de bord gratuit",
-    desc: "Répondez à de simples questions pour évaluer votre situation.",
+    title: "Faire le point",
+    desc: "Réponds à quelques questions pour comprendre où tu en es aujourd’hui",
     icon: MdOutlineDocumentScanner,
   },
   {
-    title: "Comprendre ce qui se passe",
-    desc: "Identifier les valeurs, motivations et tensions.",
+    title: "Mettre des mots",
+    desc: " Identifie ce qui t’anime… et ce qui te freine réellement ",
     icon: HiOutlineChatBubbleLeftRight,
   },
   {
-    title: "Parcours d’expédition",
-    desc: "Un voyage guidé en capsules pour clarifier votre direction.",
+    title: "Explorer",
+    desc: " Avance à ton rythme à travers un parcours guidé pour clarifier ta direction",
     icon: HiOutlineMap,
   },
   {
-    title: "Rencontrer l’équipe (optionnel)",
-    desc: "Échanger avec un mentor.",
+    title: "Échanger (optionnel)",
+    desc: " Prends du recul avec un professionnel",
     icon: HiOutlineUsers,
   },
   {
-    title: "Passer à l’action",
-    desc: "Avancer avec des décisions plus claires.",
+    title: "Décider",
+    desc: " Avance avec plus de clarté et des choix qui te ressemblent",
     icon: FaRoute,
   },
 ];
@@ -47,10 +47,10 @@ const YourPathThrough = () => {
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-4xl lg:text-5xl font-semibold text-white">
-          Votre exploration en <span className="text-orange-400">5 Phases</span>
+          Ton voyage en<span className="text-orange-400"> 5 étapes</span>
         </h2>
         <p className="mt-4 text-gray-300 font-medium">
-          Une progression douce et guidée vers la clarté de carrière
+          En quelques étapes, tu passes de la confusion à une vision plus claire de ta situation.
         </p>
       </div>
 

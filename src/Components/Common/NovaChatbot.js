@@ -11,7 +11,7 @@ export default function NovaChatbot() {
 
         const iframe = document.createElement("iframe");
         // iframe.src = "https://limova-web-sltj.onrender.com/embededChatbot?connectionId=3f4ea327-04bf-4f89-98da-c2810f575120";
-        iframe.src = "https://limova-web-sltj.onrender.com/embededChatbot?connectionId=4851cd7f-b734-4530-b39c-1d49b00b3e33";
+        iframe.src = "https://limova-web-sltj.onrender.com/embededChatbot?connectionId=3f4ea327-04bf-4f89-98da-c2810f575120&mode=iframe";
         iframe.setAttribute("allow", "web-share");
 
 

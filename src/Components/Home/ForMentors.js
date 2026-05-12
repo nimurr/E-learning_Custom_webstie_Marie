@@ -9,7 +9,7 @@ const ForMentors = () => {
                     <circle cx="12" cy="12" r="3" stroke="#c9a96e" strokeWidth="1.5" />
                 </svg>
             ),
-            text: 'Visibilité dans un écosystème qualifié',
+            text: 'Accédez à des profils déjà en phase de questionnement',
         },
         {
             icon: (
@@ -17,7 +17,7 @@ const ForMentors = () => {
                     <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Cadre numérique structuré',
+            text: 'Développez votre activité auprès d’un public ciblé et engagé',
         },
         {
             icon: (
@@ -26,7 +26,7 @@ const ForMentors = () => {
                     <path d="M12 6v6l4 2" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Modèle d\'abonnement',
+            text: 'Intervenez au bon moment, lorsque le besoin d’accompagnement est réel',
         },
         {
             icon: (
@@ -36,7 +36,7 @@ const ForMentors = () => {
                     </svg>
                 </div>
             ),
-            text: 'Entretien obligatoire avant approbation',
+            text: 'Gagnez en visibilité au sein d’un écosystème centré sur l’alignement professionnel',
         },
     ];
 
@@ -70,10 +70,10 @@ const ForMentors = () => {
                 {/* Title */}
                 <div className="text-center">
                     <h1 className="text-5xl font-bold text-white">
-                        For <span style={{ color: '#f5a623' }}>Mentors</span>
+                        Rejoignez  <span style={{ color: '#f5a623' }}>un écosystème engagé</span>
                     </h1>
                     <p className="mt-2 " style={{ color: '#8898b8' }}>
-                        Join a curated ecosystem focused on alignment.
+                        Accompagnez des personnes en réflexion professionnelle, dans un cadre structuré, humain et qualitatif.
                     </p>
                 </div>
 
@@ -99,7 +99,7 @@ const ForMentors = () => {
                         boxShadow: '0 4px 20px rgba(245,166,35,0.35)',
                     }}
                 >
-                    Postulez pour rejoindre l'écosystème
+                    🚀 Postuler pour rejoindre l’écosystème
                 </button>
             </div>
         </div>

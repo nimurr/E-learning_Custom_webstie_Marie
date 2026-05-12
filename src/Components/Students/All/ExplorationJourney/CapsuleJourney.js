@@ -24,7 +24,7 @@ const steps = [
     {
         id: 4,
     },
-   
+
 ];
 
 /* ---------------------- PROGRESS COMPONENT ---------------------- */
@@ -101,14 +101,14 @@ const CapsuleJourneyForSingleItem = () => {
                 {
                     currentStep === 2 && (
                         <div className="text-center mt-10">
-                            <Inspiration  fullModuleVideodata={fullModuleVideodata}/>
+                            <Inspiration fullModuleVideodata={fullModuleVideodata} />
                         </div>
                     )
                 }
                 {
                     currentStep === 3 && (
                         <div className="text-center mt-10">
-                            <Diagnostics capsuleId={capsuleId}/>
+                            <Diagnostics capsuleId={capsuleId} />
                         </div>
                     )
                 }
@@ -135,7 +135,7 @@ const CapsuleJourneyForSingleItem = () => {
                         onClick={prevStep}
                         disabled={currentStep === 1}
                         className={`px-6 py-3 rounded-xl border transition
-              ${currentStep === 1
+                        ${currentStep === 1
                                 ? "border-gray-200 text-gray-400 cursor-not-allowed"
                                 : "border-primary text-primary hover:bg-indigo-50"
                             }`}
@@ -146,8 +146,8 @@ const CapsuleJourneyForSingleItem = () => {
                     <button
                         onClick={nextStep}
                         disabled={currentStep === totalSteps}
-                        className={`px-8 py-3 rounded-xl text-white transition 
-              ${currentStep === totalSteps
+                        className={`px-8 py-3 rounded-xl cursor-pointer text-white transition 
+                            ${currentStep === totalSteps
                                 ? "bg-gray-300 cursor-not-allowed"
                                 : "customSignUpButton"
                             }`}

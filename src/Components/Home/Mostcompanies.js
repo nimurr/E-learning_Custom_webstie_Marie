@@ -66,9 +66,9 @@ const Mostcompanies = () => {
 
                 {/* Title */}
                 <div className="text-center max-w-2xl">
-                    <h1 className="text-2xl md:text-3xl font-bold text-white leading-snug">
+                    {/* <h1 className="text-2xl md:text-3xl font-bold text-white leading-snug">
                         Most Companies React When Disengagement Becomes A Crisis.
-                    </h1>
+                    </h1> */}
                     <p className="mt-2 text-base md:text-lg  leading-snug">
                         <span style={{ color: '#f5a623' }}>La Propulserie </span>
                         <span className="text-white">

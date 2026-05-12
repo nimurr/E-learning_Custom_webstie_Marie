@@ -10,7 +10,7 @@ const Knowsomeone = () => {
                     <path d="M12 2v13" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Partagez le Dashboard Check gratuit',
+            text: ' Partager Envoyez-lui le bilan pour l’aider à faire le point',
         },
         {
             icon: (
@@ -18,7 +18,7 @@ const Knowsomeone = () => {
                     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#a0aec0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Encouragez la réflexion sans pression',
+            text: ' Encourager Ouvrez une porte, sans pression',
         },
         {
             icon: (
@@ -30,7 +30,7 @@ const Knowsomeone = () => {
                     <path d="M20.5 9C21.5 9.5 22 10.5 22 12s-.5 2.5-1.5 3" stroke="#f5a623" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
             ),
-            text: 'Soutenez-les sans remplacer un professionnel',
+            text: ' Soutenir Être là, sans devoir avoir toutes les réponses',
         },
     ];
 
@@ -59,7 +59,9 @@ const Knowsomeone = () => {
                         Connaissez-vous quelqu'un qui se sent <span style={{ color: '#f5a623' }}>perdu</span> au travail?
                     </h1>
                     <p className="mt-2" style={{ color: '#8898b8' }}>
-                        Parfois, les gens autour de nous voient le désalignement avant nous. Recommandez le Dashboard Check à quelqu'un que vous aimez.
+                        Parfois, on voit qu’une personne ne va plus bien dans son travail…
+                        bien avant qu’elle ne mette des mots dessus.
+                        Vous pouvez l’aider, simplement.
                     </p>
                 </div>
 
