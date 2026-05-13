@@ -6,6 +6,10 @@ import moment from "moment";
 import { FaArrowDown } from "react-icons/fa";
 
 const DownloadCertificate = () => {
+    // Safe version
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    console.log(user?.name); // null if not found, object if found
+
     const certificateRef = useRef();
 
     const downloadCertificate2 = async () => {
@@ -41,7 +45,7 @@ const DownloadCertificate = () => {
             {/* Hidden Certificate */}
             <div className="fixed left-[-9999px] top-0">
                 <div ref={certificateRef}>
-                    <CertificateTemplate />
+                    <CertificateTemplate userName={user?.name} />
                 </div>
             </div>
         </>
@@ -51,7 +55,9 @@ const DownloadCertificate = () => {
 export default DownloadCertificate;
 
 
-function CertificateTemplate() {
+function CertificateTemplate({ userName }) {
+
+
     return (
         <div className="w-[1200px] h-[850px] bg-white flex items-center justify-center p-6">
             <div className="w-full h-full shadow-2xl relative overflow-hidden">
@@ -67,7 +73,7 @@ function CertificateTemplate() {
                     <div className="relative z-10 m-5">
                         <div className="mb-6">
                             <div className="w-32 h-32 mx-auto rounded-full flex items-center justify-center">
-                                <img className="w-full" src="/Images/Auth/logo_student_dash.png" alt="logo" />
+                                <img className="w-full" src="/Images/Auth/main_logo.jpg" alt="logo" />
                             </div>
                         </div>
 
@@ -77,7 +83,7 @@ function CertificateTemplate() {
                         <p className="text-gray-500 mb-8">This certificate is proudly presented to</p>
 
                         <h2 className="text-5xl mycertificateFont font-semibold text-gray-900 mb-8 border-b-2 border-dashed border-indigo-300 inline-block px-8 pb-2">
-                            Tasmia Hassan Shabonty
+                           {userName}
                         </h2>
 
                         <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed mb-10">
