@@ -8,68 +8,14 @@ import 'swiper/css/navigation';
 import Capsules from '@/Components/Cards/Capsules';
 import { useGetPurchesAllCapsuleQuery } from '@/redux/fetures/capsules/capsules';
 
-const data = [
-    {
-        title: 'Digital Marketing',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 40,
-        totalRatings: 52,
-        avgRating: 4.5,
-
-    },
-    {
-        title: 'Advanced Product Design Management ',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 45,
-        totalRatings: 78,
-        avgRating: 4.6,
-    },
-    {
-        title: 'Advanced Product Design Management ',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 45,
-        totalRatings: 78,
-        avgRating: 4.6,
-    },
-    {
-        title: 'Advanced Product Design Management ',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 45,
-        totalRatings: 78,
-        avgRating: 4.6,
-    },
-    {
-        title: 'Web Development & Design',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 60,
-        totalRatings: 45,
-        avgRating: 4.5,
-    },
-    {
-        title: 'Web Development & Design',
-        discription: 'A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection A gentle journey from career uncertainty to aligned purpose, guided by cosmic wisdom and human connection',
-        type: 'Intermediate Level',
-        image: '/Images/Cards/card-image.png',
-        price: 150,
-        totalRatings: 45,
-        avgRating: 4.5,
-    }
-]
+ 
 
 const PurchasedCapsules = () => {
+    
     const { data: purchasedCapsules } = useGetPurchesAllCapsuleQuery();
-    const fullData = purchasedCapsules?.data?.results;
-    console.log(purchasedCapsules)
+    const fullData = purchasedCapsules?.data;
+
+    console.log(fullData)
 
     return (
         <div className='max-w-7xl mx-auto my-10 bg-gray-100 rounded-2xl p-5 lg:p-10'>
