@@ -1,12 +1,18 @@
 'use client';
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { RxCross1 } from "react-icons/rx";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const [user , setUser] = useState(null); // Replace with actual user state management
+
+  useEffect(() => {
+    // Fetch user data from localStorage or an API
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+  }, []);
 
   const navigationItems = [
     { label: "L'approche", id: "approach" },

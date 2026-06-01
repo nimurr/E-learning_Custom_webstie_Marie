@@ -1,19 +1,26 @@
 'use client';
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import moment from "moment";
 import { FaArrowDown } from "react-icons/fa";
 
 const DownloadCertificate = () => {
-    // Safe version
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-    console.log(user?.name); // null if not found, object if found
+    // ✅ Initialize as null — populated only on client after mount
+    const [user, setUser] = useState(null);
+    const certificateRef = useRef(null);
 
-    const certificateRef = useRef();
+    // ✅ localStorage only runs in the browser, never during SSR/prerender
+    useEffect(() => {
+        const stored = localStorage.getItem("user");
+        if (stored) {
+            setUser(JSON.parse(stored));
+        }
+    }, []);
 
     const downloadCertificate2 = async () => {
         const element = certificateRef.current;
+        if (!element) return;
 
         const canvas = await html2canvas(element, {
             scale: 3,
@@ -34,7 +41,6 @@ const DownloadCertificate = () => {
 
     return (
         <>
-            {/* Download Button */}
             <button
                 onClick={downloadCertificate2}
                 className="customSignUpButton hover:bg-indigo-800 text-white px-5 py-4 rounded-lg text-sm font-medium flex items-center gap-2"
@@ -42,7 +48,6 @@ const DownloadCertificate = () => {
                 Download Certificate <FaArrowDown />
             </button>
 
-            {/* Hidden Certificate */}
             <div className="fixed left-[-9999px] top-0">
                 <div ref={certificateRef}>
                     <CertificateTemplate userName={user?.name} />
@@ -56,8 +61,6 @@ export default DownloadCertificate;
 
 
 function CertificateTemplate({ userName }) {
-
-
     return (
         <div className="w-[1200px] h-[850px] bg-white flex items-center justify-center p-6">
             <div className="w-full h-full shadow-2xl relative overflow-hidden">
@@ -83,7 +86,7 @@ function CertificateTemplate({ userName }) {
                         <p className="text-gray-500 mb-8">This certificate is proudly presented to</p>
 
                         <h2 className="text-5xl mycertificateFont font-semibold text-gray-900 mb-8 border-b-2 border-dashed border-indigo-300 inline-block px-8 pb-2">
-                           {userName}
+                            {userName}
                         </h2>
 
                         <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed mb-10">

@@ -27,15 +27,15 @@ function createEmptyCapsule() {
   };
 }
 
-async function upsertCapsule(expeditionId, capsule) {
-  const res = await fetch(`/api/expedition/${expeditionId}/capsule`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(capsule),
-  });
-  if (!res.ok) throw new Error('Failed to save capsule');
-  return res.json();
-}
+// async function upsertCapsule(expeditionId, capsule) {
+//   const res = await fetch(`/api/expedition/${expeditionId}/capsule`, {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(capsule),
+//   });
+//   if (!res.ok) throw new Error('Failed to save capsule');
+//   return res.json();
+// }
 
 async function upsertCapsule(expeditionId, capsule) {
   const res = await fetch(`/api/expedition/${expeditionId}/capsule`, {

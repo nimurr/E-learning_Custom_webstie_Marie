@@ -9,7 +9,6 @@ import {
   FaPlus,
   FaSave,
   FaTrashAlt,
-  FaPlus
 } from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
 import { useFetchExpeditionByIdQuery, useFetchExpeditionCapsuleDetailsQuery } from '@/redux/api/adminApi';

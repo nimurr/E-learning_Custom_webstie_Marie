@@ -25,7 +25,7 @@ const stepComponents = [
 const fallbackTitles = [
     'Identification', 'Current Situation', 'Values',
     'Idea Future', 'Work Conditions', 'Work Style', 'Skills',
-];
+]; 
 
 const Page = () => {
     const router = useRouter();

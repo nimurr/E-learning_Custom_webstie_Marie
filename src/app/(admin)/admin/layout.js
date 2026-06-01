@@ -5,11 +5,14 @@ import AdminSidebar from '@/Components/Admin/Common/AdminSidebar';
 import AdminHeader from '@/Components/Admin/Common/AdminHeader';
 import { ToastProvider } from '@/Components/Admin/hooks/useToast';
 import { ConfirmProvider } from '@/Components/Admin/hooks/useConfirm';
+ 
+
 
 export default function AdminLayout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
+
     <ToastProvider>
       <ConfirmProvider>
         <div className="flex min-h-screen bg-gray-100">
