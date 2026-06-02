@@ -1,3 +1,3 @@
-const url = "https://wwhf5s4x-8080.asse.devtunnels.ms"
+const url = "https://api.lapropulserie.com"
 
 export default url;
