@@ -38,7 +38,10 @@ export default function RootLayout({ children }) {
         <Providers>
           <PrimeReactProvider>
             {children}
-            <NovaChatbot /> {/* 👈 add this — renders on every page */}
+           {/* 
+           <NovaChatbot /> 
+           */} 
+            {/* 👈 add this — renders on every page */}
           </PrimeReactProvider>
         </Providers>
       </body>
