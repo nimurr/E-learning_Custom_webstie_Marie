@@ -14,7 +14,7 @@ const ChooseYourMission = () => {
 
                 <div className='xl:max-w-5xl mx-auto'>
                     <div className='grid lg:grid-cols-2 gap-5'>
-                        <div className='bg-blue-400/10 p-5 rounded-lg border border-orange-400'>
+                        <div className='bg-blue-400/10 p-5 rounded-lg border border-orange-400 flex flex-col justify-between'>
                             <h3 className='text-white my-5 flex items-center justify-between text-2xl'>
                                 Pour les particuliers<span className='text-5xl'>🤖</span>
                             </h3>
@@ -26,7 +26,7 @@ const ChooseYourMission = () => {
                             <button className='py-3 w-full text-center font-semibold bg-orange-500 text-white mt-5 rounded-lg'>🚀 Faire mon bilan gratuit</button>
                         </div>
 
-                        <div className='bg-blue-400/10 p-5 rounded-lg border border-orange-400'>
+                        <div className='bg-blue-400/10 p-5 rounded-lg border border-orange-400 flex flex-col justify-between'>
                             <h3 className='text-white my-5 flex items-center justify-between text-2xl'>
                                 Pour les entreprises<span className='text-5xl'>🏭</span>
                             </h3>
