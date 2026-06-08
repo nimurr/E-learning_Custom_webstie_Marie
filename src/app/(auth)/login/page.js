@@ -26,28 +26,26 @@ const Page = () => {
             password,
             rememberMe: true
         };
-        
+
         try {
             const response = await loginWithPassowrd(data).unwrap();
             if (response?.code == 200) {
                 toast.success(response?.message);
-                console.log(response?.data?.userWithoutPassword)
+                console.log(response?.data?.userWithoutPassword);
                 localStorage.setItem("token", JSON.stringify(response?.data?.tokens?.accessToken));
                 localStorage.setItem("user", JSON.stringify(response?.data?.userWithoutPassword));
                 if (response?.data?.userWithoutPassword?.role == 'student') {
-                    router.push('/students'); // ✅ redirect after login
+                    router.push('/students');
                 } else if (response?.data?.userWithoutPassword?.role == 'mentor') {
-                    router.push('/mentor'); // ✅ redirect after login
+                    router.push('/mentor');
                 }
-            }
-            else{
+            } else {
                 toast.error(response?.message);
             }
-            // router.push('/dashboard'); // ✅ redirect after login
         } catch (error) {
             console.error('Login failed:', error);
-            toast.error(error?.data?.message || 'Login failed. Please try again.'); // ✅ toast error message
-            alert(error?.data?.message || 'Login failed. Please try again.');
+            toast.error(error?.data?.message || 'Login failed. Please try again.');
+            setErrorMsg(error?.data?.message || 'Login failed. Please try again.');
         }
     };
 
@@ -58,7 +56,6 @@ const Page = () => {
                 <div className='min-w-80'>
                     <h2 className='text-3xl font-medium text-center'>Login</h2>
 
-                    {/* ✅ Error message */}
                     {errorMsg && (
                         <div className='mt-4 p-2 bg-red-100 border border-red-400 text-red-600 text-sm rounded-md text-center'>
                             {errorMsg}
@@ -112,7 +109,7 @@ const Page = () => {
                             disabled={isLoading}
                             className='cursor-pointer w-full p-2 bg-[#3b398d] font-semibold text-white rounded-md disabled:opacity-60 disabled:cursor-not-allowed'
                         >
-                            {isLoading ? 'Logging in...' : 'Login'} {/* ✅ loading state */}
+                            {isLoading ? 'Logging in...' : 'Login'}
                         </button>
                     </div>
 
