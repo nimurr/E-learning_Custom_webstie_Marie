@@ -94,7 +94,7 @@ const Page = () => {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-10">
-          <Link href="/students/exploration-journey/capsule-journey" className="bg-gradient-to-r from-primary to-indigo-500 hover:opacity-90 text-white px-8 py-3 rounded-xl font-medium shadow-md transition">
+          <Link href="/students/exploration-journey/capsule-journey" className="bg-blue-950  hover:opacity-90 text-white px-8 py-3 rounded-xl font-medium shadow-md transition">
             Start the Parcours Expédition →
           </Link>
         </div>
