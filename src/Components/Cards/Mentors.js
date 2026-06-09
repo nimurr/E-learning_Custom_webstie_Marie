@@ -28,7 +28,7 @@ const Mentors = ({ item }) => {
     }
 
     return (
-        <div className="relative overflow-hidden rounded-3xl text-white h-[260px]">
+        <div className="relative overflow-hidden rounded-3xl text-white h-auto">
 
             {/* BACKGROUND */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#0b0b1f] via-[#15153a] to-[#0b0b1f]" />
